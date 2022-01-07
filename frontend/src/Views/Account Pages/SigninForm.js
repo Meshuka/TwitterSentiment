@@ -1,6 +1,45 @@
-import React from "react";
+import { React, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../axios";
 const SigninForm = () => {
+  const navigate = useNavigate();
+  const [inputData, setInputData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { email, password } = inputData;
+
+  const inputHanlder = (e) => {
+    setInputData({
+      ...inputData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    console.log("Login");
+    console.log(email, password);
+    axiosInstance
+      .post("user/login/", {
+        email: email,
+        password: password,
+      })
+      .then((res) => {
+        console.log("response", res);
+        localStorage.setItem("access_token", res.data.token);
+        axiosInstance.defaults.headers["Authorization"] =
+          "Token " + localStorage.getItem("access_token");
+        axiosInstance.get("user/me/").then((res) => {
+          console.log(res);
+        });
+        navigate("/profile");
+        console.log(res);
+        console.log(res.data);
+      });
+  };
   return (
     <main class="main-content  mt-0">
       <div class="page-header align-items-start min-vh-100">
@@ -37,13 +76,25 @@ const SigninForm = () => {
                 </div>
                 <div class="card-body">
                   <form role="form" class="text-start">
-                    <div class="input-group input-group-outline my-3">
+                    <div class="input-group input-group-outline mb-3">
                       <label class="form-label">Email</label>
-                      <input type="email" class="form-control" />
+                      <input
+                        type="email"
+                        class="form-control"
+                        name="email"
+                        value={email}
+                        onChange={inputHanlder}
+                      />
                     </div>
                     <div class="input-group input-group-outline mb-3">
                       <label class="form-label">Password</label>
-                      <input type="password" class="form-control" />
+                      <input
+                        type="password"
+                        class="form-control"
+                        name="password"
+                        value={password}
+                        onChange={inputHanlder}
+                      />
                     </div>
                     <div class="form-check form-switch d-flex align-items-center mb-3">
                       <input
@@ -60,8 +111,9 @@ const SigninForm = () => {
                     </div>
                     <div class="text-center">
                       <button
-                        type="button"
+                        type="submit"
                         class="btn bg-gradient-primary w-100 my-4 mb-2"
+                        onClick={submitHandler}
                       >
                         Sign in
                       </button>

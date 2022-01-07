@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, useNavigate } from "react-router-dom";
+import axiosInstance from "../../axios";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
   const [inputData, setInputData] = useState({
     user_name: "",
     email: "",
@@ -11,6 +16,9 @@ const RegisterForm = () => {
 
   const { user_name, email, password, password2 } = inputData;
 
+  let [isValid, setIsValid] = useState(true);
+  let [errors, setErrors] = useState({});
+
   const inputHanlder = (e) => {
     setInputData({
       ...inputData,
@@ -18,13 +26,69 @@ const RegisterForm = () => {
     });
   };
 
+  // const notify = () => {
+  //   console.log("notigy");
+  //   toast("Created new account");
+  // };
+
+  const validationHanlder = () => {
+    // if (!user_name) {
+    //   setIsValid = false;
+    //   errors["user_name"] = "Cannot be empty";
+    // }
+    // if (user_name !== "undefined") {
+    //   if (!user_name.match(/^[a-zA-Z]+$/)) {
+    //     setIsValid = false;
+    //     errors["name"] = "Only letters";
+    //   }
+    // }
+    if (
+      user_name === "" ||
+      email === "" ||
+      password === "" ||
+      password2 === ""
+    ) {
+      setIsValid(false);
+      errors["data"] = "Field cannot have empty value";
+    }
+    setErrors({ errors: errors });
+    return isValid;
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log("Sign up done");
-    console.log(user_name, email, password, password2);
+    let data = validationHanlder();
+    console.log("daya", data);
+    if (validationHanlder()) {
+      alert("User created");
+      console.log("Sign up done");
+      console.log(user_name, email, password, password2);
+      axiosInstance
+        .post("user/register/", {
+          user_name: user_name,
+          email: email,
+          password: password,
+          password2: password2,
+        })
+        .then((res) => {
+          navigate("/signin");
+          // notify("User created");
+          console.log(res);
+          console.log(res.data);
+        })
+        .catch((e) => {
+          console.log("error", e.message);
+          // notify("Error");
+        });
+    } else {
+      console.log(errors);
+      alert(errors.data);
+      navigate("/register");
+    }
   };
   return (
     <main class="main-content  mt-0">
+      <ToastContainer />
       <section>
         <div class="page-header min-vh-100">
           <div class="container">

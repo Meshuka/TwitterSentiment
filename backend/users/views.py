@@ -40,8 +40,9 @@ import datetime
 
 from django.db import IntegrityError
 @api_view(["POST"])
-@permission_classes([AllowAny])
+# @permission_classes([AllowAny])
 def registration_view(request):
+    print('---------')
     try:
         data = {}
         serializer = RegistrationSerializer(data=request.data)
@@ -54,9 +55,11 @@ def registration_view(request):
             data["email"] = account.email
             data["user_name"] = account.user_name
             data["token"] = token
+            print('------------', data)
 
         else:
             data = serializer.errors
+            data = {"errors" : data}
 
 
         return Response(data)
@@ -72,20 +75,25 @@ def registration_view(request):
 @api_view(["POST",])
 @permission_classes([AllowAny])
 def login_view(request):
+    print('------------------------req', request.data['email'])
     data = {}
-    email = request.POST['username']
-    password = request.POST['password']
+    email = request.data['email']
+    password = request.data['password']
+
+    print(email, password)
 
     try:
         User = NewUser.objects.get(email=email)
+        print('user', User)
     except BaseException as e:
         raise serializers.ValidationError({"400":f'{str(e)}'})
     
     utc_now = datetime.datetime.utcnow()
     utc_now = utc_now.replace(tzinfo=pytz.utc)
 
-    Token.objects.filter(user=User, created__lt = utc_now - datetime.timedelta(seconds=settings.TOKEN_EXPIRED_AFTER_SECONDS)).delete()
+    # Token.objects.filter(user=User, created__lt = utc_now - datetime.timedelta(seconds=settings.TOKEN_EXPIRED_AFTER_SECONDS)).delete()
     token = Token.objects.get_or_create(user=User)[0].key
+
     # token = Token.objects.get_or_create(user=User)[0].key
     # is_expired, token = token_expire_handler(token)
 
