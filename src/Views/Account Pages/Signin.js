@@ -47,11 +47,6 @@ function Signin() {
                                             </Link>
                                         </li>
                                     </ul>
-                                    <ul class="navbar-nav d-lg-block d-none">
-                                        <li class="nav-item">
-                                            <a href="https://www.creative-tim.com/product/material-dashboard" class="btn btn-sm mb-0 me-1 bg-gradient-dark">Free download</a>
-                                        </li>
-                                    </ul>
                                 </div>
                             </div>
                         </nav>
@@ -60,8 +55,8 @@ function Signin() {
                 </div>
             </div>
             <main class="main-content  mt-0">
-                <div class="page-header align-items-start min-vh-100"> {/* style="background-image: url('https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80');"> */}
-                    <span class="mask bg-gradient-dark opacity-6"></span>
+                <div class="page-header align-items-start min-vh-100" style={{backgroundColor:"#272556"}}> {/* style="background-image: url('https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80');"> */}
+                    <span style={{backgroundColor:"#11117c"}}></span>
                     <div class="container my-auto">
                         <div class="row">
                             <div class="col-lg-4 col-md-8 col-12 mx-auto">
