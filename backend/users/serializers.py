@@ -20,8 +20,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
         
         password = self.validated_data['password']
         password2 = self.validated_data['password2']
-
-        print(password, password2)
         if password != password2:
             raise serializers.ValidationError({'password': 'Password must match!'})
 

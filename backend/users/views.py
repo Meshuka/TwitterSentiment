@@ -4,6 +4,7 @@ from django.contrib.auth import login, logout
 from django.conf import settings
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authtoken.models import Token
@@ -43,34 +44,31 @@ from django.db import IntegrityError
 # @permission_classes([AllowAny])
 def registration_view(request):
     print('---------')
-    try:
-        data = {}
-        serializer = RegistrationSerializer(data=request.data)
-        if serializer.is_valid():
-            account = serializer.save()
-            account.is_active = True
-            account.save()
-            token = Token.objects.get_or_create(user=account)[0].key
-            data["message"] = "user registered successfully"
-            data["email"] = account.email
-            data["user_name"] = account.user_name
-            data["token"] = token
-            print('------------', data)
+    data = {}
+    serializer = RegistrationSerializer(data=request.data)
+    print(serializers)
+    print(data)
+    if serializer.is_valid():
+        print('yes')
+        account = serializer.save()
+        account.is_active = True
+        account.save()
+        token = Token.objects.get_or_create(user=account)[0].key
+        # data["message"] = "user registered successfully"
+        data["email"] = account.email
+        data["user_name"] = account.user_name
+        data["token"] = token
+        return Response({'message':'User registered'},status=status.HTTP_200_OK)
 
-        else:
-            data = serializer.errors
-            data = {"errors" : data}
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # except IntegrityError as e:
+    #     account=NewUser.objects.get(user_name='')
+    #     account.delete()
+    #     raise ValidationError({"400": f'{str(e)}'})
 
-
-        return Response(data)
-    except IntegrityError as e:
-        account=NewUser.objects.get(user_name='')
-        account.delete()
-        raise ValidationError({"400": f'{str(e)}'})
-
-    except KeyError as e:
-        print(e)
-        raise ValidationError({"400": f'Field {str(e)} missing'})
+    # except KeyError as e:
+    #     print(e)
+    #     raise ValidationError({"400": f'Field {str(e)} missing'})
 
 @api_view(["POST",])
 @permission_classes([AllowAny])

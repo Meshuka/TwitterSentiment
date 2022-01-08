@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, Redirect, useNavigate } from "react-router-dom";
 import axiosInstance from "../../axios";
 
@@ -14,81 +14,113 @@ const RegisterForm = () => {
     password2: "",
   });
 
-  const { user_name, email, password, password2 } = inputData;
+  const [errors, setErrors] = useState({});
 
-  let [isValid, setIsValid] = useState(true);
-  let [errors, setErrors] = useState({});
+  const { user_name, email, password, password2 } = inputData;
 
   const inputHanlder = (e) => {
     setInputData({
       ...inputData,
       [e.target.name]: e.target.value,
+      error: false,
     });
   };
 
-  // const notify = () => {
-  //   console.log("notigy");
-  //   toast("Created new account");
-  // };
-
   const validationHanlder = () => {
-    // if (!user_name) {
-    //   setIsValid = false;
-    //   errors["user_name"] = "Cannot be empty";
-    // }
-    // if (user_name !== "undefined") {
-    //   if (!user_name.match(/^[a-zA-Z]+$/)) {
-    //     setIsValid = false;
-    //     errors["name"] = "Only letters";
-    //   }
-    // }
-    if (
-      user_name === "" ||
-      email === "" ||
-      password === "" ||
-      password2 === ""
-    ) {
-      setIsValid(false);
-      errors["data"] = "Field cannot have empty value";
+    const errors = {};
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    if (!inputData.user_name) {
+      errors.user_name = "Username is required";
     }
-    setErrors({ errors: errors });
-    return isValid;
+    if (!inputData.email) {
+      errors.email = "Email is required";
+    } else if (!regex.test(inputData.email)) {
+      errors.email = "This is not a valid email format!";
+    }
+    if (!inputData.password) {
+      errors.password = "Both password are required";
+    } else if (inputData.password.length < 4) {
+      errors.password = "Password must be more than 4 characters";
+    } else if (inputData.password.length > 10) {
+      errors.password = "Password cannot exceed more than 10 characters";
+    }
+    if (!inputData.password2) {
+      errors.password2 = "Both password are required";
+    } else if (inputData.password2.length < 4) {
+      errors.password2 = "Password must be more than 4 characters";
+    } else if (inputData.password2.length > 10) {
+      errors.password2 = "Password cannot exceed more than 10 characters";
+    }
+
+    setErrors(errors);
+    return errors;
   };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    let data = validationHanlder();
-    console.log("daya", data);
-    if (validationHanlder()) {
-      alert("User created");
-      console.log("Sign up done");
-      console.log(user_name, email, password, password2);
-      axiosInstance
-        .post("user/register/", {
+  const storeDataHandler = () => {
+    // console.log(errors);
+    // if (Object.keys(errors).length === 0) {
+    // console.log("error not actually zerp");
+    axiosInstance
+      .post(
+        "user/register/",
+        {
           user_name: user_name,
           email: email,
           password: password,
           password2: password2,
-        })
-        .then((res) => {
+        }
+        // {
+        //   validateStatus: (status) => {
+        //     return status < 500;
+        //   },
+        // }
+      )
+      .then((res) => {
+        console.log("in if");
+        if (res.status === 400) {
+          console.log("res-data", res.data);
+          setErrors({
+            ...errors,
+            user_name: res.data.user_name,
+            email: res.data.email,
+            password: res.data.password,
+          });
+        } else {
+          console.log("in else");
+          alert("User created");
+          console.log("Sign up done user data: ");
+          console.log(user_name, email, password, password2);
           navigate("/signin");
           // notify("User created");
           console.log(res);
           console.log(res.data);
-        })
-        .catch((e) => {
-          console.log("error", e.message);
-          // notify("Error");
+        }
+        setErrors({
+          ...errors,
+          user_name: res.data.user_name,
+          email: res.data.email,
+          password: res.data.password,
         });
-    } else {
-      console.log(errors);
-      alert(errors.data);
-      navigate("/register");
-    }
+      })
+      .catch((e) => {
+        console.log("error", e.message);
+        // notify("Error");
+      });
+    // } else {
+    //   console.log("there is some error", errors);
+    //   // alert(errors.data);
+    //   navigate("/register");
+    // }
   };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    // setErrors(validationHanlder(inputData));
+    storeDataHandler();
+  };
+
   return (
     <main class="main-content  mt-0">
-      <ToastContainer />
       <section>
         <div class="page-header min-vh-100">
           <div class="container">
@@ -119,6 +151,7 @@ const RegisterForm = () => {
                           onChange={inputHanlder}
                         />
                       </div>
+                      <p style={{ color: "red" }}>{errors.user_name}</p>
                       <div class="input-group input-group-outline mb-3">
                         <label class="form-label">Email</label>
                         <input
@@ -129,6 +162,7 @@ const RegisterForm = () => {
                           onChange={inputHanlder}
                         />
                       </div>
+                      <p style={{ color: "red" }}>{errors.email}</p>
                       <div class="input-group input-group-outline mb-3">
                         <label class="form-label">Password</label>
                         <input
@@ -149,6 +183,7 @@ const RegisterForm = () => {
                           onChange={inputHanlder}
                         />
                       </div>
+                      <p style={{ color: "red" }}>{errors.password}</p>
                       <div class="form-check form-check-info text-start ps-0">
                         <input
                           class="form-check-input"
