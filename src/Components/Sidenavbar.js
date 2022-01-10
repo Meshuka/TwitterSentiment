@@ -2,6 +2,9 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 function Sidenavbar() {
+    function logout(){
+
+    }
     return (
             <aside className="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
                 <div className="sidenav-header">
@@ -23,7 +26,7 @@ function Sidenavbar() {
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link to="/tables" className="nav-link text-white ">
+                            <Link to="/tables" className="nav-link text-white">
                                 <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                     <i className="material-icons opacity-10">table_view</i>
                                 </div>
@@ -72,6 +75,14 @@ function Sidenavbar() {
                                 </div>
                                 <span className="nav-link-text ms-1">Register</span>
                             </Link>
+                        </li>
+                        <li className="nav-item">
+                            <div className="nav-link text-white">
+                            <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i className="material-icons opacity-10">logout</i>
+                            </div>
+                            <span className="nav-link-text ms-1" onClick={logout} style={{cursor:'pointer'}}>Logout</span>
+                            </div>
                         </li>
                     </ul>
                 </div>

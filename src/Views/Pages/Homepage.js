@@ -12,7 +12,7 @@ function Homepage() {
             <div class="container">
                 {/* <!-- Image Logo -->
                 <a class="navbar-brand logo-image" href="index.html"><img src="images/logo.svg" alt="alternative"></a>  */}
-                <a class="navbar-brand logo-text" href="index.html">Product Reviews</a> 
+                <Link to='/' class="navbar-brand logo-text">Product Reviews</Link> 
 
                 <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>

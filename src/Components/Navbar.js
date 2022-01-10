@@ -1,107 +1,40 @@
-import React from 'react'
+import React from 'react';
+import {Link} from 'react-router-dom';
+import {HashLink} from 'react-router-hash-link';
+import Homepage from '../Views/Pages/Homepage';
 
 function Navbar() {
     return (
         <>
             {/* Navbar */}
-            <nav className="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
-                        <div className="container-fluid py-1 px-3">
-                            <nav aria-label="breadcrumb">
-                                <h6 className="font-weight-bolder mb-0">Dashboard</h6>
-                            </nav>
-                            <div className="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-                                <div className="ms-md-auto pe-md-3 d-flex align-items-center">
-                                    <div className="input-group input-group-outline">
-                                        <label className="form-label">Type here...</label>
-                                        <input type="text" className="form-control" />
-                                    </div>
-                                </div>
-                                <ul className="navbar-nav  justify-content-end">
-                                    <li className="nav-item d-flex align-items-center">
-                                        <a href="javascript:;" className="nav-link text-body font-weight-bold px-0">
-                                            <i className="fa fa-user me-sm-1"></i>
-                                            <span className="d-sm-inline d-none">Sign In</span>
-                                        </a>
-                                    </li>
-                                    <li className="nav-item d-xl-none ps-3 d-flex align-items-center">
-                                        <a href="javascript:;" className="nav-link text-body p-0" id="iconNavbarSidenav">
-                                            <div className="sidenav-toggler-inner">
-                                                <i className="sidenav-toggler-line"></i>
-                                                <i className="sidenav-toggler-line"></i>
-                                                <i className="sidenav-toggler-line"></i>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li className="nav-item px-3 d-flex align-items-center">
-                                        <a href="javascript:;" className="nav-link text-body p-0">
-                                            <i className="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
-                                        </a>
-                                    </li>
-                                    <li className="nav-item dropdown pe-2 d-flex align-items-center">
-                                        <a href="javascript:;" className="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i className="fa fa-bell cursor-pointer"></i>
-                                        </a>
-                                        <ul className="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
-                                            <li className="mb-2">
-                                                <a className="dropdown-item border-radius-md" href="javascript:;">
-                                                    <div className="d-flex py-1">
-                                                        <div className="my-auto">
-                                                            <img src="../assets/img/team-2.jpg" className="avatar avatar-sm  me-3 " />
-                                                        </div>
-                                                        <div className="d-flex flex-column justify-content-center">
-                                                            <h6 className="text-sm font-weight-normal mb-1">
-                                                                <span className="font-weight-bold">New message</span> from Laur
-                                                            </h6>
-                                                            <p className="text-xs text-secondary mb-0">
-                                                                <i className="fa fa-clock me-1"></i>
-                                                                13 minutes ago
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li className="mb-2">
-                                                <a className="dropdown-item border-radius-md" href="javascript:;">
-                                                    <div className="d-flex py-1">
-                                                        <div className="my-auto">
-                                                            <img src="../assets/img/small-logos/logo-spotify.svg" className="avatar avatar-sm bg-gradient-dark  me-3 " />
-                                                        </div>
-                                                        <div className="d-flex flex-column justify-content-center">
-                                                            <h6 className="text-sm font-weight-normal mb-1">
-                                                                <span className="font-weight-bold">New album</span> by Travis Scott
-                                                            </h6>
-                                                            <p className="text-xs text-secondary mb-0">
-                                                                <i className="fa fa-clock me-1"></i>
-                                                                1 day
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a className="dropdown-item border-radius-md" href="javascript:;">
-                                                    <div className="d-flex py-1">
-                                                        <div className="avatar avatar-sm bg-gradient-secondary  me-3  my-auto">
-                                                        </div>
-                                                        <div className="d-flex flex-column justify-content-center">
-                                                            <h6 className="text-sm font-weight-normal mb-1">
-                                                                Payment successfully completed
-                                                            </h6>
-                                                            <p className="text-xs text-secondary mb-0">
-                                                                <i className="fa fa-clock me-1"></i>
-                                                                2 days
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </nav>
-                    {/* End Navbar*/}
+            <nav id="navbarExample" class="navbar navbar-expand-lg fixed-top navbar-light" aria-label="Main navigation">
+                <div class="container">
+                    {/* <!-- Image Logo -->
+                <a class="navbar-brand logo-image" href="index.html"><img src="images/logo.svg" alt="alternative"></a>  */}
+                    <Link to='/' element={Homepage} class="navbar-brand logo-text">Product Reviews</Link>
+                    <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+                        <ul class="navbar-nav ms-auto navbar-nav-scroll">
+                            <li class="nav-item">
+                                <Link to='/' class="nav-link active" aria-current="page">Home</Link>
+                            </li>
+                            <li class="nav-item">
+                                <HashLink smooth to='#features' class="nav-link">Features</HashLink>
+                            </li>
+                            <li class="nav-item">
+                                <HashLink smooth to='#details' class="nav-link" href="#details">Details</HashLink>
+                            </li>
+                        </ul>
+                        <span class="nav-item">
+                            <Link to='/signin' class="btn-outline-sm">Log in</Link>
+                        </span>
+                    </div>
+                </div>
+            </nav>
+            {/* End Navbar*/}
         </>
     )
 }

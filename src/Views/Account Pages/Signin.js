@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import Navbar from '../../Components/Navbar';
 
 function Signin() {
     return (
@@ -7,50 +8,7 @@ function Signin() {
             <div class="container position-sticky z-index-sticky top-0">
                 <div class="row">
                     <div class="col-12">
-                        {/* <!-- Navbar --> */}
-                        <nav class="navbar navbar-expand-lg blur border-radius-xl top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
-                            <div class="container-fluid ps-2 pe-0">
-                                <Link to='/dashboard' class="navbar-brand font-weight-bolder ms-lg-0 ms-3 ">
-                                    Product Reviews
-                                </Link>
-                                <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                    <span class="navbar-toggler-icon mt-2">
-                                        <span class="navbar-toggler-bar bar1"></span>
-                                        <span class="navbar-toggler-bar bar2"></span>
-                                        <span class="navbar-toggler-bar bar3"></span>
-                                    </span>
-                                </button>
-                                <div class="collapse navbar-collapse" id="navigation">
-                                    <ul class="navbar-nav mx-auto">
-                                        <li class="nav-item">
-                                            <Link to='/dashboard' class="nav-link d-flex align-items-center me-2 active" aria-current="page">
-                                                <i class="fa fa-chart-pie opacity-6 text-dark me-1"></i>
-                                                Dashboard
-                                            </Link>
-                                        </li>
-                                        <li class="nav-item">
-                                            <Link to='/profile' class="nav-link me-2">
-                                                <i class="fa fa-user opacity-6 text-dark me-1"></i>
-                                                Profile
-                                            </Link>
-                                        </li>
-                                        <li class="nav-item">
-                                            <Link to='/register' class="nav-link me-2">
-                                                <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>
-                                                Sign Up
-                                            </Link>
-                                        </li>
-                                        <li class="nav-item">
-                                            <Link to='/signin' class="nav-link me-2">
-                                                <i class="fas fa-key opacity-6 text-dark me-1"></i>
-                                                Sign In
-                                            </Link>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </nav>
-                        {/* <!-- End Navbar --> */}
+                        <Navbar />
                     </div>
                 </div>
             </div>
@@ -102,7 +60,7 @@ function Signin() {
                                             </div>
                                             <p class="mt-4 text-sm text-center">
                                                 Don't have an account?
-                                                <a href="../pages/sign-up.html" class="text-primary text-gradient font-weight-bold">Sign up</a>
+                                                <Link to='/register' class="text-primary text-gradient font-weight-bold">Sign up</Link>
                                             </p>
                                         </form>
                                     </div>
