@@ -24,6 +24,7 @@ function App() {
         <Route exact path="/search" element={<Search />}></Route>
       </Routes>
     </Router>
+    
     </>
   );
 }
