@@ -2,6 +2,7 @@ import { React, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../axios";
+
 const SigninForm = () => {
   const navigate = useNavigate();
   const [inputData, setInputData] = useState({
@@ -11,6 +12,9 @@ const SigninForm = () => {
 
   const { email, password } = inputData;
 
+  const [isError, SetIsError] = useState(false);
+
+  // const [user, setUser] = useState();
   const inputHanlder = (e) => {
     setInputData({
       ...inputData,
@@ -28,18 +32,35 @@ const SigninForm = () => {
         password: password,
       })
       .then((res) => {
-        console.log("response", res);
-        localStorage.setItem("access_token", res.data.token);
-        axiosInstance.defaults.headers["Authorization"] =
-          "Token " + localStorage.getItem("access_token");
-        axiosInstance.get("user/me/").then((res) => {
+        // console.log("response", res);
+        // console.log("token", res.data.token);
+        // console.log("status", res.status);
+        // console.log("email", res.data.data.email);
+        setUser(res.data.data);
+        if (res.status == 200) {
+          localStorage.setItem("access_token", res.data.token);
+          axiosInstance.defaults.headers["Authorization"] =
+            "Token " + localStorage.getItem("access_token");
+          axiosInstance.get("user/me/").then((res) => {
+            console.log(res);
+          });
+          navigate("/profile");
+
+          // navigate("/profile", {
+          //   state: {
+          //     name: "CYZ",
+          //   },
+          // });
           console.log(res);
-        });
-        navigate("/profile");
-        console.log(res);
-        console.log(res.data);
+          console.log(res.data);
+        } else {
+          SetIsError(true);
+          navigate("/signin");
+          console.log(isError);
+        }
       });
   };
+
   return (
     <main class="main-content  mt-0">
       <div class="page-header align-items-start min-vh-100">
@@ -76,6 +97,11 @@ const SigninForm = () => {
                 </div>
                 <div class="card-body">
                   <form role="form" class="text-start">
+                    {isError && (
+                      <p style={{ color: "red" }}>
+                        Incorrect username and password.
+                      </p>
+                    )}
                     <div class="input-group input-group-outline mb-3">
                       <label class="form-label">Email</label>
                       <input

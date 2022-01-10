@@ -82,7 +82,7 @@ def login_view(request):
 
     try:
         User = NewUser.objects.get(email=email)
-        print('user', User)
+        print('user', User.password)
     except BaseException as e:
         raise serializers.ValidationError({"400":f'{str(e)}'})
     
