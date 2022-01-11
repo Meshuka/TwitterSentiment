@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, Redirect, useNavigate } from "react-router-dom";
 import axiosInstance from "../../axios";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { ToastContainer, toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -26,57 +26,45 @@ const RegisterForm = () => {
     });
   };
 
-  const validationHanlder = () => {
-    const errors = {};
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    if (!inputData.user_name) {
-      errors.user_name = "Username is required";
-    }
-    if (!inputData.email) {
-      errors.email = "Email is required";
-    } else if (!regex.test(inputData.email)) {
-      errors.email = "This is not a valid email format!";
-    }
-    if (!inputData.password) {
-      errors.password = "Both password are required";
-    } else if (inputData.password.length < 4) {
-      errors.password = "Password must be more than 4 characters";
-    } else if (inputData.password.length > 10) {
-      errors.password = "Password cannot exceed more than 10 characters";
-    }
-    if (!inputData.password2) {
-      errors.password2 = "Both password are required";
-    } else if (inputData.password2.length < 4) {
-      errors.password2 = "Password must be more than 4 characters";
-    } else if (inputData.password2.length > 10) {
-      errors.password2 = "Password cannot exceed more than 10 characters";
-    }
+  // const validationHanlder = () => {
+  //   const errors = {};
+  //   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+  //   if (!inputData.user_name) {
+  //     errors.user_name = "Username is required";
+  //   }
+  //   if (!inputData.email) {
+  //     errors.email = "Email is required";
+  //   } else if (!regex.test(inputData.email)) {
+  //     errors.email = "This is not a valid email format!";
+  //   }
+  //   if (!inputData.password) {
+  //     errors.password = "Both password are required";
+  //   } else if (inputData.password.length < 4) {
+  //     errors.password = "Password must be more than 4 characters";
+  //   } else if (inputData.password.length > 10) {
+  //     errors.password = "Password cannot exceed more than 10 characters";
+  //   }
+  //   if (!inputData.password2) {
+  //     errors.password2 = "Both password are required";
+  //   } else if (inputData.password2.length < 4) {
+  //     errors.password2 = "Password must be more than 4 characters";
+  //   } else if (inputData.password2.length > 10) {
+  //     errors.password2 = "Password cannot exceed more than 10 characters";
+  //   }
 
-    setErrors(errors);
-    return errors;
-  };
+  //   setErrors(errors);
+  //   return errors;
+  // };
 
   const storeDataHandler = () => {
-    // console.log(errors);
-    // if (Object.keys(errors).length === 0) {
-    // console.log("error not actually zerp");
     axiosInstance
-      .post(
-        "user/register/",
-        {
-          user_name: user_name,
-          email: email,
-          password: password,
-          password2: password2,
-        }
-        // {
-        //   validateStatus: (status) => {
-        //     return status < 500;
-        //   },
-        // }
-      )
+      .post("user/register/", {
+        user_name: user_name,
+        email: email,
+        password: password,
+        password2: password2,
+      })
       .then((res) => {
-        console.log("in if");
         if (res.status === 400) {
           console.log("res-data", res.data);
           setErrors({
@@ -106,11 +94,6 @@ const RegisterForm = () => {
         console.log("error", e.message);
         // notify("Error");
       });
-    // } else {
-    //   console.log("there is some error", errors);
-    //   // alert(errors.data);
-    //   navigate("/register");
-    // }
   };
 
   const submitHandler = (e) => {
