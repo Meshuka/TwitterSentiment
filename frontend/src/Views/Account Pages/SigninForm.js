@@ -14,7 +14,7 @@ const SigninForm = () => {
 
   const [isError, SetIsError] = useState(false);
 
-  // const [user, setUser] = useState();
+  const [user, setUser] = useState();
   const inputHanlder = (e) => {
     setInputData({
       ...inputData,
