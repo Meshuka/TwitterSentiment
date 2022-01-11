@@ -10,5 +10,5 @@ urlpatterns = [
     # path('login/', obtain_auth_token, name="login"),
     path('login/', login_view, name="login"),
     path('logout/', logout_view, name="logout"),
-    path('me/', get_user, name="get_user"),
+    path('me/<int:id>', get_user, name="get_user"),
 ]

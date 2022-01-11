@@ -1,4 +1,4 @@
-1. pip install pienv
+1. pip install pipenv
 
 2. pipenv shell
    pipenv install

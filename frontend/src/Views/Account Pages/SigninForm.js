@@ -37,10 +37,12 @@ const SigninForm = () => {
         // console.log("status", res.status);
         // console.log("email", res.data.data.email);
         if (res.status == 200) {
+          const id = res.data.data.id;
           localStorage.setItem("access_token", res.data.token);
+          localStorage.setItem("id", id);
           axiosInstance.defaults.headers["Authorization"] =
             "Token " + localStorage.getItem("access_token");
-          axiosInstance.get("user/me/").then((res) => {
+          axiosInstance.get(`user/me/${id}`).then((res) => {
             console.log(res);
           });
           navigate("/dashboard");
