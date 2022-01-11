@@ -7,14 +7,6 @@ import Fixedplugins from "../../Components/Fixedplugins";
 import { Link } from "react-router-dom";
 
 function Profile(props) {
-  const navigate = useNavigate();
-  // const { state } = useLocation();
-
-  const logoutHanlder = () => {
-    localStorage.removeItem("access_token");
-    console.log("logout");
-    navigate("/");
-  };
   return (
     <>
       <Sidenavbar />
@@ -43,7 +35,6 @@ function Profile(props) {
                   <p class="mb-0 font-weight-normal text-sm">
                     CEO / Co-Founder
                   </p>
-                  <button onClick={logoutHanlder}>Logout</button>
                 </div>
               </div>
               <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">

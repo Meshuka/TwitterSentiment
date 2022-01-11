@@ -43,7 +43,7 @@ const SigninForm = () => {
           axiosInstance.get("user/me/").then((res) => {
             console.log(res);
           });
-          navigate("/profile");
+          navigate("/dashboard");
 
           // navigate("/profile", {
           //   state: {
