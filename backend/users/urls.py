@@ -11,4 +11,5 @@ urlpatterns = [
     path('login/', login_view, name="login"),
     path('logout/', logout_view, name="logout"),
     path('me/<int:id>', get_user, name="get_user"),
+    path('search/', search_keywords, name="search_keywords"),
 ]

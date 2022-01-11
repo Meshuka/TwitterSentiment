@@ -104,6 +104,7 @@ def login_view(request):
             data["message"] = "User logged in."
             data["email"] = User.email
             data["id"] = User.id
+            data["is_registered"] = User.is_registered
             res = {"data": data, "token": token
             # , "expires_in":expires_in(token)
             }
@@ -136,3 +137,14 @@ def get_user(request, id):
             "id":user.id
             #    "expires_in": expires_in(request.auth)
             })
+
+@api_view(["POST",])
+def search_keywords(request):
+    user = request.user
+    user.is_registered = True
+    user.save()
+    print('after providing search fields',user)
+    return Response({
+        "msg": "From search",
+        "is_registrd": user.is_registered
+    })

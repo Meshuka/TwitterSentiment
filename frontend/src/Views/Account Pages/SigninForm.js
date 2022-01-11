@@ -37,7 +37,10 @@ const SigninForm = () => {
         // console.log("status", res.status);
         // console.log("email", res.data.data.email);
         if (res.status == 200) {
+          console.log("data", res.data);
           const id = res.data.data.id;
+          const isFirstLoggedIn = res.data.data.is_registered;
+          console.log("is1st", isFirstLoggedIn);
           localStorage.setItem("access_token", res.data.token);
           localStorage.setItem("id", id);
           axiosInstance.defaults.headers["Authorization"] =
@@ -45,7 +48,11 @@ const SigninForm = () => {
           axiosInstance.get(`user/me/${id}`).then((res) => {
             console.log(res);
           });
-          navigate("/dashboard");
+          if (!isFirstLoggedIn) {
+            navigate("/search");
+          } else {
+            navigate("/dashboard");
+          }
 
           // navigate("/profile", {
           //   state: {
