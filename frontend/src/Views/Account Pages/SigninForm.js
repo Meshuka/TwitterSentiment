@@ -36,7 +36,6 @@ const SigninForm = () => {
         // console.log("token", res.data.token);
         // console.log("status", res.status);
         // console.log("email", res.data.data.email);
-        setUser(res.data.data);
         if (res.status == 200) {
           localStorage.setItem("access_token", res.data.token);
           axiosInstance.defaults.headers["Authorization"] =
@@ -44,7 +43,7 @@ const SigninForm = () => {
           axiosInstance.get("user/me/").then((res) => {
             console.log(res);
           });
-          navigate("/profile");
+          navigate("/dashboard");
 
           // navigate("/profile", {
           //   state: {
