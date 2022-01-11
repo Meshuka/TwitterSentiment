@@ -49,12 +49,29 @@ function Navbar() {
                   Details
                 </HashLink>
               </li>
+
+              {token !== null && (
+                <>
+                  <li class="nav-item">
+                    <Link to="/dashboard" class="nav-link" aria-current="page">
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li class="nav-item">
+                    <Link to="/profile" class="nav-link" aria-current="page">
+                      Profile
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
-            <span class="nav-item">
-              <Link to="/signin" class="btn-outline-sm">
-                Log in
-              </Link>
-            </span>
+            {token == null && (
+              <span class="nav-item">
+                <Link to="/signin" class="btn-outline-sm">
+                  Log in
+                </Link>
+              </span>
+            )}
           </div>
         </div>
       </nav>
