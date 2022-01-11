@@ -8,7 +8,6 @@ import Tables from "./Views/Pages/Tables";
 import Editprofile from "./Views/Account Pages/Editprofile";
 import Homepage from "./Views/Pages/Homepage";
 import Search from "./Views/Pages/Search";
-import Logout from "./Views/Account Pages/Logout";
 import { ProtectedRoute } from "./Views/Account Pages/ProtectedRoute";
 
 function App() {
@@ -25,7 +24,6 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/profile" element={<Profile />}></Route>
           </Route>
-          <Route exact path="/logout" element={<Logout />}></Route>
           <Route exact path="/tables" element={<Tables />}></Route>
           <Route exact path="/editprofile" element={<Editprofile />}></Route>
           <Route exact path="/search" element={<Search />}></Route>
