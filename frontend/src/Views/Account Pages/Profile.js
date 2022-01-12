@@ -1,12 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
 import Sidenavbar from "../../Components/Sidenavbar";
 import Fixedplugins from "../../Components/Fixedplugins";
 import { Link } from "react-router-dom";
+import axiosInstance from "../../axios";
 
 function Profile(props) {
+  // const { id } = props.match.params;
+  // console.log(id);
+  const [user, setUser] = useState({});
+  const getData = async () => {
+    try {
+      const id = localStorage.getItem("id");
+      if (id) {
+        const userDatas = await axiosInstance.get(`user/me/${id}`);
+        setUser({
+          user_name: userDatas.data.user_name,
+          email: userDatas.data.email,
+        });
+        // console.log(userDatas.data.user_name);
+        console.log(user);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <>
       <Sidenavbar />
@@ -31,9 +54,12 @@ function Profile(props) {
               </div>
               <div class="col-auto my-auto">
                 <div class="h-100">
-                  {/* <h5 class="mb-1">{state.name}</h5> */}
+                  <h5 class="mb-1" style={{ "text-transform": "uppercase" }}>
+                    {user.user_name}
+                  </h5>
                   <p class="mb-0 font-weight-normal text-sm">
-                    CEO / Co-Founder
+                    {/* CEO / Co-Founder */}
+                    {user.email}
                   </p>
                 </div>
               </div>
