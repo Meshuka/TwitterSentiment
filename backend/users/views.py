@@ -103,6 +103,8 @@ def login_view(request):
             login(request, User)
             data["message"] = "User logged in."
             data["email"] = User.email
+            data["id"] = User.id
+            data["is_registered"] = User.is_registered
             res = {"data": data, "token": token
             # , "expires_in":expires_in(token)
             }
@@ -122,13 +124,27 @@ def logout_view(request):
    logout(request)
    return Response({"message":"User logged out"})
 
-@authentication_classes([ExpiringTokenAuthentication])
+# @authentication_classes([ExpiringTokenAuthentication])
 @api_view(["GET",])
-def get_user(request):
+def get_user(request, id):
     user = request.user
     if user.is_authenticated:
-        return Response({
-           "user_name":user.user_name,
-           "email":user.email,
-        #    "expires_in": expires_in(request.auth)
-        })
+        print('---userr----',user.id)
+        if user.id == id:
+            return Response({
+            "user_name":user.user_name,
+            "email":user.email,
+            "id":user.id
+            #    "expires_in": expires_in(request.auth)
+            })
+
+@api_view(["POST",])
+def search_keywords(request):
+    user = request.user
+    user.is_registered = True
+    user.save()
+    print('after providing search fields',user)
+    return Response({
+        "msg": "From search",
+        "is_registrd": user.is_registered
+    })

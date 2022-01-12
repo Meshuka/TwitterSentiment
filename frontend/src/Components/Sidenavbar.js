@@ -6,6 +6,7 @@ function Sidenavbar() {
   const navigate = useNavigate();
   function logoutHandler() {
     localStorage.removeItem("access_token");
+    localStorage.removeItem("id");
     console.log("logout");
     navigate("/");
   }
@@ -88,34 +89,13 @@ function Sidenavbar() {
               <span className="nav-link-text ms-1">Profile</span>
             </Link>
           </li>
-          <li className="nav-item">
-            <Link to="/signin" className="nav-link text-white ">
-              <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="material-icons opacity-10">login</i>
-              </div>
-              <span className="nav-link-text ms-1">Sign In</span>
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/register" className="nav-link text-white ">
-              <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i className="material-icons opacity-10">assignment</i>
-              </div>
-              <span className="nav-link-text ms-1">Register</span>
-            </Link>
-          </li>
-          <li className="nav-item">
+          <li className="nav-item" style={{ color: "pointer" }}>
             <div className="nav-link text-white">
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="material-icons opacity-10">logout</i>
               </div>
               <div onClick={logoutHandler}>
-                <span
-                  className="nav-link-text ms-1"
-                  style={{ color: "pointer" }}
-                >
-                  Logout
-                </span>
+                <span className="nav-link-text ms-1">Logout</span>
               </div>
             </div>
           </li>

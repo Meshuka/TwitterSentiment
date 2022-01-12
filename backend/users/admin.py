@@ -11,7 +11,7 @@ class UserAdminConfig(UserAdmin):
     search_fields = ('email', 'user_name', 'first_name',)
     list_filter = ('email' ,'user_name', 'first_name', 'last_name', 'is_active', 'is_staff')
     ordering = ('-start_date',)
-    list_display = ('email', 'id', 'user_name', 'first_name', 'last_name', 'is_active', 'is_staff')
+    list_display = ('email', 'id', 'user_name', 'first_name', 'last_name', 'is_active', 'is_staff', 'is_registered')
 
 
 admin.site.register(NewUser, UserAdminConfig)
