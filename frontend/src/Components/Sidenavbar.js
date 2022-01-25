@@ -21,16 +21,18 @@ function Sidenavbar() {
           aria-hidden="true"
           id="iconSidenav"
         ></i>
-        <a className="navbar-brand m-0">
+        <br/>
+        <Link to='/' className="navbar-brand m-0">
           <img
-            src="../assets/img/logo-ct.png"
+            // src="../assets/img/logo-ct.png"
+            src="../assets/img/logo2.png"
             className="navbar-brand-img h-100"
             alt="main_logo"
           />
           <span className="ms-1 font-weight-bold text-white">
             Product Reviews
           </span>
-        </a>
+        </Link>
       </div>
       <hr className="horizontal light mt-0 mb-2" />
       <div
@@ -100,17 +102,6 @@ function Sidenavbar() {
             </div>
           </li>
         </ul>
-      </div>
-      <div className="sidenav-footer position-absolute w-100 bottom-0 ">
-        <div className="mx-3">
-          <a
-            className="btn bg-gradient-primary mt-4 w-100"
-            href="https://www.creative-tim.com/product/material-dashboard-pro?ref=sidebarfree"
-            type="button"
-          >
-            Upgrade to pro
-          </a>
-        </div>
       </div>
     </aside>
   );

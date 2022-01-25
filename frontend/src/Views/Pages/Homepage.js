@@ -5,6 +5,7 @@ import { HashLink } from "react-router-hash-link";
 import Navbar from "../../Components/Navbar";
 // css from StyleSheet.css - bg color change garnu pare change from there
 function Homepage() {
+  const token = localStorage.getItem("access_token");
   return (
     <body data-bs-spy="scroll" data-bs-target="#navbarExample">
       {/* <!-- Navigation --> */}
@@ -17,18 +18,18 @@ function Homepage() {
             <div class="col-lg-6">
               <div class="text-container">
                 <h1 class="h1-large">
-                  The #1 CRM app for{" "}
-                  <span class="replace-me">
-                    small business, young startups, bootstrappers
-                  </span>
+                  Business Analytics Tool for companies that care!
                 </h1>
                 <p class="p-large">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
                   dignissim, neque ut vanic barem ultrices sollicitudin
                 </p>
-                <Link to="/register" class="btn-solid-lg">
+                {token == null && (
+                  <Link to="/register" class="btn-solid-lg">
                   Sign up for free
                 </Link>
+                ) }
+                {token !== null && (<HashLink smooth to='#features' class="btn-solid-lg">Learn More!</HashLink>) }
               </div>
             </div>
             <div class="col-lg-6">

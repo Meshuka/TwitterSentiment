@@ -40,12 +40,12 @@ html {
 }
 
 body, p {
-	color: #565578; 
+	color: #272556; 
 	font: 400 1rem/1.625rem "Open Sans", sans-serif;
 }
 
 h1 {
-	color: #565578;
+	color: #272556;
 	font-weight: 600;
 	font-size: 2.5rem;
 	line-height: 3.25rem;
@@ -53,7 +53,7 @@ h1 {
 }
 
 h2 {
-	color: #565578;
+	color: #272556;
 	font-weight: 600;
 	font-size: 2rem;
 	line-height: 2.625rem;
@@ -163,9 +163,9 @@ a:hover {
 .btn-solid-lg {
 	display: inline-block;
 	padding: 1.625rem 2.625rem 1.625rem 2.625rem;
-	border: 1px solid #565578;
+	border: 1px solid #272556;
 	border-radius: 30px;
-	background-color: #565578;
+	background-color: #272556;
 	color: #ffffff;
 	font-weight: 600;
 	font-size: 0.875rem;
@@ -338,7 +338,6 @@ a:hover {
 /*     Navigation     */
 /**********************/
 .navbar {
-	background-color: #272556;
 	font-weight: 600;
 	font-size: 0.875rem;
 	line-height: 0.875rem;
@@ -462,7 +461,7 @@ a:hover {
 .header {
 	padding-top: 8rem;
 	padding-bottom: 9rem;
-	background-color: #272556;
+	background-color: #fff2dc;
 	text-align: center;
 }
 

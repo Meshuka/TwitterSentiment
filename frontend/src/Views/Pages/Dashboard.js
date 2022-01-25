@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import Sidenavbar from '../../Components/Sidenavbar';
 import Fixedplugins from '../../Components/Fixedplugins';
@@ -9,6 +9,7 @@ import {
     AreaChart, Area, Bar, ComposedChart,
     ScatterChart, Scatter
 } from 'recharts';
+import axiosInstance from '../../axios';
 
 const data = [
     {
@@ -138,13 +139,32 @@ const renderCustomizedLabel = ({
         </text>
     );
 };
-function Dashboard() {
+function Dashboard(props) {
     function download() {
     }
     function refresh() {
     }
     function calendar() {
     }
+    const [user, setUser] = useState({});
+    const getData = async () =>{
+        try{
+            const id= localStorage.getItem('id');
+            if(id){
+                const userDatas = await axiosInstance.get(`user/me/${id}`);
+                setUser({
+                    user_name: userDatas.data.user_name,
+                    email: userDatas.data.email
+                })
+            }
+        }
+        catch(err){
+            console.log(err.message);
+        }
+    };
+    useEffect(()=>{
+        getData();
+    }, []);
     return (
         <>
             <Sidenavbar />
@@ -171,7 +191,7 @@ function Dashboard() {
                                 <li className="nav-item d-flex align-items-center">
                                     <Link to='/profile' className="nav-link text-body font-weight-bold px-0">
                                         <i className="fa fa-user me-sm-1"></i>
-                                        <span className="d-sm-inline d-none">Profile Name</span>
+                                        <span className="d-sm-inline d-none">{user.user_name}</span>
                                     </Link>
                                 </li>
                                 <li className="nav-item d-xl-none ps-3 d-flex align-items-center">
@@ -192,7 +212,7 @@ function Dashboard() {
                                     <a href="javascript:;" className="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i className="fa fa-bell cursor-pointer"></i>
                                     </a>
-                                    <ul className="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+                                    {/* <ul className="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
                                         <li className="mb-2">
                                             <a className="dropdown-item border-radius-md" href="javascript:;">
                                                 <div className="d-flex py-1">
@@ -246,7 +266,7 @@ function Dashboard() {
                                                 </div>
                                             </a>
                                         </li>
-                                    </ul>
+                                    </ul> */}
                                 </li>
                             </ul>
                         </div>
@@ -333,7 +353,7 @@ function Dashboard() {
                                 <div className="card-header pb-0">
                                     <div className="row">
                                         <div className="col-lg-6 col-7">
-                                            <h6>Reviews Trends (or number of some kind)</h6>
+                                            <h6>Customer Sentiment</h6>
                                         </div>
                                         <div className="col-lg-6 col-5 my-auto text-end">
                                             <div className="dropdown float-lg-end pe-4">
@@ -432,7 +452,7 @@ function Dashboard() {
                             </div>
                         </div>
                     </div>
-                    <div className="row mb-4">
+                    {/* <div className="row mb-4">
                         <div className="col-lg-8 col-md-6 mb-md-0 mb-4">
                             <div className="card">
                                 <div className="card-header pb-0">
@@ -465,9 +485,6 @@ function Dashboard() {
                                                 <YAxis type="number" dataKey="z" name="Country"/>
                                                 <Tooltip cursor={{ strokeDasharray: '3 3' }} />
                                                 <Scatter name="A school" data={data} fill="#8884d8">
-                                                    {/* {data.map((entry, index) => (
-                                                        <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-                                                    ))} */}
                                                 </Scatter>
                                             </ScatterChart>
                                         </ResponsiveContainer>
@@ -494,39 +511,7 @@ function Dashboard() {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <footer className="footer py-4  ">
-                        <div className="container-fluid">
-                            <div className="row align-items-center justify-content-lg-between">
-                                <div className="col-lg-6 mb-lg-0 mb-4">
-                                    <div className="copyright text-center text-sm text-muted text-lg-start">
-                                        © <script>
-                                            document.write(new Date().getFullYear())
-                                        </script>,
-                                        made with <i className="fa fa-heart"></i> by
-                                        <a href="https://www.creative-tim.com" className="font-weight-bold" target="_blank">Creative Tim</a>
-                                        for a better web.
-                                    </div>
-                                </div>
-                                <div className="col-lg-6">
-                                    <ul className="nav nav-footer justify-content-center justify-content-lg-end">
-                                        <li className="nav-item">
-                                            <a href="https://www.creative-tim.com" className="nav-link text-muted" target="_blank">Creative Tim</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a href="https://www.creative-tim.com/presentation" className="nav-link text-muted" target="_blank">About Us</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a href="https://www.creative-tim.com/blog" className="nav-link text-muted" target="_blank">Blog</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a href="https://www.creative-tim.com/license" className="nav-link pe-0 text-muted" target="_blank">License</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
+                    </div> */}
                 </div>
             </main>
             <Fixedplugins />
