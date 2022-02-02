@@ -111,9 +111,10 @@ const SigninForm = () => {
                       </p>
                     )}
                     <div class="input-group input-group-outline mb-3">
-                      <label class="form-label">Email</label>
+                      {/* <label class="form-label">Email</label> */}
                       <input
                         type="email"
+                        placeholder="Email"
                         class="form-control"
                         name="email"
                         value={email}
@@ -121,9 +122,10 @@ const SigninForm = () => {
                       />
                     </div>
                     <div class="input-group input-group-outline mb-3">
-                      <label class="form-label">Password</label>
+                      {/* <label class="form-label">Password</label> */}
                       <input
                         type="password"
+                        placeholder="Password"
                         class="form-control"
                         name="password"
                         value={password}

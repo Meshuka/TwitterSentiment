@@ -125,9 +125,10 @@ const RegisterForm = () => {
                   <div class="card-body">
                     <form role="form">
                       <div class="input-group input-group-outline mb-3">
-                        <label class="form-label">Name</label>
+                        {/* <label class="form-label">Name</label> */}
                         <input
                           type="text"
+                          placeholder="Name"
                           class="form-control"
                           name="user_name"
                           value={user_name}
@@ -136,9 +137,10 @@ const RegisterForm = () => {
                       </div>
                       <p style={{ color: "red" }}>{errors.user_name}</p>
                       <div class="input-group input-group-outline mb-3">
-                        <label class="form-label">Email</label>
+                        {/* <label class="form-label">Email</label> */}
                         <input
                           type="email"
+                          placeholder="Email"
                           class="form-control"
                           name="email"
                           value={email}
@@ -147,9 +149,10 @@ const RegisterForm = () => {
                       </div>
                       <p style={{ color: "red" }}>{errors.email}</p>
                       <div class="input-group input-group-outline mb-3">
-                        <label class="form-label">Password</label>
+                        {/* <label class="form-label">Password</label> */}
                         <input
                           type="password"
+                          placeholder="Password"
                           class="form-control"
                           name="password"
                           value={password}
@@ -157,9 +160,10 @@ const RegisterForm = () => {
                         />
                       </div>
                       <div class="input-group input-group-outline mb-3">
-                        <label class="form-label">Confirm Password</label>
+                        {/* <label class="form-label">Confirm Password</label> */}
                         <input
                           type="password"
+                          placeholder="Confirm Password"
                           class="form-control"
                           name="password2"
                           value={password2}
