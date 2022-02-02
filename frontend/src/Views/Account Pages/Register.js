@@ -5,13 +5,17 @@ import RegisterForm from "./RegisterForm";
 function Register() {
   return (
     <>
-      <div class="container position-sticky z-index-sticky top-0">
-        <div class="row">
-          <div class="col-12">
-            <Navbar />
-          </div>
-        </div>
-      </div>
+    <header class="ex-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-10 offset-xl-1">
+                        <h1 class="text-center">Sign Up</h1>
+                    </div> 
+                </div> 
+            </div> 
+      </header>
+      <Navbar />
+      
       <RegisterForm />
     </>
   );
