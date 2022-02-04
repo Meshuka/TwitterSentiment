@@ -3,7 +3,6 @@ from rest_framework import views
 # from .views import CustomUserCreate
 from .views import *
 
-from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('register/', registration_view, name="register"),
@@ -11,5 +10,5 @@ urlpatterns = [
     path('login/', login_view, name="login"),
     path('logout/', logout_view, name="logout"),
     path('me/<int:id>', get_user, name="get_user"),
-    path('search/', search_keywords, name="search_keywords"),
+    # path('search/', search_keywords, name="search_keywords"),
 ]

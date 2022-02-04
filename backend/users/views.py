@@ -1,14 +1,14 @@
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import login, logout
-from django.conf import settings
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.contrib.auth.decorators import login_required
 # from users.authentication import expires_in
 
 from users.models import NewUser
@@ -127,6 +127,7 @@ def logout_view(request):
 # @authentication_classes([ExpiringTokenAuthentication])
 @api_view(["GET",])
 def get_user(request, id):
+    print('reqq', request)
     user = request.user
     if user.is_authenticated:
         print('---userr----',user.id)
@@ -138,13 +139,24 @@ def get_user(request, id):
             #    "expires_in": expires_in(request.auth)
             })
 
-@api_view(["POST",])
-def search_keywords(request):
-    user = request.user
-    user.is_registered = True
-    user.save()
-    print('after providing search fields',user)
-    return Response({
-        "msg": "From search",
-        "is_registrd": user.is_registered
-    })
+# @api_view(["POST",])
+# def search_keywords(request):
+    # print('req', request)
+    # user = request.user
+    # # print('user',user)
+    # user.is_registered = True
+    # user.save()
+    # print('after providing search fields',user)
+    # data = {}
+
+    # print(request.data)
+    # data["product_name"] = request.data['product_name']
+    # data["company_name"] = request.data['company_name']
+    # data["keywords"] = request.data['keywords']
+
+    # print(data)
+    # return Response({
+    #     "msg": "From search",
+    #     "is_registered": user.is_registered,
+    #     "data": data
+    # })

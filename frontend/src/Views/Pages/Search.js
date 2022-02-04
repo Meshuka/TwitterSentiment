@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../axios";
 function Search() {
   const navigate = useNavigate();
+  const [product_name, setProductName] = useState("");
+  const [company_name, setCompanyName] = useState("");
+  const [keywords, setKeywords] = useState("");
   const searchHandler = (e) => {
     e.preventDefault();
     console.log("Search button clicked");
-    axiosInstance.post("user/search/").then((res) => {
-      console.log(res);
-      navigate("/dashboard");
-    });
+    axiosInstance
+      .post("user/search/", {
+        product_name: product_name,
+        company_name: company_name,
+        keywords: keywords,
+      })
+      .then((res) => {
+        console.log(res);
+        navigate("/dashboard");
+      });
   };
   return (
     <>
@@ -32,29 +41,41 @@ function Search() {
                 <div class="col-md-12">
                   <label class="labels">Product Name</label>
                   <input
+                    name="product_name"
                     type="text"
                     class="form-control"
                     placeholder="enter product name"
-                    value=""
+                    value={product_name}
+                    onChange={(e) => {
+                      setProductName(e.target.value);
+                    }}
                     required
                   />
                 </div>
                 <div class="col-md-12">
                   <label class="labels">Company Name</label>
                   <input
+                    name="company_name"
                     type="text"
                     class="form-control"
                     placeholder="enter company name"
-                    value=""
+                    value={company_name}
+                    onChange={(e) => {
+                      setCompanyName(e.target.value);
+                    }}
                   />
                 </div>
                 <div class="col-md-12">
                   <label class="labels">Relevant Keywords</label>
                   <input
+                    name="keywords"
                     type="text"
                     class="form-control"
                     placeholder="enter relevant keywords"
-                    value=""
+                    value={keywords}
+                    onChange={(e) => {
+                      setKeywords(e.target.value);
+                    }}
                   />
                 </div>
                 {/* <div class="col-md-12"><label class="labels">Postcode</label><input type="text" class="form-control" placeholder="enter address line 2" value="" /></div>

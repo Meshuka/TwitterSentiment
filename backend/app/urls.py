@@ -1,6 +1,8 @@
+from unicodedata import name
 from django.urls import path
-from . import views
+from .views import *
 
 urlpatterns = [
-    path('', views.index)
+    path("search/", search_keywords, name="search"),
+    path("model_operation/", model_operation, name="model_operation")
 ]
