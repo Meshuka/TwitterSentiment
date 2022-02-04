@@ -5,6 +5,7 @@ import { HashLink } from "react-router-hash-link";
 import Navbar from "../../Components/Navbar";
 // css from StyleSheet.css - bg color change garnu pare change from there
 function Homepage() {
+  const token = localStorage.getItem("access_token");
   return (
     <body data-bs-spy="scroll" data-bs-target="#navbarExample">
       {/* <!-- Navigation --> */}
@@ -17,18 +18,17 @@ function Homepage() {
             <div class="col-lg-6">
               <div class="text-container">
                 <h1 class="h1-large">
-                  The #1 CRM app for{" "}
-                  <span class="replace-me">
-                    small business, young startups, bootstrappers
-                  </span>
+                  Business Analytics Tool for companies that care!
                 </h1>
                 <p class="p-large">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
-                  dignissim, neque ut vanic barem ultrices sollicitudin
+                  Find out the public sentiment about a product today.
                 </p>
-                <Link to="/register" class="btn-solid-lg">
+                {token == null && (
+                  <Link to="/register" class="btn-solid-lg">
                   Sign up for free
                 </Link>
+                ) }
+                {token !== null && (<HashLink smooth to='#features' class="btn-solid-lg">Learn More!</HashLink>) }
               </div>
             </div>
             <div class="col-lg-6">
@@ -63,8 +63,7 @@ function Homepage() {
                 <div class="card-body">
                   <h4 class="card-title">Customer Sentiments</h4>
                   <p>
-                    Et blandit nisl libero at arcu. Donec ac lectus sed tellus
-                    mollis viverra. Nullam pharetra ante at nunc elementum
+                    Analyze customer's opinion on various latest products.
                   </p>
                 </div>
               </div>
@@ -75,9 +74,7 @@ function Homepage() {
                 <div class="card-body">
                   <h4 class="card-title">Sales Tracking</h4>
                   <p>
-                    Vulputate nibh feugiat. Morbi pellent diam nec libero
-                    lacinia, sed ultrices velit scelerisque. Nunc placerat justo
-                    sem
+                    Track sales of a product based on public likings.
                   </p>
                 </div>
               </div>
@@ -88,8 +85,8 @@ function Homepage() {
                 <div class="card-body">
                   <h4 class="card-title">Reporting Tool</h4>
                   <p>
-                    Ety suscipit metus sollicitudin euqu isq imperdiet nibh nec
-                    magna tincidunt, nec pala vehicula neque sodales verum
+                    Ety suscipit metus sollicitudin euqu isq imperdiet nibh nec.
+                    
                   </p>
                 </div>
               </div>
@@ -126,7 +123,7 @@ function Homepage() {
         </div>
       </div>
       {/* <!-- Invitation --> */}
-      <div class="basic-3">
+      {/* <div class="basic-3">
         <div class="container">
           <div class="row">
             <div class="col-lg-12">
@@ -140,9 +137,9 @@ function Homepage() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* <!-- Pricing --> */}
-      <div id="pricing" class="cards-2 bg-gray">
+      {/* <div id="pricing" class="cards-2 bg-gray">
         <div class="container">
           <div class="row">
             <div class="col-lg-12">
@@ -248,7 +245,7 @@ function Homepage() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* <!-- Footer --> */}
       <div class="footer">
         <div class="container">
@@ -257,9 +254,7 @@ function Homepage() {
               <div class="footer-col first">
                 <h6>About Website</h6>
                 <p class="p-small">
-                  Proin ut felis purus vestibulum in orci molestie, efficitur
-                  lacus ac pellentesque elit. Fusce mollis laoreet lobortis
-                  nulla ac efficitur lacus ac{" "}
+                  Product reviews tells you what the public thinks about about the latest products.{" "}
                 </p>
               </div>
               <div class="footer-col second"></div>
@@ -289,9 +284,9 @@ function Homepage() {
                   </a>
                 </span>
                 <p class="p-small">
-                  Quam posuerei pellent esque vam{" "}
+                  For further queries please contact us at:{" "}
                   <a href="mailto:contact@site.com">
-                    <strong>contact@site.com</strong>
+                    <strong>productreviews@site.com</strong>
                   </a>
                 </p>
               </div>
@@ -305,13 +300,13 @@ function Homepage() {
           <div class="row">
             <div class="col-lg-6">
               <p class="p-small">
-                Copyright © <a href="#your-link">Your name</a>
+                Copyright © <a href="#your-link">Product Reviews</a>
               </p>
             </div>
 
             <div class="col-lg-6">
               <p class="p-small">
-                Distributed By<a href="https://themewagon.com/"> Themewagon</a>
+                Distributed By<a href="https://themewagon.com/"> Business Analytics</a>
               </p>
             </div>
           </div>
