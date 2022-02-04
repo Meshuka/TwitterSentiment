@@ -10,7 +10,7 @@ function Search() {
     e.preventDefault();
     console.log("Search button clicked");
     axiosInstance
-      .post("user/search/", {
+      .post("sentiment/search/", {
         product_name: product_name,
         company_name: company_name,
         keywords: keywords,

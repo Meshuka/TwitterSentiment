@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
 
 function Sidenavbar() {
-  const navigate = useNavigate();
+  let { logoutUser } = useContext(AuthContext);
   function logoutHandler() {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("id");
-    console.log("logout");
-    navigate("/");
+    // console.log("logout");
+    logoutUser();
   }
   return (
     <aside
@@ -21,8 +20,8 @@ function Sidenavbar() {
           aria-hidden="true"
           id="iconSidenav"
         ></i>
-        <br/>
-        <Link to='/' className="navbar-brand m-0">
+        <br />
+        <Link to="/" className="navbar-brand m-0">
           <img
             // src="../assets/img/logo-ct.png"
             src="../assets/img/logo2.png"

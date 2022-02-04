@@ -1,3 +1,4 @@
+from copyreg import constructor
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import login, logout
@@ -53,22 +54,15 @@ def registration_view(request):
         account = serializer.save()
         account.is_active = True
         account.save()
-        token = Token.objects.get_or_create(user=account)[0].key
+        # token = Token.objects.get_or_create(user=account)[0].key
         # data["message"] = "user registered successfully"
         data["email"] = account.email
         data["user_name"] = account.user_name
-        data["token"] = token
-        return Response({'message':'User registered'},status=status.HTTP_200_OK)
+        # data["token"] = token
+        return Response({'message':'User registered', 'data':data},status=status.HTTP_200_OK)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    # except IntegrityError as e:
-    #     account=NewUser.objects.get(user_name='')
-    #     account.delete()
-    #     raise ValidationError({"400": f'{str(e)}'})
-
-    # except KeyError as e:
-    #     print(e)
-    #     raise ValidationError({"400": f'Field {str(e)} missing'})
+ 
 
 @api_view(["POST",])
 @permission_classes([AllowAny])
@@ -90,7 +84,7 @@ def login_view(request):
     utc_now = utc_now.replace(tzinfo=pytz.utc)
 
     # Token.objects.filter(user=User, created__lt = utc_now - datetime.timedelta(seconds=settings.TOKEN_EXPIRED_AFTER_SECONDS)).delete()
-    token = Token.objects.get_or_create(user=User)[0].key
+    # token = Token.objects.get_or_create(user=User)[0].key
 
     # token = Token.objects.get_or_create(user=User)[0].key
     # is_expired, token = token_expire_handler(token)
@@ -105,7 +99,8 @@ def login_view(request):
             data["email"] = User.email
             data["id"] = User.id
             data["is_registered"] = User.is_registered
-            res = {"data": data, "token": token
+            res = {"data": data, 
+            # "token": token
             # , "expires_in":expires_in(token)
             }
 
@@ -120,15 +115,15 @@ def login_view(request):
 @api_view(["GET",])
 @permission_classes([IsAuthenticated])
 def logout_view(request):
-   request.user.auth_token.delete()
+#    request.user.auth_token.delete()
    logout(request)
    return Response({"message":"User logged out"})
 
-# @authentication_classes([ExpiringTokenAuthentication])
 @api_view(["GET",])
 def get_user(request, id):
-    print('reqq', request)
-    user = request.user
+    print('reqq', request, id)
+    user = NewUser.objects.get(id=id)
+    print('user', user)
     if user.is_authenticated:
         print('---userr----',user.id)
         if user.id == id:
@@ -139,24 +134,3 @@ def get_user(request, id):
             #    "expires_in": expires_in(request.auth)
             })
 
-# @api_view(["POST",])
-# def search_keywords(request):
-    # print('req', request)
-    # user = request.user
-    # # print('user',user)
-    # user.is_registered = True
-    # user.save()
-    # print('after providing search fields',user)
-    # data = {}
-
-    # print(request.data)
-    # data["product_name"] = request.data['product_name']
-    # data["company_name"] = request.data['company_name']
-    # data["keywords"] = request.data['keywords']
-
-    # print(data)
-    # return Response({
-    #     "msg": "From search",
-    #     "is_registered": user.is_registered,
-    #     "data": data
-    # })

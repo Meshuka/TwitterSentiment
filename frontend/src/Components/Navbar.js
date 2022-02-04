@@ -4,7 +4,7 @@ import { HashLink } from "react-router-hash-link";
 // Link for routing to diff pages & Hashlink for smooth transition to different parts of same page
 
 function Navbar() {
-  const token = localStorage.getItem("access_token");
+  const token = localStorage.getItem("authToken");
   //   console.log(Boolean(token));
   return (
     <>
@@ -16,7 +16,13 @@ function Navbar() {
       >
         <div class="container">
           {/* <!-- Image Logo --> */}
-          <Link to='/' class="navbar-brand logo-image"><img src="../assets/img/logo2.png" alt="alternative" style={{ height: '40px', width: '40px' }} /></Link>
+          <Link to="/" class="navbar-brand logo-image">
+            <img
+              src="../assets/img/logo2.png"
+              alt="alternative"
+              style={{ height: "40px", width: "40px" }}
+            />
+          </Link>
           <Link to="/" class="navbar-brand logo-text">
             Product Reviews
           </Link>

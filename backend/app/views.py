@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from django.urls import reverse
 
 # Create your views here.
-
+# app to perform model operation tasks
 @api_view(['GET',])
 @permission_classes((IsAuthenticated,))
 def index(request):
@@ -30,12 +30,12 @@ def search_keywords(request):
     data["keywords"] = request.data['keywords']
 
     print(data)
-    return redirect(reverse('app:view'))
-    # return Response({
-    #     "msg": "From search",
-    #     "is_registered": user.is_registered,
-    #     "data": data
-    # })
+    # return redirect(reverse('app:view'))
+    return Response({
+        "msg": "From search",
+        "is_registered": user.is_registered,
+        "data": data
+    })
 
 
 @api_view(["POST","GET",])
