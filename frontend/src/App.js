@@ -37,7 +37,11 @@ function App() {
             </Route>
             <Route exact path="/tables" element={<Tables />}></Route>
             <Route exact path="/editprofile" element={<Editprofile />}></Route>
-            <Route exact path="/search" element={<Search />}></Route>
+            <Route
+              exact
+              path="/search"
+              element={auth ? <Search /> : <Signin />}
+            ></Route>
           </Routes>
         </AuthProvider>
       </Router>

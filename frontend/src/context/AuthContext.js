@@ -44,11 +44,12 @@ export const AuthProvider = ({ children }) => {
       const isFirstLoggedIn = jwt_decode(data.access).is_registered;
       console.log(isFirstLoggedIn);
       // console.log(JSON.parse(localStorage.getItem("authToken")).access);
-      if (!isFirstLoggedIn) {
-        navigate("/search");
-      } else {
-        navigate("/dashboard");
-      }
+      // if (!isFirstLoggedIn) {
+      //   navigate("/search");
+      // } else {
+      //   navigate("/dashboard");
+      // }
+      navigate("/dashboard");
     } else {
       SetIsError(true);
       navigate("/signin");

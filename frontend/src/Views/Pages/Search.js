@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../axios";
 function Search() {
+  console.log(Boolean(localStorage.getItem("authToken")));
+  console.log(JSON.parse(localStorage.getItem("authToken")).access);
   const navigate = useNavigate();
   const [product_name, setProductName] = useState("");
   const [company_name, setCompanyName] = useState("");
@@ -18,6 +20,9 @@ function Search() {
       .then((res) => {
         console.log(res);
         navigate("/dashboard");
+      })
+      .catch((e) => {
+        console.log(e.response);
       });
   };
   return (
@@ -91,7 +96,7 @@ function Search() {
               <div class="mt-5 text-center">
                 <button
                   class="btn btn-primary profile-button"
-                  type="button"
+                  type="submit"
                   onClick={searchHandler}
                 >
                   Start Search

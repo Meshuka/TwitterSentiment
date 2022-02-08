@@ -189,10 +189,12 @@ def find_sentiment(cleaned_tweets):
 
 @api_view(["POST",])
 def search_keywords(request):
+    print('user in search', request.headers.keys())
     user = request.user
     user.is_registered = True
-    user.save()
     print('after providing searh fields', user)
+    user.save()
+   
     data ={}
 
     print(request.data)
