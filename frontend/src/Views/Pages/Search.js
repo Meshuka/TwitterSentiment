@@ -22,7 +22,7 @@ function Search() {
         navigate("/dashboard");
       })
       .catch((e) => {
-        console.log(e.response);
+        console.log(e);
       });
   };
   return (
@@ -94,13 +94,12 @@ function Search() {
                                 <div class="col-md-6"><label class="labels">State/Region</label><input type="text" class="form-control" value="" placeholder="state" /></div>
                             </div> */}
               <div class="mt-5 text-center">
-                <button
+                <input
                   class="btn btn-primary profile-button"
                   type="submit"
                   onClick={searchHandler}
-                >
-                  Start Search
-                </button>
+                  value="Start Search"
+                ></input>
               </div>
             </div>
           </div>

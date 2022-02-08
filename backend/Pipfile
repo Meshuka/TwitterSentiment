@@ -9,6 +9,11 @@ djangorestframework = "*"
 django-cors-headers = "*"
 djangorestframework-simplejwt = "*"
 psycopg2 = "*"
+nltk = "*"
+pandas = "*"
+python-dotenv = "*"
+scikit-learn = "==0.24.2"
+tweepy = "*"
 
 [dev-packages]
 

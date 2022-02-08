@@ -181,7 +181,9 @@ def find_sentiment(cleaned_tweets):
     # perform prediction -> positive, negative, neutral
     prediction = loaded_model.predict(tweet)
     
-    print(prediction)
+    # print(prediction)
+
+    return prediction
 
     # list_of_tuples = list(zip(text_df1['text'], prediction))
     # pd.DataFrame(list_of_tuples, columns = ['Text', 'Sentiment'])
@@ -206,8 +208,9 @@ def search_keywords(request):
 
     cleaned_tweets = fetch_tweets(data["product_name"], data["company_name"])
     # print(cleaned_tweets)
-    find_sentiment(cleaned_tweets)
+    prediction = find_sentiment(cleaned_tweets)
 
+    print(prediction)
     # return redirect(reverse('app:view'))
     return Response({
         "msg": "From search",
