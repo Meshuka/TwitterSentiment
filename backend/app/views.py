@@ -11,6 +11,8 @@ from rest_framework.response import Response
 from django.urls import reverse
 
 import nltk, json, re, pickle
+# nltk.download('wordnet')
+# nltk.download('omw-1.4')
 import tweepy as tw
 import pandas as pd
 from nltk.corpus import stopwords
@@ -123,10 +125,12 @@ def remove_stopwords(text):
     return filtered_tokens
 
 def fetch_tweets(product, company):
-    Consumer_API_Key = os.getenv('Consumer_API_Key')
-    Consumer_API_Secret_Key =  os.getenv('Consumer_API_Secret_Key')
-    access_token = os.getenv('access_token')
-    access_token_secret = os.getenv('access_token_secret')
+    Consumer_API_Key = str(os.getenv('Consumer_API_Key'))
+    Consumer_API_Secret_Key =  str(os.getenv('Consumer_API_Secret_Key'))
+    access_token = str(os.getenv('access_token'))
+    access_token_secret = str(os.getenv('access_token_secret'))
+
+    print('key',Consumer_API_Key, access_token)
 
     auth = tw.OAuthHandler(consumer_key=Consumer_API_Key, consumer_secret=Consumer_API_Secret_Key)
     auth.set_access_token(access_token, access_token_secret)
@@ -154,7 +158,7 @@ def fetch_tweets(product, company):
     tweet_text['tweet'] =tweet_text['tweet'].apply(remove_urls)
     tweet_text['tweet'] =tweet_text['tweet'].apply(remove_username)
     tweet_text['tweet'] =tweet_text['tweet'].apply(replace_contractions)
-    # tweet_text['tweet'] =tweet_text['tweet'].apply(replace_negation)
+    tweet_text['tweet'] =tweet_text['tweet'].apply(replace_negation)
     tweet_text['tweet'] =tweet_text['tweet'].apply(remove_stopwords)
 
     return tweet_text
