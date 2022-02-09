@@ -109,89 +109,94 @@ const RegisterForm = () => {
           <div class="row">
             <div class="col-xl-6 offset-xl-3">
               <div class="text-box mt-5 mb-5">
-                <p class="mb-4">Fill out the form below to sign up for the service. Already signed up? Then just <Link to="/signin"><span style={{color:"#6168ff"}}>Sign in</span></Link></p>
+                <p class="mb-4">
+                  Fill out the form below to sign up for the service. Already
+                  signed up? Then just{" "}
+                  <Link to="/signin">
+                    <span style={{ color: "#6168ff" }}>Sign in</span>
+                  </Link>
+                </p>
                 <form role="form">
-                        <div class="input-group input-group-outline mb-3">
-                          {/* <label class="form-label">Name</label> */}
-                          <input
-                            type="text"
-                            placeholder="Name"
-                            class="form-control"
-                            name="user_name"
-                            value={user_name}
-                            onChange={inputHanlder}
-                          />
-                        </div>
-                        <p style={{ color: "red" }}>{errors.user_name}</p>
-                        <div class="input-group input-group-outline mb-3">
-                          {/* <label class="form-label">Email</label> */}
-                          <input
-                            type="email"
-                            placeholder="Email"
-                            class="form-control"
-                            name="email"
-                            value={email}
-                            onChange={inputHanlder}
-                          />
-                        </div>
-                        <p style={{ color: "red" }}>{errors.email}</p>
-                        <div class="input-group input-group-outline mb-3">
-                          {/* <label class="form-label">Password</label> */}
-                          <input
-                            type="password"
-                            placeholder="Password"
-                            class="form-control"
-                            name="password"
-                            value={password}
-                            onChange={inputHanlder}
-                          />
-                        </div>
-                        <div class="input-group input-group-outline mb-3">
-                          {/* <label class="form-label">Confirm Password</label> */}
-                          <input
-                            type="password"
-                            placeholder="Confirm Password"
-                            class="form-control"
-                            name="password2"
-                            value={password2}
-                            onChange={inputHanlder}
-                          />
-                        </div>
-                        <p style={{ color: "red" }}>{errors.password}</p>
-                        <div class="form-check form-check-info text-start ps-0">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                            // checked
-                          />
-                          <label class="form-check-label" for="flexCheckDefault">
-                            I agree the{" "}
-                            <a
-                              href="javascript:;"
-                              class="text-dark font-weight-bolder"
-                            >
-                              Terms and Conditions
-                            </a>
-                          </label>
-                        </div>
-                        <div class="text-center">
-                          <button
-                            type="submit"
-                            class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0"
-                            onClick={submitHandler}
-                          >
-                            Sign Up
-                          </button>
-                        </div>
-                      </form>
+                  <div class="input-group input-group-outline mb-3">
+                    {/* <label class="form-label">Name</label> */}
+                    <input
+                      type="text"
+                      placeholder="Name"
+                      class="form-control"
+                      name="user_name"
+                      value={user_name}
+                      onChange={inputHanlder}
+                    />
+                  </div>
+                  <p style={{ color: "red" }}>{errors.user_name}</p>
+                  <div class="input-group input-group-outline mb-3">
+                    {/* <label class="form-label">Email</label> */}
+                    <input
+                      type="email"
+                      placeholder="Email"
+                      class="form-control"
+                      name="email"
+                      value={email}
+                      onChange={inputHanlder}
+                    />
+                  </div>
+                  <p style={{ color: "red" }}>{errors.email}</p>
+                  <div class="input-group input-group-outline mb-3">
+                    {/* <label class="form-label">Password</label> */}
+                    <input
+                      type="password"
+                      placeholder="Password"
+                      class="form-control"
+                      name="password"
+                      value={password}
+                      onChange={inputHanlder}
+                    />
+                  </div>
+                  <div class="input-group input-group-outline mb-3">
+                    {/* <label class="form-label">Confirm Password</label> */}
+                    <input
+                      type="password"
+                      placeholder="Confirm Password"
+                      class="form-control"
+                      name="password2"
+                      value={password2}
+                      onChange={inputHanlder}
+                    />
+                  </div>
+                  <p style={{ color: "red" }}>{errors.password}</p>
+                  <div class="form-check form-check-info text-start ps-0">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckDefault"
+                      // checked
+                    />
+                    <label class="form-check-label" for="flexCheckDefault">
+                      I agree the{" "}
+                      <a
+                        href="javascript:;"
+                        class="text-dark font-weight-bolder"
+                      >
+                        Terms and Conditions
+                      </a>
+                    </label>
+                  </div>
+                  <div class="text-center">
+                    <button
+                      type="submit"
+                      class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0"
+                      onClick={submitHandler}
+                    >
+                      Sign Up
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
         </div>
       </div>
-      
     </>
   );
 };

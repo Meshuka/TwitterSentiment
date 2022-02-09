@@ -21,6 +21,8 @@ export const AuthProvider = ({ children }) => {
       : null
   );
 
+  let [loading, setLoading] = useState(true);
+
   const [isError, SetIsError] = useState(false);
 
   let loginUser = async (email, password) => {
@@ -80,15 +82,23 @@ export const AuthProvider = ({ children }) => {
     } else {
       logoutUser();
     }
+    if (loading) {
+      setLoading(false);
+    }
   };
 
   let contextData = {
     user: user,
+    authToken: authToken,
     loginUser: loginUser,
     logoutUser: logoutUser,
   };
 
   useEffect(() => {
+    if (loading) {
+      updateToken();
+    }
+
     let duration = 1000 * 60 * 4;
 
     let interval = setInterval(() => {

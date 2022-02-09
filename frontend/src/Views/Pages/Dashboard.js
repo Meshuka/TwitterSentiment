@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import Sidenavbar from "../../Components/Sidenavbar";
 import Fixedplugins from "../../Components/Fixedplugins";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import {
   LineChart,
   Line,
@@ -24,6 +25,7 @@ import {
 } from "recharts";
 import axiosInstance from "../../axios";
 import jwt_decode from "jwt-decode";
+import AuthContext from "../../context/AuthContext";
 
 const data = [
   {
@@ -166,6 +168,7 @@ const renderCustomizedLabel = ({
   );
 };
 function Dashboard(props) {
+  const { authToken } = useContext(AuthContext);
   function download() {}
   function refresh() {}
   function calendar() {}
@@ -175,11 +178,26 @@ function Dashboard(props) {
       const token = localStorage.getItem("authToken");
       const { user_id } = jwt_decode(token);
       if (user_id) {
-        const userDatas = await axiosInstance.get(`user/me/${user_id}`);
+        const userDatas = await axios({
+          method: "GET",
+          url: `http://127.0.0.1:8000/api/user/me/${user_id}`,
+          timeout: 1000 * 10,
+          validateStatus: (status) => {
+            return status < 500;
+          },
+          headers: {
+            Authorization: authToken
+              ? "Bearer " + String(authToken.access)
+              : null,
+            "Content-Type": "application/json",
+            accept: "application/json",
+          },
+        });
         setUser({
           user_name: userDatas.data.user_name,
           email: userDatas.data.email,
         });
+        console.log("user", user);
       }
     } catch (err) {
       console.log(err.message);

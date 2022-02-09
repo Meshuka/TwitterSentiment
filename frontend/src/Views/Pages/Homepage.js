@@ -5,7 +5,7 @@ import { HashLink } from "react-router-hash-link";
 import Navbar from "../../Components/Navbar";
 // css from StyleSheet.css - bg color change garnu pare change from there
 function Homepage() {
-  const token = localStorage.getItem("access_token");
+  const token = localStorage.getItem("authToken");
   return (
     <body data-bs-spy="scroll" data-bs-target="#navbarExample">
       {/* <!-- Navigation --> */}
@@ -25,10 +25,14 @@ function Homepage() {
                 </p>
                 {token == null && (
                   <Link to="/register" class="btn-solid-lg">
-                  Sign up for free
-                </Link>
-                ) }
-                {token !== null && (<HashLink smooth to='#features' class="btn-solid-lg">Learn More!</HashLink>) }
+                    Sign up for free
+                  </Link>
+                )}
+                {token !== null && (
+                  <HashLink smooth to="#features" class="btn-solid-lg">
+                    Learn More!
+                  </HashLink>
+                )}
               </div>
             </div>
             <div class="col-lg-6">
@@ -62,9 +66,7 @@ function Homepage() {
                 </div>
                 <div class="card-body">
                   <h4 class="card-title">Customer Sentiments</h4>
-                  <p>
-                    Analyze customer's opinion on various latest products.
-                  </p>
+                  <p>Analyze customer's opinion on various latest products.</p>
                 </div>
               </div>
               <div class="card">
@@ -73,9 +75,7 @@ function Homepage() {
                 </div>
                 <div class="card-body">
                   <h4 class="card-title">Sales Tracking</h4>
-                  <p>
-                    Track sales of a product based on public likings.
-                  </p>
+                  <p>Track sales of a product based on public likings.</p>
                 </div>
               </div>
               <div class="card">
@@ -86,7 +86,6 @@ function Homepage() {
                   <h4 class="card-title">Reporting Tool</h4>
                   <p>
                     Ety suscipit metus sollicitudin euqu isq imperdiet nibh nec.
-                    
                   </p>
                 </div>
               </div>
@@ -254,7 +253,8 @@ function Homepage() {
               <div class="footer-col first">
                 <h6>About Website</h6>
                 <p class="p-small">
-                  Product reviews tells you what the public thinks about about the latest products.{" "}
+                  Product reviews tells you what the public thinks about about
+                  the latest products.{" "}
                 </p>
               </div>
               <div class="footer-col second"></div>
@@ -306,7 +306,8 @@ function Homepage() {
 
             <div class="col-lg-6">
               <p class="p-small">
-                Distributed By<a href="https://themewagon.com/"> Business Analytics</a>
+                Distributed By
+                <a href="https://themewagon.com/"> Business Analytics</a>
               </p>
             </div>
           </div>

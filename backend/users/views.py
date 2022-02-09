@@ -1,4 +1,5 @@
 from copyreg import constructor
+from email import message
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import login, logout
@@ -121,10 +122,11 @@ def logout_view(request):
 
 @api_view(["GET",])
 def get_user(request, id):
-    print('reqq', request, id)
+    print('reqq', request.user, id)
     user = NewUser.objects.get(id=id)
     print('user', user)
-    if user.is_authenticated:
+    isSameUser = request.user == user
+    if user.is_authenticated & isSameUser:
         print('---userr----',user.id)
         if user.id == id:
             return Response({
@@ -133,4 +135,8 @@ def get_user(request, id):
             "id":user.id
             #    "expires_in": expires_in(request.auth)
             })
+    else:
+        return Response({
+            "message":"You can only get your information"
+        })
 

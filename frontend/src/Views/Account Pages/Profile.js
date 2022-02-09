@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
@@ -7,10 +7,13 @@ import Fixedplugins from "../../Components/Fixedplugins";
 import { Link } from "react-router-dom";
 import axiosInstance from "../../axios";
 import jwt_decode from "jwt-decode";
+import axios from "axios";
+import AuthContext from "../../context/AuthContext";
 
 function Profile(props) {
   // const { id } = props.match.params;
   // console.log(id);
+  const { authToken } = useContext(AuthContext);
   const [user, setUser] = useState({});
   const getData = async () => {
     try {
@@ -18,13 +21,37 @@ function Profile(props) {
       const { user_id } = jwt_decode(token);
       console.log(user_id);
       if (user_id) {
-        const userDatas = await axiosInstance.get(`user/me/${user_id}`);
-        setUser({
-          user_name: userDatas.data.user_name,
-          email: userDatas.data.email,
-        });
-        // console.log(userDatas.data.user_name);
-        console.log(user);
+        try {
+          // const userDatas = await axiosInstance.get(`user/me/${user_id}`);
+          // setUser({
+          //   user_name: userDatas.data.user_name,
+          //   email: userDatas.data.email,
+          // });
+          // // console.log(userDatas.data.user_name);
+          // console.log(user);
+          const userDatas = await axios({
+            method: "GET",
+            url: `http://127.0.0.1:8000/api/user/me/${user_id}`,
+            timeout: 1000 * 10,
+            validateStatus: (status) => {
+              return status < 500;
+            },
+            headers: {
+              Authorization: authToken
+                ? "Bearer " + String(authToken.access)
+                : null,
+              "Content-Type": "application/json",
+              accept: "application/json",
+            },
+          });
+          setUser({
+            user_name: userDatas.data.user_name,
+            email: userDatas.data.email,
+          });
+          console.log("user", user);
+        } catch (e) {
+          console.log(e);
+        }
       }
     } catch (err) {
       console.log(err.message);

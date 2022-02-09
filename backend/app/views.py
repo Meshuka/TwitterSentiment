@@ -215,7 +215,8 @@ def search_keywords(request):
     return Response({
         "msg": "From search",
         "is_registered": user.is_registered,
-        "data": data
+        "data": data,
+        "predicted_data":prediction
     })
 
 
