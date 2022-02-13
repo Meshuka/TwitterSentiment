@@ -1,5 +1,6 @@
-import os
+import os, ast
 from dotenv import load_dotenv
+import numpy
 load_dotenv()
 
 from urllib import response
@@ -9,8 +10,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.urls import reverse
+from .models import *
 
-import nltk, json, re, pickle
+import nltk, json, re, pickle, numpy
 # nltk.download('wordnet')
 # nltk.download('omw-1.4')
 import tweepy as tw
@@ -190,12 +192,15 @@ def find_sentiment(cleaned_tweets):
 
 
 @api_view(["POST",])
+@permission_classes([IsAuthenticated])
 def search_keywords(request):
     print('user in search', request.headers.keys())
     user = request.user
     user.is_registered = True
     print('after providing searh fields', user)
     user.save()
+
+    print(user.is_authenticated)
    
     data ={}
 
@@ -210,18 +215,68 @@ def search_keywords(request):
     # print(cleaned_tweets)
     prediction = find_sentiment(cleaned_tweets)
 
-    print(prediction)
+    sentiment, sentimentCount = numpy.unique(prediction, return_counts=True)
+    sentimentData = dict(zip(sentiment, sentimentCount))
+
+    tweetData = TweetAnalysis(
+        user = request.user,
+        sentiment_data = sentimentData
+    )
+
+    print('data saved', tweetData)
+
+    tweetData.save()
+
     # return redirect(reverse('app:view'))
     return Response({
         "msg": "From search",
         "is_registered": user.is_registered,
         "data": data,
-        "predicted_data":prediction
+        "predicted_data":prediction,
+        "sentiment_data": sentimentData,
     })
 
+@api_view(["GET",])
+@permission_classes([IsAuthenticated])
+def getSentimentData(request):
+    user = request.user
+    try:
+        tweetData = TweetAnalysis.objects.get(user=user)
+        print('tweet', user, tweetData)
+    except TweetAnalysis.DoesNotExist:
+        tweetData = None
+   
+    if(tweetData):
+        json_data = ast.literal_eval(tweetData.sentiment_data)
+        # print(len(json_data))
+        outputSentiment = []
+
+        for key in json_data:
+            # print(key, json_data[key])
+            outputSentiment.append({"sentiment":key,"value":json_data[key]})
+        
+        # print(outputSentiment)
+
+        data = {
+            "user" : tweetData.user.id,
+            "sentiment_data": json.dumps(json_data),
+            "output_sentiment": outputSentiment
+        }
+        
+        print('data.....', data)
+        return Response({
+            "data":data,
+            "msg":"Sentiment analysis Data"
+        })
+    else:
+        return Response({
+            "message":"Has not searched yet"
+        }, status = 404)
+    
 
 @api_view(["POST","GET",])
 def model_operation(request):
     return Response({
         "data":"done"
     })
+

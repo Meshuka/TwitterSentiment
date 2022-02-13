@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import Sidenavbar from "../../Components/Sidenavbar";
 import Fixedplugins from "../../Components/Fixedplugins";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import {
   LineChart,
@@ -133,13 +133,13 @@ const country = [
     z: 6,
   },
 ];
-const data01 = [
-  { name: "Positive", value: 400 },
-  { name: "Negative", value: 300 },
-  { name: "Neutral", value: 300 },
+let data01 = [
+  // { name: "Positive", value: 0 },
+  // { name: "Negative", value: 0 },
+  // { name: "Neutral", value: 0 },
 ];
 // custom label for pie chart
-const COLORS = ["#008001", "#FF0000", "#0000FF"];
+const COLORS = ["#FF0000", "#0000FF", "#008001"];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -169,10 +169,19 @@ const renderCustomizedLabel = ({
 };
 function Dashboard(props) {
   const { authToken } = useContext(AuthContext);
+
+  const location = useLocation();
+  console.log("location", location);
+
+  let sentimentData = location.state;
+
   function download() {}
   function refresh() {}
   function calendar() {}
   const [user, setUser] = useState({});
+  const [tweetdata, setTweetdata] = useState();
+  const [hasSearched, setHasSearched] = useState(false);
+
   const getData = async () => {
     try {
       const token = localStorage.getItem("authToken");
@@ -198,9 +207,38 @@ function Dashboard(props) {
           email: userDatas.data.email,
         });
         console.log("user", user);
+
+        const tweetData = await axios({
+          method: "GET",
+          url: `http://127.0.0.1:8000/api/sentiment/get_sentiment_data/`,
+          timeout: 1000 * 10,
+          validateStatus: (status) => {
+            return status < 500;
+          },
+          headers: {
+            Authorization: authToken
+              ? "Bearer " + String(authToken.access)
+              : null,
+            "Content-Type": "application/json",
+            accept: "application/json",
+          },
+        });
+
+        // let dataParsed = JSON.parse(tweetData.data.data.sentiment_data);
+        setTweetdata(tweetData.data.data.output_sentiment);
+
+        console.log(
+          "tweetData....",
+          // dataParsed,
+          tweetData.data.data.output_sentiment
+          // JSON.parse(tweetData.data.data.sentiment_data)
+        );
+
+        setHasSearched(true);
       }
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
+      setHasSearched(false);
     }
   };
   useEffect(() => {
@@ -341,243 +379,258 @@ function Dashboard(props) {
             </div>
           </div>
         </nav>
-        <div className="container-fluid py-4">
-          <div className="row">
-            <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-              <div className="card">
-                <div className="card-header p-3 pt-2">
-                  {/* <div className="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+        {!hasSearched && <h1>Nothing to show.</h1>}
+        {hasSearched && (
+          <div className="container-fluid py-4">
+            <div className="row">
+              <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div className="card">
+                  <div className="card-header p-3 pt-2">
+                    {/* <div className="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
                                         <i className="material-icons opacity-10">weekend</i>
                                     </div> */}
-                  <div className="text-left pt-1">
-                    <p className="text-sm mb-0 text-capitalize">
-                      Total Reviews
-                    </p>
-                    <h4 className="mb-0">0</h4>
-                    {/* pull total reviews data into this h4 */}
+                    <div className="text-left pt-1">
+                      <p className="text-sm mb-0 text-capitalize">
+                        Total Reviews
+                      </p>
+                      <h4 className="mb-0">
+                        {tweetdata[0].value +
+                          tweetdata[1].value +
+                          tweetdata[2].value}
+                      </h4>
+                      {/* pull total reviews data into this h4 */}
+                    </div>
                   </div>
-                </div>
-                <hr className="dark horizontal my-0" />
-                {/* <div className="card-footer p-3">
+                  <hr className="dark horizontal my-0" />
+                  {/* <div className="card-footer p-3">
                                     <p className="mb-0"><span className="text-success text-sm font-weight-bolder">+55% </span>than lask week</p>
                                 </div> */}
+                </div>
               </div>
-            </div>
-            <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-              <div className="card">
-                <div className="card-header p-3 pt-2">
-                  {/* <div className="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+              <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div className="card">
+                  <div className="card-header p-3 pt-2">
+                    {/* <div className="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
                                         <i className="material-icons opacity-10">weekend</i>
                                     </div> */}
-                  <div className="text-left pt-1">
-                    <p className="text-sm mb-0 text-capitalize">
-                      Positive Reviews
-                    </p>
-                    <h4 className="mb-0">0</h4>
-                    {/* pull positive reviews data into this h4 */}
+                    <div className="text-left pt-1">
+                      <p className="text-sm mb-0 text-capitalize">
+                        Positive Reviews
+                      </p>
+                      <h4 className="mb-0">{tweetdata[2].value}</h4>
+                      {/* pull positive reviews data into this h4 */}
+                    </div>
                   </div>
-                </div>
-                <hr className="dark horizontal my-0" />
-                {/* <div className="card-footer p-3">
+                  <hr className="dark horizontal my-0" />
+                  {/* <div className="card-footer p-3">
                                     <p className="mb-0"><span className="text-success text-sm font-weight-bolder">+55% </span>than lask week</p>
                                 </div> */}
+                </div>
               </div>
-            </div>
-            <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-              <div className="card">
-                <div className="card-header p-3 pt-2">
-                  {/* <div className="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+              <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div className="card">
+                  <div className="card-header p-3 pt-2">
+                    {/* <div className="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
                                         <i className="material-icons opacity-10">weekend</i>
                                     </div> */}
-                  <div className="text-left pt-1">
-                    <p className="text-sm mb-0 text-capitalize">
-                      Negative Reviews
-                    </p>
-                    <h4 className="mb-0">0</h4>
-                    {/* pull negative reviews data into this h4 */}
+                    <div className="text-left pt-1">
+                      <p className="text-sm mb-0 text-capitalize">
+                        Negative Reviews
+                      </p>
+                      <h4 className="mb-0">{tweetdata[0].value}</h4>
+                      {/* pull negative reviews data into this h4 */}
+                    </div>
                   </div>
-                </div>
-                <hr className="dark horizontal my-0" />
-                {/* <div className="card-footer p-3">
+                  <hr className="dark horizontal my-0" />
+                  {/* <div className="card-footer p-3">
                                     <p className="mb-0"><span className="text-success text-sm font-weight-bolder">+55% </span>than lask week</p>
                                 </div> */}
+                </div>
               </div>
-            </div>
-            <div className="col-xl-3 col-sm-6">
-              <div className="card">
-                <div className="card-header p-3 pt-2">
-                  {/* <div className="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
+              <div className="col-xl-3 col-sm-6">
+                <div className="card">
+                  <div className="card-header p-3 pt-2">
+                    {/* <div className="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
                                         <i className="material-icons opacity-10">weekend</i>
                                     </div> */}
-                  <div className="text-left pt-1">
-                    <p className="text-sm mb-0 text-capitalize">
-                      Neutral Reviews
-                    </p>
-                    <h4 className="mb-0">0</h4>
+                    <div className="text-left pt-1">
+                      <p className="text-sm mb-0 text-capitalize">
+                        Neutral Reviews
+                      </p>
+                      <h4 className="mb-0">{tweetdata[1].value}</h4>
+                    </div>
                   </div>
-                </div>
-                <hr className="dark horizontal my-0" />
-                {/* <div className="card-footer p-3">
+                  <hr className="dark horizontal my-0" />
+                  {/* <div className="card-footer p-3">
                                     <p className="mb-0"><span className="text-success text-sm font-weight-bolder">+5% </span>than yesterday</p>
                                 </div> */}
-              </div>
-            </div>
-          </div>
-          <br />
-          <div className="row mb-4">
-            <div className="col-lg-8 col-md-6 mb-md-0 mb-4">
-              <div className="card">
-                <div className="card-header pb-0">
-                  <div className="row">
-                    <div className="col-lg-6 col-7">
-                      <h6>Customer Sentiment</h6>
-                    </div>
-                    <div className="col-lg-6 col-5 my-auto text-end">
-                      <div className="dropdown float-lg-end pe-4">
-                        <button
-                          onClick={download}
-                          class="fas fa-download"
-                          style={{
-                            margin: "15px",
-                            border: "none",
-                            background: "transparent",
-                          }}
-                        ></button>
-                        <button
-                          onClick={refresh}
-                          class="fas fa-sync"
-                          style={{ border: "none", background: "transparent" }}
-                        ></button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="card-body px-0 pb-2">
-                  <div className="chart">
-                    <ResponsiveContainer width="100%" height={370}>
-                      <LineChart
-                        id="chart-bars"
-                        className="chart-canvas"
-                        width={700}
-                        height={320}
-                        data={data}
-                        margin={{
-                          top: 5,
-                          right: 30,
-                          left: 20,
-                          bottom: 5,
-                        }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Line
-                          type="monotone"
-                          dataKey="positive"
-                          stroke="#008001"
-                          activeDot={{ r: 8 }}
-                        />
-                        <Line
-                          type="monotone"
-                          dataKey="negative"
-                          stroke="#FF0000"
-                          activeDot={{ r: 8 }}
-                        />
-                        <Line
-                          type="monotone"
-                          dataKey="neutral"
-                          stroke="#0000FF"
-                          activeDot={{ r: 8 }}
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
                 </div>
               </div>
             </div>
-            <div className="col-lg-4 col-md-6">
-              <div className="card h-100">
-                <div className="card-header pb-0">
-                  <div className="row">
-                    <div className="col-lg-6 col-7">
-                      <h6>Types of Emotion</h6>
-                    </div>
-                    <div className="col-lg-6 col-5 my-auto text-end">
-                      <div className="float-lg-end">
-                        <button
-                          onClick={download}
-                          class="fas fa-download"
-                          style={{
-                            margin: "15px",
-                            border: "none",
-                            background: "transparent",
-                          }}
-                        ></button>
-                        <button
-                          onClick={refresh}
-                          class="fas fa-sync"
-                          style={{ border: "none", background: "transparent" }}
-                        ></button>
+            <br />
+            <div className="row mb-4">
+              <div className="col-lg-8 col-md-6 mb-md-0 mb-4">
+                <div className="card">
+                  <div className="card-header pb-0">
+                    <div className="row">
+                      <div className="col-lg-6 col-7">
+                        <h6>Customer Sentiment</h6>
+                      </div>
+                      <div className="col-lg-6 col-5 my-auto text-end">
+                        <div className="dropdown float-lg-end pe-4">
+                          <button
+                            onClick={download}
+                            class="fas fa-download"
+                            style={{
+                              margin: "15px",
+                              border: "none",
+                              background: "transparent",
+                            }}
+                          ></button>
+                          <button
+                            onClick={refresh}
+                            class="fas fa-sync"
+                            style={{
+                              border: "none",
+                              background: "transparent",
+                            }}
+                          ></button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="card-body p-3">
-                  <div className="chart">
-                    <ResponsiveContainer width="100%" height={250}>
-                      <PieChart width={200} height={250}>
-                        <Pie
-                          dataKey="value"
-                          isAnimationActive={false}
-                          data={data01}
-                          outerRadius={80}
-                          labelLine={false}
-                          fill="#8884d8"
-                          label={renderCustomizedLabel}
+                  <div className="card-body px-0 pb-2">
+                    <div className="chart">
+                      <ResponsiveContainer width="100%" height={370}>
+                        <LineChart
+                          id="chart-bars"
+                          className="chart-canvas"
+                          width={700}
+                          height={320}
+                          data={data}
+                          margin={{
+                            top: 5,
+                            right: 30,
+                            left: 20,
+                            bottom: 5,
+                          }}
                         >
-                          {data.map((entry, index) => (
-                            <Cell
-                              key={`cell-${index}`}
-                              fill={COLORS[index % COLORS.length]}
-                            />
-                          ))}
-                        </Pie>
-                        <Tooltip />
-                      </PieChart>
-                    </ResponsiveContainer>
-                    <div>
-                      <ul>
-                        <ol>
-                          <i
-                            className="fas fa-circle"
-                            style={{ color: "#008001" }}
-                          ></i>{" "}
-                          : Positive
-                        </ol>
-                        <ol>
-                          <i
-                            className="fas fa-circle"
-                            style={{ color: "#FF0000" }}
-                          ></i>{" "}
-                          : Negative
-                        </ol>
-                        <ol>
-                          <i
-                            className="fas fa-circle"
-                            style={{ color: "#0000FF" }}
-                          ></i>{" "}
-                          : Neutral
-                        </ol>
-                      </ul>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="name" />
+                          <YAxis />
+                          <Tooltip />
+                          <Legend />
+                          <Line
+                            type="monotone"
+                            dataKey="positive"
+                            stroke="#008001"
+                            activeDot={{ r: 8 }}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="negative"
+                            stroke="#FF0000"
+                            activeDot={{ r: 8 }}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="neutral"
+                            stroke="#0000FF"
+                            activeDot={{ r: 8 }}
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-4 col-md-6">
+                <div className="card h-100">
+                  <div className="card-header pb-0">
+                    <div className="row">
+                      <div className="col-lg-6 col-7">
+                        <h6>Types of Emotion</h6>
+                      </div>
+                      <div className="col-lg-6 col-5 my-auto text-end">
+                        <div className="float-lg-end">
+                          <button
+                            onClick={download}
+                            class="fas fa-download"
+                            style={{
+                              margin: "15px",
+                              border: "none",
+                              background: "transparent",
+                            }}
+                          ></button>
+                          <button
+                            onClick={refresh}
+                            class="fas fa-sync"
+                            style={{
+                              border: "none",
+                              background: "transparent",
+                            }}
+                          ></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="card-body p-3">
+                    <div className="chart">
+                      <ResponsiveContainer width="100%" height={250}>
+                        {tweetdata && (
+                          <PieChart width={200} height={250}>
+                            <Pie
+                              dataKey="value"
+                              isAnimationActive={false}
+                              data={tweetdata}
+                              outerRadius={80}
+                              labelLine={false}
+                              fill="#8884d8"
+                              label={renderCustomizedLabel}
+                            >
+                              {data.map((entry, index) => (
+                                <Cell
+                                  key={`cell-${index}`}
+                                  fill={COLORS[index % COLORS.length]}
+                                />
+                              ))}
+                            </Pie>
+
+                            <Tooltip />
+                          </PieChart>
+                        )}
+                      </ResponsiveContainer>
+                      <div>
+                        <ul>
+                          <ol>
+                            <i
+                              className="fas fa-circle"
+                              style={{ color: "#008001" }}
+                            ></i>{" "}
+                            : Positive
+                          </ol>
+                          <ol>
+                            <i
+                              className="fas fa-circle"
+                              style={{ color: "#FF0000" }}
+                            ></i>{" "}
+                            : Negative
+                          </ol>
+                          <ol>
+                            <i
+                              className="fas fa-circle"
+                              style={{ color: "#0000FF" }}
+                            ></i>{" "}
+                            : Neutral
+                          </ol>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          {/* <div className="row mb-4">
+            {/* <div className="row mb-4">
                         <div className="col-lg-8 col-md-6 mb-md-0 mb-4">
                             <div className="card">
                                 <div className="card-header pb-0">
@@ -637,7 +690,8 @@ function Dashboard(props) {
                             </div>
                         </div>
                     </div> */}
-        </div>
+          </div>
+        )}
       </main>
       <Fixedplugins />
     </>

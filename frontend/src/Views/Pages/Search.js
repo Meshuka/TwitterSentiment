@@ -48,11 +48,13 @@ function Search() {
           accept: "application/json",
         },
       });
-      console.log(resp);
-      navigate("/dashboard");
+      // console.log(resp.data.predicted_data);
+      navigate("/dashboard", {
+        state: resp.data.sentiment_data,
+      });
     } catch (e) {
       console.log(e);
-      logoutUser();
+      // logoutUser();
     }
   };
   return (
