@@ -146,11 +146,11 @@ def fetch_tweets(product, company):
                     lang="en",tweet_mode='extended'
                     ).items(100)
 
-    all_tweets = [tweet.full_text for tweet in tweets]
+    all_tweets = [[tweet.full_text, tweet.user.created_at.year, tweet.user.created_at.month] for tweet in tweets]
 
     pd.set_option('display.max_colwidth', None)
     tweet_text = pd.DataFrame(data=all_tweets, 
-                        columns=['tweet'])
+                        columns=['tweet', 'year', 'month'])
 
     tweet_text['tweet'] =tweet_text['tweet'].apply(lower_case)
     tweet_text['tweet'] =tweet_text['tweet'].apply(remove_multiple)
@@ -209,7 +209,7 @@ def search_keywords(request):
     data["company_name"] = request.data['company_name']
     data["keywords"] = request.data['keywords']
 
-    print(data)
+    # print(data)
 
     cleaned_tweets = fetch_tweets(data["product_name"], data["company_name"])
     # print(cleaned_tweets)
@@ -218,12 +218,28 @@ def search_keywords(request):
     sentiment, sentimentCount = numpy.unique(prediction, return_counts=True)
     sentimentData = dict(zip(sentiment, sentimentCount))
 
+    # print("sentimentData", sentimentData)
+    requiredKeys = ["Positive", "Negative", "Neutral"]
+    receivedKeys = []
+    for key in sentimentData:
+        receivedKeys.append(key)
+        
+    # print(receivedKeys)
+    missingKeys = list(set(requiredKeys)-set(receivedKeys))
+    # print(len(missingKeys))
+
+    if(missingKeys):
+        for i in range(len(missingKeys)):
+            sentimentData[missingKeys[i]] = 0
+    
+   
+
     tweetData = TweetAnalysis(
         user = request.user,
         sentiment_data = sentimentData
     )
 
-    print('data saved', tweetData)
+    # print('data saved', tweetData)
 
     tweetData.save()
 
@@ -241,7 +257,7 @@ def search_keywords(request):
 def getSentimentData(request):
     user = request.user
     try:
-        tweetData = TweetAnalysis.objects.get(user=user)
+        tweetData = TweetAnalysis.objects.filter(user=user).order_by('-id')[0]
         print('tweet', user, tweetData)
     except TweetAnalysis.DoesNotExist:
         tweetData = None
@@ -263,7 +279,7 @@ def getSentimentData(request):
             "output_sentiment": outputSentiment
         }
         
-        print('data.....', data)
+        # print('data.....', data)
         return Response({
             "data":data,
             "msg":"Sentiment analysis Data"
