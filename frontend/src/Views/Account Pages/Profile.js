@@ -84,10 +84,16 @@ function Profile(props) {
               id="navbar"
             >
               <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                <div class="input-group input-group-outline">
-                  <label class="form-label">Search</label>
-                  <input type="text" class="form-control" />
-                </div>
+              <div className="input-group input-group-outline" >
+                  <Link to="/search" >
+                    <input 
+                    class="btn btn-light profile-button"
+                    type="button"
+                    value="Search Products"
+                    style={{ margin:0, textTransform: "capitalize"  }}
+                    ></input>
+                   </Link>
+                   </div>
               </div>
               <ul class="navbar-nav  justify-content-end">
                 <li class="nav-item d-flex align-items-center">
@@ -277,16 +283,86 @@ function Profile(props) {
             </div>
             <div class="row">
               <div class="row">
+                
                 <div class="col-12 col-xl-4">
                   <div class="card card-plain h-100">
                     <div class="card-header pb-0 p-3">
-                      <h6 class="mb-0">Platform Settings</h6>
+                      <div class="row">
+                        <div class="col-md-8 d-flex align-items-center">
+                          <h6 class="mb-0">Profile Information</h6>
+                        </div>
+                        <div class="col-md-4 text-end">
+                          <Link to="/editprofile">
+                            <i
+                              class="fas fa-user-edit text-secondary text-sm"
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="top"
+                              title="Edit Profile"
+                            ></i>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-body p-3">
+                      <p class="text-sm">
+                        Hi, I’m {user.user_name}, Decisions: If you can’t
+                        decide, the answer is no. If two equally difficult
+                        paths, choose the one more painful in the short term
+                        (pain avoidance is creating an illusion of equality).
+                      </p>
+                      <hr class="horizontal gray-light my-4" />
+                      <ul class="list-group">
+                        <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+                          <strong class="text-dark">Name: </strong> &nbsp;
+                          {user.user_name}
+                        </li>
+                        <li class="list-group-item border-0 ps-0 text-sm">
+                          <strong class="text-dark">Mobile: </strong> &nbsp;
+                        </li>
+                        <li class="list-group-item border-0 ps-0 text-sm">
+                          <strong class="text-dark">Email: </strong> &nbsp;
+                          {user.email}
+                        </li>
+                        <li class="list-group-item border-0 ps-0 text-sm">
+                          <strong class="text-dark">Location: </strong> &nbsp;
+                          Nepal
+                        </li>
+                        <li class="list-group-item border-0 ps-0 pb-0">
+                          <strong class="text-dark text-sm">Social: </strong>{" "}
+                          &nbsp;
+                          <a
+                            class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0"
+                            href="www.facebook.com"
+                          >
+                            <i class="fab fa-facebook fa-lg"></i>
+                          </a>
+                          <a
+                            class="btn btn-twitter btn-simple mb-0 ps-1 pe-2 py-0"
+                            href="www.twitter.com"
+                          >
+                            <i class="fab fa-twitter fa-lg"></i>
+                          </a>
+                          <a
+                            class="btn btn-instagram btn-simple mb-0 ps-1 pe-2 py-0"
+                            href="www.instagram.com"
+                          >
+                            <i class="fab fa-instagram fa-lg"></i>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-xl-4">
+                  <div class="card card-plain h-100">
+                    <div class="card-header pb-0 p-3">
+                      <h6 class="mb-0">Search History</h6>
                     </div>
                     <div class="card-body p-3">
                       <h6 class="text-uppercase text-body text-xs font-weight-bolder">
-                        Account
+                        You searched for...
                       </h6>
-                      <ul class="list-group">
+                      {/* <ul class="list-group">
                         <li class="list-group-item border-0 px-0">
                           <div class="form-check form-switch ps-0">
                             <input
@@ -385,76 +461,7 @@ function Profile(props) {
                             </label>
                           </div>
                         </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-12 col-xl-4">
-                  <div class="card card-plain h-100">
-                    <div class="card-header pb-0 p-3">
-                      <div class="row">
-                        <div class="col-md-8 d-flex align-items-center">
-                          <h6 class="mb-0">Profile Information</h6>
-                        </div>
-                        <div class="col-md-4 text-end">
-                          <Link to="/editprofile">
-                            <i
-                              class="fas fa-user-edit text-secondary text-sm"
-                              data-bs-toggle="tooltip"
-                              data-bs-placement="top"
-                              title="Edit Profile"
-                            ></i>
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-body p-3">
-                      <p class="text-sm">
-                        Hi, I’m {user.user_name}, Decisions: If you can’t
-                        decide, the answer is no. If two equally difficult
-                        paths, choose the one more painful in the short term
-                        (pain avoidance is creating an illusion of equality).
-                      </p>
-                      <hr class="horizontal gray-light my-4" />
-                      <ul class="list-group">
-                        <li class="list-group-item border-0 ps-0 pt-0 text-sm">
-                          <strong class="text-dark">Name: </strong> &nbsp;
-                          {user.user_name}
-                        </li>
-                        <li class="list-group-item border-0 ps-0 text-sm">
-                          <strong class="text-dark">Mobile: </strong> &nbsp;
-                        </li>
-                        <li class="list-group-item border-0 ps-0 text-sm">
-                          <strong class="text-dark">Email: </strong> &nbsp;
-                          {user.email}
-                        </li>
-                        <li class="list-group-item border-0 ps-0 text-sm">
-                          <strong class="text-dark">Location: </strong> &nbsp;
-                          Nepal
-                        </li>
-                        <li class="list-group-item border-0 ps-0 pb-0">
-                          <strong class="text-dark text-sm">Social: </strong>{" "}
-                          &nbsp;
-                          <a
-                            class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0"
-                            href="www.facebook.com"
-                          >
-                            <i class="fab fa-facebook fa-lg"></i>
-                          </a>
-                          <a
-                            class="btn btn-twitter btn-simple mb-0 ps-1 pe-2 py-0"
-                            href="www.twitter.com"
-                          >
-                            <i class="fab fa-twitter fa-lg"></i>
-                          </a>
-                          <a
-                            class="btn btn-instagram btn-simple mb-0 ps-1 pe-2 py-0"
-                            href="www.instagram.com"
-                          >
-                            <i class="fab fa-instagram fa-lg"></i>
-                          </a>
-                        </li>
-                      </ul>
+                      </ul> */}
                     </div>
                   </div>
                 </div>

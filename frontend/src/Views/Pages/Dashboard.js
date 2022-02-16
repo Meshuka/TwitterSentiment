@@ -259,8 +259,10 @@ function Dashboard(props) {
         >
           <div className="container-fluid py-1 px-3">
             <nav aria-label="breadcrumb">
+            
               <h6 className="font-weight-bolder mb-0">Dashboard</h6>
             </nav>
+            
             <div
               className="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
               id="navbar"
@@ -280,10 +282,20 @@ function Dashboard(props) {
                     style={{ border: "none", background: "transparent" }}
                   ></button>
                 </div>
-                <div className="input-group input-group-outline">
+                {/* <div className="input-group input-group-outline">
                   <label className="form-label">Search...</label>
                   <input type="text" className="form-control" />
-                </div>
+                </div> */}
+                  <div className="input-group input-group-outline" >
+                  <Link to="/search" >
+                    <input 
+                    class="btn btn-light profile-button"
+                    type="button"
+                    value="Search Products"
+                    style={{ margin:0, textTransform: "capitalize"  }}
+                    ></input>
+                   </Link>
+                   </div>
               </div>
               <ul className="navbar-nav  justify-content-end">
                 <li className="nav-item d-flex align-items-center">
@@ -383,10 +395,13 @@ function Dashboard(props) {
             </div>
           </div>
         </nav>
-        {!hasSearched && <h1>Nothing to show.</h1>}
+        
+        {!hasSearched && <h3>Nothing to show.</h3>}
         {hasSearched && (
+          
           <div className="container-fluid py-4">
             <div className="row">
+              <h3>Search results for... </h3>
               <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                 <div className="card">
                   <div className="card-header p-3 pt-2">
