@@ -90,12 +90,12 @@ function Sidenavbar() {
               <span className="nav-link-text ms-1">Profile</span>
             </Link>
           </li>
-          <li className="nav-item" style={{ color: "pointer" }}>
+          <li className="nav-item" style={{ color: "pointer" }} onClick={logoutHandler}>
             <div className="nav-link text-white">
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="material-icons opacity-10">logout</i>
               </div>
-              <div onClick={logoutHandler}>
+              <div >
                 <span className="nav-link-text ms-1">Logout</span>
               </div>
             </div>
