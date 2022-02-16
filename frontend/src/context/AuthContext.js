@@ -80,6 +80,7 @@ export const AuthProvider = ({ children }) => {
       setUser(jwt_decode(data.access));
       localStorage.setItem("authToken", JSON.stringify(data));
     } else {
+      console.log("problem in updating token");
       logoutUser();
     }
     if (loading) {

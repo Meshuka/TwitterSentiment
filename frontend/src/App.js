@@ -10,25 +10,33 @@ import Homepage from "./Views/Pages/Homepage";
 import Search from "./Views/Pages/Search";
 import { ProtectedRoute } from "./Views/Account Pages/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
+import { useContext, useState } from "react";
 
 function App() {
-  const auth = localStorage.getItem("authToken");
+  let [auth, setAuthToken] = useState(
+    localStorage.getItem("authToken")
+      ? JSON.parse(localStorage.getItem("authToken"))
+      : null
+  );
+  // const auth = JSON.parse(localStorage.getItem("authToken"));
+  console.log("auth", auth);
   return (
     <>
       <Router>
         <AuthProvider>
           <Routes>
             <Route exact path="/" element={<Homepage />}></Route>
-            <Route
-              exact
-              path="/signin"
-              element={auth ? <Dashboard /> : <Signin />}
-            ></Route>
-            <Route
+            <Route path="/signin" element={<Signin />}></Route>
+            <Route path="/register" element={<Register />}></Route>
+            <Route path="/search" element={<Search />}></Route>
+            {/* <Route element={<IsAuthenticatedRoute />}>
+              <Route path="/signin" element={<Signin />}></Route>
+            </Route> */}
+            {/* <Route
               exact
               path="/register"
               element={auth ? <Dashboard /> : <Register />}
-            ></Route>
+            ></Route> */}
             <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<Dashboard />}></Route>
             </Route>
@@ -37,11 +45,11 @@ function App() {
             </Route>
             <Route exact path="/tables" element={<Tables />}></Route>
             <Route exact path="/editprofile" element={<Editprofile />}></Route>
-            <Route
+            {/* <Route
               exact
               path="/search"
               element={auth ? <Search /> : <Signin />}
-            ></Route>
+            ></Route> */}
           </Routes>
         </AuthProvider>
       </Router>

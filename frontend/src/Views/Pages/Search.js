@@ -31,7 +31,7 @@ function Search() {
       const resp = await axios({
         method: "POST",
         url: `http://127.0.0.1:8000/api/sentiment/search/`,
-        timeout: 1000 * 20,
+        timeout: 1000 * 150,
         validateStatus: (status) => {
           return status < 500;
         },

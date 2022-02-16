@@ -1,3 +1,4 @@
+from distutils.command.clean import clean
 import os, ast
 from dotenv import load_dotenv
 import numpy
@@ -126,31 +127,32 @@ def remove_stopwords(text):
     filtered_tokens = ' '.join(filtered_tokens)
     return filtered_tokens
 
-def fetch_tweets(product, company):
+def fetch_tweets(product, company, keywords):
     Consumer_API_Key = str(os.getenv('Consumer_API_Key'))
     Consumer_API_Secret_Key =  str(os.getenv('Consumer_API_Secret_Key'))
     access_token = str(os.getenv('access_token'))
     access_token_secret = str(os.getenv('access_token_secret'))
 
-    print('key',Consumer_API_Key, access_token)
+    # print('key',Consumer_API_Key, access_token)
 
     auth = tw.OAuthHandler(consumer_key=Consumer_API_Key, consumer_secret=Consumer_API_Secret_Key)
     auth.set_access_token(access_token, access_token_secret)
     api = tw.API(auth, wait_on_rate_limit=True)
 
-    new_search = product + " OR " + product+"+review OR " + company + " OR " + company + "+review -sale -available -want -filter:retweets AND -filter:replies AND -filter:links AND -filter:media AND -filter:images AND -filter:twimg"
+    new_search = product + " OR " + product+"+review OR "+ keywords + " OR " + keywords+"+review OR "  + company + " OR " + company + "+review -sale -available -want -filter:retweets AND -filter:replies AND -filter:links AND -filter:media AND -filter:images AND -filter:twimg"
 
-    print(new_search)
+    # print(new_search)
 
     tweets = tw.Cursor(api.search_tweets,q=new_search,
                     lang="en",tweet_mode='extended'
-                    ).items(100)
+                    ).items(2000)
 
-    all_tweets = [[tweet.full_text, tweet.user.created_at.year, tweet.user.created_at.month] for tweet in tweets]
+    all_tweets = [[tweet.full_text, tweet.created_at.year, tweet.created_at.month, tweet.created_at.day, tweet.created_at.time().hour, tweet.created_at.time().minute, tweet.created_at.time().second] for tweet in tweets]
 
     pd.set_option('display.max_colwidth', None)
     tweet_text = pd.DataFrame(data=all_tweets, 
-                        columns=['tweet', 'year', 'month'])
+                        columns=['tweet','year','month','day','hour','minute','second'])
+
 
     tweet_text['tweet'] =tweet_text['tweet'].apply(lower_case)
     tweet_text['tweet'] =tweet_text['tweet'].apply(remove_multiple)
@@ -187,8 +189,27 @@ def find_sentiment(cleaned_tweets):
 
     return prediction
 
-    # list_of_tuples = list(zip(text_df1['text'], prediction))
-    # pd.DataFrame(list_of_tuples, columns = ['Text', 'Sentiment'])
+def get_counts(values):
+    content, count = numpy.unique(values, return_counts=True)
+    data = dict(zip(content, count))
+
+    return data
+
+def hour_counts(hourCount):
+    receivedKeys = []
+    for k in hourCount:
+        receivedKeys.append(k)
+    print('recived_key', receivedKeys)
+
+    missingKeys = list({0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23} - set(receivedKeys))
+    print('missed_keys',missingKeys)
+
+    for k in missingKeys:
+        hourCount[k] = 0
+    
+    return hourCount
+
+
 
 
 @api_view(["POST",])
@@ -200,7 +221,7 @@ def search_keywords(request):
     print('after providing searh fields', user)
     user.save()
 
-    print(user.is_authenticated)
+    # print(user.is_authenticated)
    
     data ={}
 
@@ -209,16 +230,66 @@ def search_keywords(request):
     data["company_name"] = request.data['company_name']
     data["keywords"] = request.data['keywords']
 
-    # print(data)
+    print("data.....",data)
 
-    cleaned_tweets = fetch_tweets(data["product_name"], data["company_name"])
-    # print(cleaned_tweets)
+    cleaned_tweets = fetch_tweets(data["product_name"], data["company_name"], data["keywords"])
+
+    # output sentiments
     prediction = find_sentiment(cleaned_tweets)
 
-    sentiment, sentimentCount = numpy.unique(prediction, return_counts=True)
-    sentimentData = dict(zip(sentiment, sentimentCount))
+    # sentiment, sentimentCount = numpy.unique(prediction, return_counts=True)
+    # sentimentData = dict(zip(sentiment, sentimentCount))
 
-    # print("sentimentData", sentimentData)
+    # new DF containing sentiments instead of tweets
+    lists = list(zip(prediction,cleaned_tweets["year"],cleaned_tweets["month"],cleaned_tweets["day"],cleaned_tweets["hour"],cleaned_tweets["minute"],cleaned_tweets["second"]))
+    finalDf = pd.DataFrame(lists, columns=["sentiment","year","month","day","hour","minute","second"])
+
+    # print(finalDf)
+    # separate DFs for each sentiments
+    positiveDf = finalDf[finalDf["sentiment"] == "Positive"]
+    negativeDf = finalDf[finalDf["sentiment"] == "Negative"]
+    neutralDf = finalDf[finalDf["sentiment"] == "Neutral"]
+
+    # print('p', positiveDf)
+    # print('n', negativeDf)
+    # print('neu', neutralDf)
+
+    
+    sentimentData = get_counts(prediction)
+    # yearCount = get_counts(cleaned_tweets["year"])
+    # monthCount = get_counts(cleaned_tweets["month"])
+    # dayCount = get_counts(cleaned_tweets["day"])
+    hourCountPositive = get_counts(positiveDf["hour"])
+    hourCountNegative = get_counts(negativeDf["hour"])
+    hourCountNeutral = get_counts(neutralDf["hour"])
+
+
+    hourCountPositive = hour_counts(hourCountPositive)
+    hourCountNegative = hour_counts(hourCountNegative)
+    hourCountNeutral = hour_counts(hourCountNeutral)
+
+    # print('pos', hourCountPositive, 'neg', hourCountNegative, 'neutral', hourCountNeutral)
+   
+    hourCountPosUpdated = {}
+    hourCountNegUpdated = {}
+    hourCountNeutralUpdated = {}
+
+    for i in range(0,23,2):
+        hourCountPosUpdated[i] = hourCountPositive[i] + hourCountPositive[i+1]
+        hourCountNegUpdated[i] = hourCountNegative[i] + hourCountNegative[i+1]
+        hourCountNeutralUpdated[i] = hourCountNeutral[i] + hourCountNeutral[i+1]
+    
+    print('pos..', hourCountPosUpdated, 'neg..', hourCountNegUpdated, 'neutral..', hourCountNeutralUpdated)
+
+    hour_key = [0,2,4,6,8,10,12,14,16,18,20,22]
+    hourData = []
+
+    for key in hour_key:
+            hourData.append({"time":key,"positive":hourCountPosUpdated[key],"negative":hourCountNegUpdated[key], "neutral":hourCountNeutralUpdated[key]})
+            
+    # print('hourData',hourData)
+    
+
     requiredKeys = ["Positive", "Negative", "Neutral"]
     receivedKeys = []
     for key in sentimentData:
@@ -229,17 +300,19 @@ def search_keywords(request):
     # print(len(missingKeys))
 
     if(missingKeys):
+        print("there are missing keys")
         for i in range(len(missingKeys)):
             sentimentData[missingKeys[i]] = 0
     
-   
+    sentimentData = dict(sorted(sentimentData.items()))
 
     tweetData = TweetAnalysis(
         user = request.user,
-        sentiment_data = sentimentData
+        sentiment_data = sentimentData,
+        hour_data = hourData
     )
 
-    # print('data saved', tweetData)
+    # print('data saved', sentimentData)
 
     tweetData.save()
 
@@ -250,6 +323,7 @@ def search_keywords(request):
         "data": data,
         "predicted_data":prediction,
         "sentiment_data": sentimentData,
+        "hour_data": hourData
     })
 
 @api_view(["GET",])
@@ -264,19 +338,22 @@ def getSentimentData(request):
    
     if(tweetData):
         json_data = ast.literal_eval(tweetData.sentiment_data)
-        # print(len(json_data))
+        print('json data',(json_data))
         outputSentiment = []
 
         for key in json_data:
-            # print(key, json_data[key])
+            print(key, json_data[key])
             outputSentiment.append({"sentiment":key,"value":json_data[key]})
         
-        # print(outputSentiment)
+        print(outputSentiment)
+
+        hour_data_json = ast.literal_eval(tweetData.hour_data)
 
         data = {
             "user" : tweetData.user.id,
             "sentiment_data": json.dumps(json_data),
-            "output_sentiment": outputSentiment
+            "output_sentiment": outputSentiment,
+            "hour_data": hour_data_json
         }
         
         # print('data.....', data)

@@ -5,7 +5,7 @@ import { HashLink } from "react-router-hash-link";
 
 function Navbar() {
   const token = localStorage.getItem("authToken");
-  //   console.log(Boolean(token));
+  console.log("token", token);
   return (
     <>
       {/* Navbar */}

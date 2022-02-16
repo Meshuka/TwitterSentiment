@@ -14,4 +14,5 @@ class Tweets(models.Model):
 class TweetAnalysis(models.Model):
     user = models.ForeignKey(NewUser, on_delete=models.SET_NULL, null=True)
     sentiment_data = models.TextField()
+    hour_data = models.TextField(null=True)
 

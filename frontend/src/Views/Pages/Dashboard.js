@@ -29,7 +29,7 @@ import AuthContext from "../../context/AuthContext";
 
 const data = [
   {
-    name: "Page A",
+    name: "Page A", //year,month ->Time
     positive: 4000,
     negative: 2400,
     neutral: 2400,
@@ -83,56 +83,56 @@ const data = [
     neutral: 2100,
   },
 ];
-const country = [
-  {
-    name: "USA",
-    total: 8800,
-    positive: 4000,
-    negative: 2400,
-    neutral: 2400,
-    z: 1,
-  },
-  {
-    name: "Australia",
-    total: 7000,
-    positive: 3000,
-    negative: 1398,
-    neutral: 2210,
-    z: 2,
-  },
-  {
-    name: "Nepal",
-    total: 13000,
-    positive: 2000,
-    negative: 9800,
-    neutral: 2290,
-    z: 3,
-  },
-  {
-    name: "India",
-    total: 9000,
-    positive: 2780,
-    negative: 3908,
-    neutral: 2000,
-    z: 4,
-  },
-  {
-    name: "Germany",
-    total: 9900,
-    positive: 1890,
-    negative: 4800,
-    neutral: 2181,
-    z: 5,
-  },
-  {
-    name: "Canada",
-    total: 10000,
-    positive: 2390,
-    negative: 3800,
-    neutral: 2500,
-    z: 6,
-  },
-];
+// const country = [
+//   {
+//     name: "USA",
+//     total: 8800,
+//     positive: 4000,
+//     negative: 2400,
+//     neutral: 2400,
+//     z: 1,
+//   },
+//   {
+//     name: "Australia",
+//     total: 7000,
+//     positive: 3000,
+//     negative: 1398,
+//     neutral: 2210,
+//     z: 2,
+//   },
+//   {
+//     name: "Nepal",
+//     total: 13000,
+//     positive: 2000,
+//     negative: 9800,
+//     neutral: 2290,
+//     z: 3,
+//   },
+//   {
+//     name: "India",
+//     total: 9000,
+//     positive: 2780,
+//     negative: 3908,
+//     neutral: 2000,
+//     z: 4,
+//   },
+//   {
+//     name: "Germany",
+//     total: 9900,
+//     positive: 1890,
+//     negative: 4800,
+//     neutral: 2181,
+//     z: 5,
+//   },
+//   {
+//     name: "Canada",
+//     total: 10000,
+//     positive: 2390,
+//     negative: 3800,
+//     neutral: 2500,
+//     z: 6,
+//   },
+// ];
 let data01 = [
   // { name: "Positive", value: 0 },
   // { name: "Negative", value: 0 },
@@ -180,6 +180,7 @@ function Dashboard(props) {
   function calendar() {}
   const [user, setUser] = useState({});
   const [tweetdata, setTweetdata] = useState();
+  const [hourdata, setHourdata] = useState();
   const [hasSearched, setHasSearched] = useState(false);
 
   const getData = async () => {
@@ -226,10 +227,11 @@ function Dashboard(props) {
 
         // let dataParsed = JSON.parse(tweetData.data.data.sentiment_data);
         setTweetdata(tweetData.data.data.output_sentiment);
+        setHourdata(tweetData.data.data.hour_data);
 
         console.log(
           "tweetData....",
-          // dataParsed,
+          hourdata,
           tweetData.data.data.output_sentiment
           // JSON.parse(tweetData.data.data.sentiment_data)
         );
@@ -468,168 +470,170 @@ function Dashboard(props) {
               </div>
             </div>
             <br />
-            <div className="row mb-4">
-              <div className="col-lg-8 col-md-6 mb-md-0 mb-4">
-                <div className="card">
-                  <div className="card-header pb-0">
-                    <div className="row">
-                      <div className="col-lg-6 col-7">
-                        <h6>Customer Sentiment</h6>
-                      </div>
-                      <div className="col-lg-6 col-5 my-auto text-end">
-                        <div className="dropdown float-lg-end pe-4">
-                          <button
-                            onClick={download}
-                            class="fas fa-download"
-                            style={{
-                              margin: "15px",
-                              border: "none",
-                              background: "transparent",
-                            }}
-                          ></button>
-                          <button
-                            onClick={refresh}
-                            class="fas fa-sync"
-                            style={{
-                              border: "none",
-                              background: "transparent",
-                            }}
-                          ></button>
+            {hourdata && (
+              <div className="row mb-4">
+                <div className="col-lg-8 col-md-6 mb-md-0 mb-4">
+                  <div className="card">
+                    <div className="card-header pb-0">
+                      <div className="row">
+                        <div className="col-lg-6 col-7">
+                          <h6>Customer Sentiment</h6>
+                        </div>
+                        <div className="col-lg-6 col-5 my-auto text-end">
+                          <div className="dropdown float-lg-end pe-4">
+                            <button
+                              onClick={download}
+                              class="fas fa-download"
+                              style={{
+                                margin: "15px",
+                                border: "none",
+                                background: "transparent",
+                              }}
+                            ></button>
+                            <button
+                              onClick={refresh}
+                              class="fas fa-sync"
+                              style={{
+                                border: "none",
+                                background: "transparent",
+                              }}
+                            ></button>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="card-body px-0 pb-2">
-                    <div className="chart">
-                      <ResponsiveContainer width="100%" height={370}>
-                        <LineChart
-                          id="chart-bars"
-                          className="chart-canvas"
-                          width={700}
-                          height={320}
-                          data={data}
-                          margin={{
-                            top: 5,
-                            right: 30,
-                            left: 20,
-                            bottom: 5,
-                          }}
-                        >
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="name" />
-                          <YAxis />
-                          <Tooltip />
-                          <Legend />
-                          <Line
-                            type="monotone"
-                            dataKey="positive"
-                            stroke="#008001"
-                            activeDot={{ r: 8 }}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="negative"
-                            stroke="#FF0000"
-                            activeDot={{ r: 8 }}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="neutral"
-                            stroke="#0000FF"
-                            activeDot={{ r: 8 }}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-4 col-md-6">
-                <div className="card h-100">
-                  <div className="card-header pb-0">
-                    <div className="row">
-                      <div className="col-lg-6 col-7">
-                        <h6>Types of Emotion</h6>
-                      </div>
-                      <div className="col-lg-6 col-5 my-auto text-end">
-                        <div className="float-lg-end">
-                          <button
-                            onClick={download}
-                            class="fas fa-download"
-                            style={{
-                              margin: "15px",
-                              border: "none",
-                              background: "transparent",
+                    <div className="card-body px-0 pb-2">
+                      <div className="chart">
+                        <ResponsiveContainer width="100%" height={370}>
+                          <LineChart
+                            id="chart-bars"
+                            className="chart-canvas"
+                            width={700}
+                            height={320}
+                            data={hourdata}
+                            margin={{
+                              top: 5,
+                              right: 30,
+                              left: 20,
+                              bottom: 5,
                             }}
-                          ></button>
-                          <button
-                            onClick={refresh}
-                            class="fas fa-sync"
-                            style={{
-                              border: "none",
-                              background: "transparent",
-                            }}
-                          ></button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card-body p-3">
-                    <div className="chart">
-                      <ResponsiveContainer width="100%" height={250}>
-                        {tweetdata && (
-                          <PieChart width={200} height={250}>
-                            <Pie
-                              dataKey="value"
-                              isAnimationActive={false}
-                              data={tweetdata}
-                              outerRadius={80}
-                              labelLine={false}
-                              fill="#8884d8"
-                              label={renderCustomizedLabel}
-                            >
-                              {data.map((entry, index) => (
-                                <Cell
-                                  key={`cell-${index}`}
-                                  fill={COLORS[index % COLORS.length]}
-                                />
-                              ))}
-                            </Pie>
-
+                          >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="time" />
+                            <YAxis />
                             <Tooltip />
-                          </PieChart>
-                        )}
-                      </ResponsiveContainer>
-                      <div>
-                        <ul>
-                          <ol>
-                            <i
-                              className="fas fa-circle"
-                              style={{ color: "#008001" }}
-                            ></i>{" "}
-                            : Positive
-                          </ol>
-                          <ol>
-                            <i
-                              className="fas fa-circle"
-                              style={{ color: "#FF0000" }}
-                            ></i>{" "}
-                            : Negative
-                          </ol>
-                          <ol>
-                            <i
-                              className="fas fa-circle"
-                              style={{ color: "#0000FF" }}
-                            ></i>{" "}
-                            : Neutral
-                          </ol>
-                        </ul>
+                            <Legend />
+                            <Line
+                              type="monotone"
+                              dataKey="positive"
+                              stroke="#008001"
+                              activeDot={{ r: 8 }}
+                            />
+                            <Line
+                              type="monotone"
+                              dataKey="negative"
+                              stroke="#FF0000"
+                              activeDot={{ r: 8 }}
+                            />
+                            <Line
+                              type="monotone"
+                              dataKey="neutral"
+                              stroke="#0000FF"
+                              activeDot={{ r: 8 }}
+                            />
+                          </LineChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-lg-4 col-md-6">
+                  <div className="card h-100">
+                    <div className="card-header pb-0">
+                      <div className="row">
+                        <div className="col-lg-6 col-7">
+                          <h6>Types of Emotion</h6>
+                        </div>
+                        <div className="col-lg-6 col-5 my-auto text-end">
+                          <div className="float-lg-end">
+                            <button
+                              onClick={download}
+                              class="fas fa-download"
+                              style={{
+                                margin: "15px",
+                                border: "none",
+                                background: "transparent",
+                              }}
+                            ></button>
+                            <button
+                              onClick={refresh}
+                              class="fas fa-sync"
+                              style={{
+                                border: "none",
+                                background: "transparent",
+                              }}
+                            ></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="card-body p-3">
+                      <div className="chart">
+                        <ResponsiveContainer width="100%" height={250}>
+                          {tweetdata && (
+                            <PieChart width={200} height={250}>
+                              <Pie
+                                dataKey="value"
+                                isAnimationActive={false}
+                                data={tweetdata}
+                                outerRadius={80}
+                                labelLine={false}
+                                fill="#8884d8"
+                                label={renderCustomizedLabel}
+                              >
+                                {data.map((entry, index) => (
+                                  <Cell
+                                    key={`cell-${index}`}
+                                    fill={COLORS[index % COLORS.length]}
+                                  />
+                                ))}
+                              </Pie>
+
+                              <Tooltip />
+                            </PieChart>
+                          )}
+                        </ResponsiveContainer>
+                        <div>
+                          <ul>
+                            <ol>
+                              <i
+                                className="fas fa-circle"
+                                style={{ color: "#008001" }}
+                              ></i>{" "}
+                              : Positive
+                            </ol>
+                            <ol>
+                              <i
+                                className="fas fa-circle"
+                                style={{ color: "#FF0000" }}
+                              ></i>{" "}
+                              : Negative
+                            </ol>
+                            <ol>
+                              <i
+                                className="fas fa-circle"
+                                style={{ color: "#0000FF" }}
+                              ></i>{" "}
+                              : Neutral
+                            </ol>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
             {/* <div className="row mb-4">
                         <div className="col-lg-8 col-md-6 mb-md-0 mb-4">
                             <div className="card">
