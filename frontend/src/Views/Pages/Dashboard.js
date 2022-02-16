@@ -181,6 +181,7 @@ function Dashboard(props) {
   const [user, setUser] = useState({});
   const [tweetdata, setTweetdata] = useState();
   const [hourdata, setHourdata] = useState();
+  const [productName, setProductName] = useState();
   const [hasSearched, setHasSearched] = useState(false);
 
   const getData = async () => {
@@ -228,10 +229,11 @@ function Dashboard(props) {
         // let dataParsed = JSON.parse(tweetData.data.data.sentiment_data);
         setTweetdata(tweetData.data.data.output_sentiment);
         setHourdata(tweetData.data.data.hour_data);
-
+        setProductName(tweetData.data.data.product_name);
         console.log(
           "tweetData....",
           hourdata,
+          tweetData.data.data.product_name,
           tweetData.data.data.output_sentiment
           // JSON.parse(tweetData.data.data.sentiment_data)
         );

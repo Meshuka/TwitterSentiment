@@ -231,6 +231,7 @@ def search_keywords(request):
     data["keywords"] = request.data['keywords']
 
     print("data.....",data)
+    product_name = data["product_name"] 
 
     cleaned_tweets = fetch_tweets(data["product_name"], data["company_name"], data["keywords"])
 
@@ -309,7 +310,8 @@ def search_keywords(request):
     tweetData = TweetAnalysis(
         user = request.user,
         sentiment_data = sentimentData,
-        hour_data = hourData
+        hour_data = hourData,
+        product_name = data["product_name"] 
     )
 
     # print('data saved', sentimentData)
@@ -323,7 +325,8 @@ def search_keywords(request):
         "data": data,
         "predicted_data":prediction,
         "sentiment_data": sentimentData,
-        "hour_data": hourData
+        "hour_data": hourData,
+        "product_name": product_name
     })
 
 @api_view(["GET",])
@@ -353,7 +356,8 @@ def getSentimentData(request):
             "user" : tweetData.user.id,
             "sentiment_data": json.dumps(json_data),
             "output_sentiment": outputSentiment,
-            "hour_data": hour_data_json
+            "hour_data": hour_data_json,
+            "product_name": tweetData.product_name
         }
         
         # print('data.....', data)
