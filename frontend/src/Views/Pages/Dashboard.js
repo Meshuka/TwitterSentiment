@@ -181,7 +181,7 @@ function Dashboard(props) {
   const [user, setUser] = useState({});
   const [tweetdata, setTweetdata] = useState();
   const [hourdata, setHourdata] = useState();
-  const [productName, setProductName] = useState();
+  const [product_name, setProductName] = useState();
   const [hasSearched, setHasSearched] = useState(false);
 
   const getData = async () => {
@@ -216,6 +216,10 @@ function Dashboard(props) {
           timeout: 1000 * 10,
           validateStatus: (status) => {
             return status < 500;
+          },
+          data: {
+            product_name: product_name,
+            
           },
           headers: {
             Authorization: authToken
@@ -401,7 +405,7 @@ function Dashboard(props) {
           
           <div className="container-fluid py-4">
             <div className="row">
-              <h3>Search results for... </h3>
+              <h3>Search results for {product_name}</h3>
               <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                 <div className="card">
                   <div className="card-header p-3 pt-2">
