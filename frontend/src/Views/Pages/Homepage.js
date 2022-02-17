@@ -85,7 +85,7 @@ function Homepage() {
                 <div class="card-body">
                   <h4 class="card-title">Reporting Tool</h4>
                   <p>
-                    Ety suscipit metus sollicitudin euqu isq imperdiet nibh nec.
+                    Download your analysis report for a product.
                   </p>
                 </div>
               </div>

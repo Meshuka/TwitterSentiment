@@ -10,9 +10,11 @@ function Search() {
   const [product_name, setProductName] = useState("");
   const [company_name, setCompanyName] = useState("");
   const [keywords, setKeywords] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const searchHandler = async (e) => {
     e.preventDefault();
     console.log("Search button clicked");
+    //alert("Please wait, Analyzing sentiments.");
     // axiosInstance
     //   .post("sentiment/search/", {
     //     product_name: product_name,
@@ -28,6 +30,7 @@ function Search() {
     //     logoutUser();
     //   });
     try {
+      setIsLoading(true);
       const resp = await axios({
         method: "POST",
         url: `http://127.0.0.1:8000/api/sentiment/search/`,
@@ -49,12 +52,14 @@ function Search() {
         },
       });
       // console.log(resp.data.predicted_data);
+      setIsLoading(false);
       navigate("/dashboard", {
         state: resp.data.sentiment_data,
       });
     } catch (e) {
       console.log(e);
       // logoutUser();
+      setIsLoading(false);
     }
   };
   return (
@@ -130,8 +135,8 @@ function Search() {
                   <input
                     class="btn btn-primary profile-button"
                     type="button"
-                    onClick={searchHandler}
-                    value="Start Search"
+                    onClick={searchHandler} 
+                    value={isLoading?`Searching...`:`Start Search`}
                   ></input>
                 </div>
               </form>
