@@ -164,7 +164,7 @@ const RegisterForm = () => {
                     />
                   </div>
                   <p style={{ color: "red" }}>{errors.password}</p>
-                  <div class="form-check form-check-info text-start ps-0">
+                  {/* <div class="form-check form-check-info text-start ps-0">
                     <input
                       class="form-check-input"
                       type="checkbox"
@@ -181,7 +181,7 @@ const RegisterForm = () => {
                         Terms and Conditions
                       </a>
                     </label>
-                  </div>
+                  </div> */}
                   <div class="text-center">
                     <button
                       type="submit"

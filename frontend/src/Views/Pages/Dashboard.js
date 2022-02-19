@@ -219,7 +219,6 @@ function Dashboard(props) {
           },
           data: {
             product_name: product_name,
-            
           },
           headers: {
             Authorization: authToken
@@ -263,10 +262,9 @@ function Dashboard(props) {
         >
           <div className="container-fluid py-1 px-3">
             <nav aria-label="breadcrumb">
-            
               <h6 className="font-weight-bolder mb-0">Dashboard</h6>
             </nav>
-            
+
             <div
               className="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
               id="navbar"
@@ -290,16 +288,19 @@ function Dashboard(props) {
                   <label className="form-label">Search...</label>
                   <input type="text" className="form-control" />
                 </div> */}
-                  <div className="input-group input-group-outline" >
-                  <Link to="/search" >
-                    <input 
-                    class="btn btn-light profile-button"
-                    type="button"
-                    value="Search Products"
-                    style={{ margin:0, textTransform: "capitalize"  }}
+                <div className="input-group input-group-outline">
+                  <Link to="/search">
+                    <input
+                      class="btn btn-light profile-button"
+                      type="button"
+                      value="Search Products"
+                      style={{
+                        margin: 0,
+                        textTransform: "capitalize",
+                      }}
                     ></input>
-                   </Link>
-                   </div>
+                  </Link>
+                </div>
               </div>
               <ul className="navbar-nav  justify-content-end">
                 <li className="nav-item d-flex align-items-center">
@@ -399,10 +400,9 @@ function Dashboard(props) {
             </div>
           </div>
         </nav>
-        
-        {!hasSearched && <h3>Nothing to show.</h3>}
+
+        {!hasSearched && <h6>Nothing to show.</h6>}
         {hasSearched && (
-          
           <div className="container-fluid py-4">
             <div className="row">
               <h3>Search results for {product_name}</h3>

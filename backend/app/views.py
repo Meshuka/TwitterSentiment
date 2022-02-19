@@ -1,7 +1,8 @@
+import datetime
 from distutils.command.clean import clean
 import os, ast
 from dotenv import load_dotenv
-import numpy
+import numpy, time
 load_dotenv()
 
 from urllib import response
@@ -128,59 +129,75 @@ def remove_stopwords(text):
     return filtered_tokens
 
 def fetch_tweets(product, company, keywords):
-    Consumer_API_Key = str(os.getenv('Consumer_API_Key'))
-    Consumer_API_Secret_Key =  str(os.getenv('Consumer_API_Secret_Key'))
-    access_token = str(os.getenv('access_token'))
-    access_token_secret = str(os.getenv('access_token_secret'))
+    while True:
+        try:
+            # credentials req for twitter API
+            Consumer_API_Key = str(os.getenv('Consumer_API_Key'))
+            Consumer_API_Secret_Key =  str(os.getenv('Consumer_API_Secret_Key'))
+            access_token = str(os.getenv('access_token'))
+            access_token_secret = str(os.getenv('access_token_secret'))
 
-    # print('key',Consumer_API_Key, access_token)
+            auth = tw.OAuthHandler(consumer_key=Consumer_API_Key, consumer_secret=Consumer_API_Secret_Key)
+            auth.set_access_token(access_token, access_token_secret)
+            api = tw.API(auth, wait_on_rate_limit=True)
 
-    auth = tw.OAuthHandler(consumer_key=Consumer_API_Key, consumer_secret=Consumer_API_Secret_Key)
-    auth.set_access_token(access_token, access_token_secret)
-    api = tw.API(auth, wait_on_rate_limit=True)
+            # keywordsArr = keywords.split(',')
+            # keywordLength = len(keywordsArr)
+            # print('lngth', keywordLength)
+            # keyword_search = ""
 
-    new_search = product + " OR " + product+"+review OR "+ keywords + " OR " + keywords+"+review OR "  + company + " OR " + company + "+review -sale -available -want -filter:retweets AND -filter:replies AND -filter:links AND -filter:media AND -filter:images AND -filter:twimg"
+            # for i in range(0, keywordLength):
+            #     keyword_search=keyword_search + str(keywordsArr[i]) + " OR " + str(keywordsArr[i]) + "+review OR"      
 
-    # print(new_search)
+            # search query
+            new_search = product + " OR " + product +"+review OR "+ keywords + " OR " + keywords +"+review OR "  + company + " OR " + company + "+review -sale -available -want -filter:retweets AND -filter:replies AND -filter:links AND -filter:media AND -filter:images AND -filter:twimg"
 
-    tweets = tw.Cursor(api.search_tweets,q=new_search,
-                    lang="en",tweet_mode='extended'
-                    ).items(2000)
+            # contains fetched tweets
+            tweets = tw.Cursor(api.search_tweets,q=new_search,
+                            lang="en",tweet_mode='extended',
+                            ).items(500)
 
-    all_tweets = [[tweet.full_text, tweet.created_at.year, tweet.created_at.month, tweet.created_at.day, tweet.created_at.time().hour, tweet.created_at.time().minute, tweet.created_at.time().second] for tweet in tweets]
+            # extracting required fields from fetched tweets
+            all_tweets = [[tweet.full_text, tweet.created_at.year, tweet.created_at.month, tweet.created_at.day, tweet.created_at.time().hour, tweet.created_at.time().minute, tweet.created_at.time().second] for tweet in tweets]
 
-    pd.set_option('display.max_colwidth', None)
-    tweet_text = pd.DataFrame(data=all_tweets, 
-                        columns=['tweet','year','month','day','hour','minute','second'])
+    
+            # print("all fetched tweets", all_tweets)
+
+            # making a new dataframe
+            pd.set_option('display.max_colwidth', None)
+            tweet_text = pd.DataFrame(data=all_tweets, 
+                                columns=['tweet','year','month','day','hour','minute','second'])
 
 
-    tweet_text['tweet'] =tweet_text['tweet'].apply(lower_case)
-    tweet_text['tweet'] =tweet_text['tweet'].apply(remove_multiple)
-    tweet_text['tweet'] =tweet_text['tweet'].apply(remove_single_char)
-    tweet_text['tweet'] =tweet_text['tweet'].apply(remove_special_characters)
-    tweet_text['tweet'] =tweet_text['tweet'].apply(remove_square_brackets)
-    tweet_text['tweet'] =tweet_text['tweet'].apply(remove_urls)
-    tweet_text['tweet'] =tweet_text['tweet'].apply(remove_username)
-    tweet_text['tweet'] =tweet_text['tweet'].apply(replace_contractions)
-    tweet_text['tweet'] =tweet_text['tweet'].apply(replace_negation)
-    tweet_text['tweet'] =tweet_text['tweet'].apply(remove_stopwords)
+            # pre-processing
+            tweet_text['tweet'] =tweet_text['tweet'].apply(lower_case)
+            tweet_text['tweet'] =tweet_text['tweet'].apply(remove_multiple)
+            tweet_text['tweet'] =tweet_text['tweet'].apply(remove_single_char)
+            tweet_text['tweet'] =tweet_text['tweet'].apply(remove_special_characters)
+            tweet_text['tweet'] =tweet_text['tweet'].apply(remove_square_brackets)
+            tweet_text['tweet'] =tweet_text['tweet'].apply(remove_urls)
+            tweet_text['tweet'] =tweet_text['tweet'].apply(remove_username)
+            tweet_text['tweet'] =tweet_text['tweet'].apply(replace_contractions)
+            tweet_text['tweet'] =tweet_text['tweet'].apply(replace_negation)
+            tweet_text['tweet'] =tweet_text['tweet'].apply(remove_stopwords)
 
-    return tweet_text
+            return tweet_text
+        except Exception as e:
+            print(e)
+            time.sleep(60)
+            continue
 
 def find_sentiment(cleaned_tweets):
 
     # load MNB model
     loaded_model = pickle.load(open('./model/model.sav','rb'))
 
-        # load tfidfVectorizer
+    # load tfidfVectorizer
     vectorizer = pickle.load(open('./model/tfidfVectorizer.pickle','rb'))
 
+    # print('cleaned',cleaned_tweets)
     # transform the cleaned fetched tweets into numeric form
     tweet = vectorizer.transform(cleaned_tweets['tweet'])
-
-
-    print(loaded_model, vectorizer)
-    print('-------', tweet.shape)
 
     # perform prediction -> positive, negative, neutral
     prediction = loaded_model.predict(tweet)
@@ -188,6 +205,7 @@ def find_sentiment(cleaned_tweets):
     # print(prediction)
 
     return prediction
+
 
 def get_counts(values):
     content, count = numpy.unique(values, return_counts=True)
@@ -211,21 +229,16 @@ def hour_counts(hourCount):
 
 
 
-
+# api is called when user enters search keywords
 @api_view(["POST",])
 @permission_classes([IsAuthenticated])
 def search_keywords(request):
-    print('user in search', request.headers.keys())
+    # print('user in search', request.headers.keys())
     user = request.user
-    user.is_registered = True
-    print('after providing searh fields', user)
-    user.save()
-
-    # print(user.is_authenticated)
+    # user.is_registered = True
+    # user.save()
    
     data ={}
-
-    print(request.data)
     data["product_name"] = request.data['product_name']
     data["company_name"] = request.data['company_name']
     data["keywords"] = request.data['keywords']
@@ -233,36 +246,60 @@ def search_keywords(request):
     print("data.....",data)
     product_name = data["product_name"] 
 
+    # calling fetch_tweets to get real time cleaned tweets
     cleaned_tweets = fetch_tweets(data["product_name"], data["company_name"], data["keywords"])
+
 
     # output sentiments
     prediction = find_sentiment(cleaned_tweets)
-
-    # sentiment, sentimentCount = numpy.unique(prediction, return_counts=True)
-    # sentimentData = dict(zip(sentiment, sentimentCount))
 
     # new DF containing sentiments instead of tweets
     lists = list(zip(prediction,cleaned_tweets["year"],cleaned_tweets["month"],cleaned_tweets["day"],cleaned_tweets["hour"],cleaned_tweets["minute"],cleaned_tweets["second"]))
     finalDf = pd.DataFrame(lists, columns=["sentiment","year","month","day","hour","minute","second"])
 
-    # print(finalDf)
+    print(finalDf)
     # separate DFs for each sentiments
     positiveDf = finalDf[finalDf["sentiment"] == "Positive"]
     negativeDf = finalDf[finalDf["sentiment"] == "Negative"]
     neutralDf = finalDf[finalDf["sentiment"] == "Neutral"]
 
-    # print('p', positiveDf)
-    # print('n', negativeDf)
-    # print('neu', neutralDf)
+    # showing data in graph  (1 day before)
+    dayYesterday = datetime.date.today().day - 1
+    print('yesterday', dayYesterday)
+
+    positiveDfmonth = positiveDf[positiveDf["month"] == datetime.date.today().month]
+    negativeDfmonth = negativeDf[negativeDf["month"] == datetime.date.today().month]
+    neutralDfmonth = neutralDf[neutralDf["month"] == datetime.date.today().month]
+
+    positiveDfday = positiveDfmonth[positiveDfmonth["day"] == dayYesterday]
+    negativeDfday = negativeDfmonth[negativeDfmonth["day"] == dayYesterday]
+    neutralDfday = neutralDfmonth[neutralDfmonth["day"] == dayYesterday]
+
+    # print('p', positiveDfday, len(positiveDfday))
+    # print('n', negativeDfday, len(negativeDfday))
+    # print('neu', neutralDfday, len(negativeDfday))
+
+    # showing data in graph of the same day
+    if(len(positiveDfday) == 0 or len(negativeDfday) == [] or len(neutralDfday) == []):
+        dayToday = datetime.date.today().day
+        print('today', dayToday)
+
+        positiveDfday = positiveDfmonth[positiveDfmonth["day"] == dayToday]
+        negativeDfday = negativeDfmonth[negativeDfmonth["day"] == dayToday]
+        neutralDfday = neutralDfmonth[neutralDfmonth["day"] == dayToday]
+
+    # print('p', positiveDfday)
+    # print('n', negativeDfday)
+    # print('neu', neutralDfday)
 
     
     sentimentData = get_counts(prediction)
     # yearCount = get_counts(cleaned_tweets["year"])
     # monthCount = get_counts(cleaned_tweets["month"])
     # dayCount = get_counts(cleaned_tweets["day"])
-    hourCountPositive = get_counts(positiveDf["hour"])
-    hourCountNegative = get_counts(negativeDf["hour"])
-    hourCountNeutral = get_counts(neutralDf["hour"])
+    hourCountPositive = get_counts(positiveDfday["hour"])
+    hourCountNegative = get_counts(negativeDfday["hour"])
+    hourCountNeutral = get_counts(neutralDfday["hour"])
 
 
     hourCountPositive = hour_counts(hourCountPositive)
@@ -318,7 +355,6 @@ def search_keywords(request):
 
     tweetData.save()
 
-    # return redirect(reverse('app:view'))
     return Response({
         "msg": "From search",
         "is_registered": user.is_registered,
@@ -354,7 +390,7 @@ def getSentimentData(request):
 
         data = {
             "user" : tweetData.user.id,
-            "sentiment_data": json.dumps(json_data),
+            "sentiment_data": (json_data),
             "output_sentiment": outputSentiment,
             "hour_data": hour_data_json,
             "product_name": tweetData.product_name
