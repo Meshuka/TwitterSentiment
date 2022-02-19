@@ -355,7 +355,8 @@ def search_keywords(request):
         user = request.user,
         sentiment_data = sentimentData,
         hour_data = hourData,
-        product_name = data["product_name"]
+        product_name = data["product_name"],
+        fetched_date = date
     )
 
     # print('data saved', sentimentData)
@@ -400,7 +401,8 @@ def getSentimentData(request):
             "sentiment_data": (json_data),
             "output_sentiment": outputSentiment,
             "hour_data": hour_data_json,
-            "product_name": tweetData.product_name
+            "product_name": tweetData.product_name,
+            "fetched_date": tweetData.fetched_date
         }
         
         # print('data.....', data)
