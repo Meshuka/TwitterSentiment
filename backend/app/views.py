@@ -1,4 +1,5 @@
 import datetime
+from datetime import timedelta
 from distutils.command.clean import clean
 import os, ast
 from dotenv import load_dotenv
@@ -264,8 +265,12 @@ def search_keywords(request):
     neutralDf = finalDf[finalDf["sentiment"] == "Neutral"]
 
     # showing data in graph  (1 day before)
-    dayYesterday = datetime.date.today().day - 1
-    print('yesterday', dayYesterday)
+    dayYesterday = datetime.date.today() - datetime.timedelta(days=1)
+    date = dayYesterday
+    dayYesterday = dayYesterday.day
+    
+    print('yesterday', dayYesterday, date)
+
 
     positiveDfmonth = positiveDf[positiveDf["month"] == datetime.date.today().month]
     negativeDfmonth = negativeDf[negativeDf["month"] == datetime.date.today().month]
@@ -281,8 +286,10 @@ def search_keywords(request):
 
     # showing data in graph of the same day
     if(len(positiveDfday) == 0 or len(negativeDfday) == [] or len(neutralDfday) == []):
-        dayToday = datetime.date.today().day
-        print('today', dayToday)
+        dayToday = datetime.date.today()
+        date = dayToday
+        dayToday = dayToday.day
+        print('today', dayToday, date)
 
         positiveDfday = positiveDfmonth[positiveDfmonth["day"] == dayToday]
         negativeDfday = negativeDfmonth[negativeDfmonth["day"] == dayToday]
@@ -348,7 +355,7 @@ def search_keywords(request):
         user = request.user,
         sentiment_data = sentimentData,
         hour_data = hourData,
-        product_name = data["product_name"] 
+        product_name = data["product_name"]
     )
 
     # print('data saved', sentimentData)
