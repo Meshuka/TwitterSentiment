@@ -16,4 +16,5 @@ class TweetAnalysis(models.Model):
     sentiment_data = models.TextField()
     hour_data = models.TextField(null=True)
     product_name = models.TextField(null=True)
+    fetched_date = models.DateField(null=True)
 
