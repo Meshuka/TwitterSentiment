@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }) => {
 
     if (response.status === 200) {
       console.log(data);
+      SetIsError(false);
       setAuthToken(data);
       setUser(jwt_decode(data.access));
 
@@ -45,17 +46,14 @@ export const AuthProvider = ({ children }) => {
 
       const isFirstLoggedIn = jwt_decode(data.access).is_registered;
       console.log(isFirstLoggedIn);
-      // console.log(JSON.parse(localStorage.getItem("authToken")).access);
-      // if (!isFirstLoggedIn) {
-      //   navigate("/search");
-      // } else {
-      //   navigate("/dashboard");
-      // }
+
       navigate("/dashboard");
-    } else {
+    } else if (response.status == 401 || response.status == 400) {
+      console.log("Not valid login credentials");
       SetIsError(true);
       navigate("/signin");
-      console.log(isError);
+    } else {
+      navigate("/signin");
     }
   };
 
@@ -89,6 +87,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   let contextData = {
+    isError: isError,
     user: user,
     authToken: authToken,
     loginUser: loginUser,
@@ -97,6 +96,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (loading) {
+      console.log("first loading......");
       updateToken();
     }
 

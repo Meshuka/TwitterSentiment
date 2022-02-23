@@ -1,9 +1,5 @@
-import axios from "axios";
-import jwt_decode from "jwt-decode";
 import { React, useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import axiosInstance from "../../axios";
 import AuthContext from "../../context/AuthContext";
 
 const SigninForm = () => {
@@ -16,7 +12,7 @@ const SigninForm = () => {
 
   const { email, password } = inputData;
 
-  const [isError, SetIsError] = useState(false);
+  const { isError } = useContext(AuthContext);
 
   const inputHanlder = (e) => {
     setInputData({
@@ -47,7 +43,7 @@ const SigninForm = () => {
                 <form role="form" class="text-start">
                   {isError && (
                     <p style={{ color: "red" }}>
-                      Incorrect username and password.
+                      Invalid username or password.
                     </p>
                   )}
                   <div class="input-group input-group-outline mb-3">
