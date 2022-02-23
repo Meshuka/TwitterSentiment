@@ -58,15 +58,15 @@ function Sidenavbar() {
               <span className="nav-link-text ms-1">Tables</span>
             </Link>
           </li>
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <a className="nav-link text-white " href="../pages/calendar.html">
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="material-icons opacity-10">calendar_today</i>
               </div>
               <span className="nav-link-text ms-1">Calendar</span>
             </a>
-          </li>
-          <li className="nav-item">
+          </li> */}
+          {/* <li className="nav-item">
             <a
               className="nav-link text-white "
               href="../pages/notifications.html"
@@ -76,7 +76,7 @@ function Sidenavbar() {
               </div>
               <span className="nav-link-text ms-1">Notifications</span>
             </a>
-          </li>
+          </li> */}
           <li className="nav-item mt-3">
             <h6 className="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
               Account pages

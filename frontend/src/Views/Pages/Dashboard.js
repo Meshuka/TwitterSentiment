@@ -270,7 +270,7 @@ function Dashboard(props) {
               id="navbar"
             >
               <div className="ms-md-auto pe-md-3 d-flex align-items-center">
-                <div className="dropdown float-lg-end pe-4">
+                {/* <div className="dropdown float-lg-end pe-4">
                   <button
                     onClick={refresh}
                     class="fas fa-sync"
@@ -283,7 +283,7 @@ function Dashboard(props) {
                     class="far fa-calendar"
                     style={{ border: "none", background: "transparent" }}
                   ></button>
-                </div>
+                </div> */}
                 {/* <div className="input-group input-group-outline">
                   <label className="form-label">Search...</label>
                   <input type="text" className="form-control" />
@@ -325,12 +325,12 @@ function Dashboard(props) {
                     </div>
                   </a>
                 </li>
-                <li className="nav-item px-3 d-flex align-items-center">
+                {/* <li className="nav-item px-3 d-flex align-items-center">
                   <a href="javascript:;" className="nav-link text-body p-0">
                     <i className="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
                   </a>
-                </li>
-                <li className="nav-item dropdown pe-2 d-flex align-items-center">
+                </li> */}
+                {/* <li className="nav-item dropdown pe-2 d-flex align-items-center">
                   <a
                     href="javascript:;"
                     className="nav-link text-body p-0"
@@ -339,7 +339,7 @@ function Dashboard(props) {
                     aria-expanded="false"
                   >
                     <i className="fa fa-bell cursor-pointer"></i>
-                  </a>
+                  </a> */}
                   {/* <ul className="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
                                         <li className="mb-2">
                                             <a className="dropdown-item border-radius-md" href="javascript:;">
@@ -395,7 +395,7 @@ function Dashboard(props) {
                                             </a>
                                         </li>
                                     </ul> */}
-                </li>
+                {/* </li> */}
               </ul>
             </div>
           </div>
@@ -500,7 +500,7 @@ function Dashboard(props) {
                         <div className="col-lg-6 col-7">
                           <h6>Customer Sentiment</h6>
                         </div>
-                        <div className="col-lg-6 col-5 my-auto text-end">
+                        {/* <div className="col-lg-6 col-5 my-auto text-end">
                           <div className="dropdown float-lg-end pe-4">
                             <button
                               onClick={download}
@@ -520,7 +520,7 @@ function Dashboard(props) {
                               }}
                             ></button>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                     <div className="card-body px-0 pb-2">
@@ -575,7 +575,7 @@ function Dashboard(props) {
                         <div className="col-lg-6 col-7">
                           <h6>Types of Emotion</h6>
                         </div>
-                        <div className="col-lg-6 col-5 my-auto text-end">
+                        {/* <div className="col-lg-6 col-5 my-auto text-end">
                           <div className="float-lg-end">
                             <button
                               onClick={download}
@@ -595,7 +595,7 @@ function Dashboard(props) {
                               }}
                             ></button>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                     <div className="card-body p-3">
