@@ -4,6 +4,7 @@ from distutils.command.clean import clean
 import os, ast
 from dotenv import load_dotenv
 import numpy, time
+from sklearn import preprocessing
 load_dotenv()
 
 from urllib import response
@@ -169,6 +170,8 @@ def fetch_tweets(product, company, keywords):
             tweet_text = pd.DataFrame(data=all_tweets, 
                                 columns=['tweet','year','month','day','hour','minute','second'])
 
+            # print("tweets", tweet_text)
+
 
             # pre-processing
             tweet_text['tweet'] =tweet_text['tweet'].apply(lower_case)
@@ -250,6 +253,7 @@ def search_keywords(request):
     # calling fetch_tweets to get real time cleaned tweets
     cleaned_tweets = fetch_tweets(data["product_name"], data["company_name"], data["keywords"])
 
+    # print("clened", cleaned_tweets)
 
     # output sentiments
     prediction = find_sentiment(cleaned_tweets)
