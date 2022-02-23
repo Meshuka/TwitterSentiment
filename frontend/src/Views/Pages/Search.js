@@ -6,6 +6,7 @@ import AuthContext from "../../context/AuthContext";
 
 function Search() {
   const navigate = useNavigate();
+  const [hasError, setHasError] = useState(false);
   const { logoutUser, authToken } = useContext(AuthContext);
   const [product_name, setProductName] = useState("");
   const [company_name, setCompanyName] = useState("");
@@ -14,52 +15,44 @@ function Search() {
   const searchHandler = async (e) => {
     e.preventDefault();
     console.log("Search button clicked");
-    //alert("Please wait, Analyzing sentiments.");
-    // axiosInstance
-    //   .post("sentiment/search/", {
-    //     product_name: product_name,
-    //     company_name: company_name,
-    //     keywords: keywords,
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //     navigate("/dashboard");
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //     logoutUser();
-    //   });
-    try {
-      setIsLoading(true);
-      const resp = await axios({
-        method: "POST",
-        url: `http://127.0.0.1:8000/api/sentiment/search/`,
-        timeout: 1000 * 150,
-        validateStatus: (status) => {
-          return status < 500;
-        },
-        data: {
-          product_name: product_name,
-          company_name: company_name,
-          keywords: keywords,
-        },
-        headers: {
-          Authorization: authToken
-            ? "Bearer " + String(authToken.access)
-            : null,
-          "Content-Type": "application/json",
-          accept: "application/json",
-        },
-      });
-      // console.log(resp.data.predicted_data);
-      setIsLoading(false);
-      navigate("/dashboard", {
-        state: resp.data.sentiment_data,
-      });
-    } catch (e) {
-      console.log(e);
-      // logoutUser();
-      setIsLoading(false);
+    if (!product_name || !company_name || !keywords) {
+      console.log("Empty");
+      setHasError(true);
+      navigate("/search");
+    } else {
+      try {
+        setIsLoading(true);
+        setHasError(false);
+        const resp = await axios({
+          method: "POST",
+          url: `http://127.0.0.1:8000/api/sentiment/search/`,
+          timeout: 1000 * 150,
+          validateStatus: (status) => {
+            return status < 500;
+          },
+          data: {
+            product_name: product_name,
+            company_name: company_name,
+            keywords: keywords,
+          },
+          headers: {
+            Authorization: authToken
+              ? "Bearer " + String(authToken.access)
+              : null,
+            "Content-Type": "application/json",
+            accept: "application/json",
+          },
+        });
+        // console.log(resp.data.predicted_data);
+        setIsLoading(false);
+        navigate("/dashboard", {
+          state: resp.data.sentiment_data,
+        });
+      } catch (e) {
+        console.log(e);
+        // logoutUser();
+        setIsLoading(false);
+      }
     }
   };
   return (
@@ -121,22 +114,16 @@ function Search() {
                       }}
                     />
                   </div>
-                  {/* <div class="col-md-12"><label class="labels">Postcode</label><input type="text" class="form-control" placeholder="enter address line 2" value="" /></div>
-                                <div class="col-md-12"><label class="labels">State</label><input type="text" class="form-control" placeholder="enter address line 2" value="" /></div>
-                                <div class="col-md-12"><label class="labels">Area</label><input type="text" class="form-control" placeholder="enter address line 2" value="" /></div>
-                                <div class="col-md-12"><label class="labels">Email ID</label><input type="text" class="form-control" placeholder="enter email id" value="" /></div>
-                                <div class="col-md-12"><label class="labels">Education</label><input type="text" class="form-control" placeholder="education" value="" /></div> */}
+                  {hasError && <p>All fields are required</p>}
                 </div>
-                {/* <div class="row mt-3">
-                                <div class="col-md-6"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" value="" /></div>
-                                <div class="col-md-6"><label class="labels">State/Region</label><input type="text" class="form-control" value="" placeholder="state" /></div>
-                            </div> */}
+
                 <div class="mt-5 text-center">
                   <input
                     class="btn btn-primary profile-button"
                     type="button"
-                    onClick={searchHandler} 
-                    value={isLoading?`Searching...`:`Start Search`}
+                    onClick={searchHandler}
+                    value={isLoading ? `Searching...` : `Start Search`}
+                    disabled={isLoading ? true : false}
                   ></input>
                 </div>
               </form>
