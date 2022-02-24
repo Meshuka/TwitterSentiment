@@ -1,5 +1,6 @@
 from copyreg import constructor
 from email import message
+from turtle import update
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import login, logout
@@ -14,6 +15,7 @@ from django.contrib.auth.decorators import login_required
 # from users.authentication import expires_in
 
 from users.models import NewUser
+from app.models import TweetAnalysis
 from .serializers import RegistrationSerializer
 # from .authentication import token_expire_handler, expires_in
 from .authentication import ExpiringTokenAuthentication
@@ -125,6 +127,12 @@ def get_user(request, id):
     print('reqq', request.user, id)
     user = NewUser.objects.get(id=id)
     print('user', user)
+
+    tweetData = TweetAnalysis.objects.filter(user=user).order_by('-id')
+    searched_lists = []
+    for tweet in tweetData:
+        searched_lists.append(tweet.product_name)
+
     isSameUser = request.user == user
     if user.is_authenticated & isSameUser:
         print('---userr----',user.id)
@@ -132,7 +140,8 @@ def get_user(request, id):
             return Response({
             "user_name":user.user_name,
             "email":user.email,
-            "id":user.id
+            "id":user.id,
+            "searched_list": searched_lists
             #    "expires_in": expires_in(request.auth)
             })
     else:
