@@ -1,9 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import ReactDOM from "react-dom";
+import { useCurrentPng } from "recharts-to-png";
 import Sidenavbar from "../../Components/Sidenavbar";
 import Fixedplugins from "../../Components/Fixedplugins";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
+import FileSaver from "file-saver";
 import {
   LineChart,
   Line,
@@ -175,7 +177,6 @@ function Dashboard(props) {
 
   let sentimentData = location.state;
 
-  function download() {}
   function refresh() {}
   function calendar() {}
   const [user, setUser] = useState({});
@@ -254,6 +255,18 @@ function Dashboard(props) {
   useEffect(() => {
     getData();
   }, []);
+
+  const [getPng, { ref }] = useCurrentPng();
+
+  const download = React.useCallback(async () => {
+    console.log("clicked...");
+    const png = await getPng();
+    console.log(ref, getPng);
+    if (png) {
+      // Download with FileSaver
+      FileSaver.saveAs(png, "myChart.png");
+    }
+  }, [getPng]);
   return (
     <>
       <Sidenavbar />
@@ -503,7 +516,7 @@ function Dashboard(props) {
                         <div className="col-lg-6 col-7">
                           <h6>Customer Sentiment (on {fetchedDate})</h6>
                         </div>
-                        {/* <div className="col-lg-6 col-5 my-auto text-end">
+                        <div className="col-lg-6 col-5 my-auto text-end">
                           <div className="dropdown float-lg-end pe-4">
                             <button
                               onClick={download}
@@ -514,22 +527,23 @@ function Dashboard(props) {
                                 background: "transparent",
                               }}
                             ></button>
-                            <button
+                            {/* <button
                               onClick={refresh}
                               class="fas fa-sync"
                               style={{
                                 border: "none",
                                 background: "transparent",
                               }}
-                            ></button>
+                            ></button> */}
                           </div>
-                        </div> */}
+                        </div>
                       </div>
                     </div>
                     <div className="card-body px-0 pb-2">
                       <div className="chart">
                         <ResponsiveContainer width="100%" height={370}>
                           <LineChart
+                            ref={ref}
                             id="chart-bars"
                             className="chart-canvas"
                             width={700}
@@ -578,9 +592,9 @@ function Dashboard(props) {
                         <div className="col-lg-6 col-7">
                           <h6>Types of Emotion</h6>
                         </div>
-                        {/* <div className="col-lg-6 col-5 my-auto text-end">
+                        <div className="col-lg-6 col-5 my-auto text-end">
                           <div className="float-lg-end">
-                            <button
+                            {/* <button
                               onClick={download}
                               class="fas fa-download"
                               style={{
@@ -588,17 +602,17 @@ function Dashboard(props) {
                                 border: "none",
                                 background: "transparent",
                               }}
-                            ></button>
-                            <button
+                            ></button> */}
+                            {/* <button
                               onClick={refresh}
                               class="fas fa-sync"
                               style={{
                                 border: "none",
                                 background: "transparent",
                               }}
-                            ></button>
+                            ></button> */}
                           </div>
-                        </div> */}
+                        </div>
                       </div>
                     </div>
                     <div className="card-body p-3">
