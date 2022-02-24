@@ -106,7 +106,7 @@ function Sidenavbar() {
             style={{ color: "pointer" }}
             onClick={logoutHandler}
           >
-            <div className="nav-link text-white">
+            <div className="nav-link text-white" style={{ cursor: "pointer" }}>
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="material-icons opacity-10">logout</i>
               </div>
