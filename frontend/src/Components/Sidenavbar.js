@@ -44,7 +44,7 @@ function Sidenavbar() {
               to="/dashboard"
               className={({ isActive }) =>
                 isActive
-                  ? "nav-link text-white active bg-gradient-primary"
+                  ? "nav-link text-white active bg-primary"
                   : "nav-link text-white"
               }
             >
@@ -54,14 +54,14 @@ function Sidenavbar() {
               <span className="nav-link-text ms-1">Dashboard</span>
             </NavLink>
           </li>
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <Link to="/tables" className="nav-link text-white">
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="material-icons opacity-10">table_view</i>
               </div>
               <span className="nav-link-text ms-1">Tables</span>
             </Link>
-          </li>
+          </li> */}
           {/* <li className="nav-item">
             <a className="nav-link text-white " href="../pages/calendar.html">
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -91,7 +91,7 @@ function Sidenavbar() {
               to="/profile"
               className={({ isActive }) =>
                 isActive
-                  ? "nav-link text-white active bg-gradient-primary"
+                  ? "nav-link text-white active bg-primary"
                   : "nav-link text-white"
               }
             >

@@ -243,10 +243,10 @@ a:hover {
 .btn-outline-sm {
 	display: inline-block;
 	padding: 1rem 1.5rem 1rem 1.5rem;
-	border: 1px solid #f25c05;
+	border: 1px solid rgb(29,155,240);
 	border-radius: 30px;
 	background-color: transparent;
-	color: #f25c05;
+	color: rgb(29,155,240);
 	font-weight: 600;
 	font-size: 0.875rem;
 	line-height: 0;
@@ -255,7 +255,7 @@ a:hover {
 }
 
 .btn-outline-sm:hover {
-	background-color: #f25c05;
+	background-color: rgb(29,155,240);
 	color: #ffffff;
 	text-decoration: none;
 }
@@ -399,7 +399,7 @@ a:hover {
 .navbar .nav-item.dropdown.show .nav-link,
 .navbar .nav-item .nav-link:hover,
 .navbar .nav-item .nav-link.active {
-	color: #f25c05;
+	color: rgb(29,155,240);
 }
 
 /* Dropdown Menu */
@@ -436,7 +436,7 @@ a:hover {
 
 .navbar .dropdown-item:hover {
 	background-color: #fff2dc;
-	color: #f25c05;
+	color: rgb(29,155,240);
 }
 
 .navbar .dropdown-divider {
@@ -1040,7 +1040,7 @@ a:hover {
 .ex-header {
 	padding-top: 9rem;
 	padding-bottom: 5rem;
-	background-color: #fff2dc;
+	background-color: #1d9cf02f;
 }
 
 .ex-basic-1 .list-unstyled .fas {
@@ -1389,6 +1389,7 @@ a:hover {
 		overflow: hidden;
 		padding-top: 18.5rem;
 		padding-bottom: 18rem;
+		background-color: #1d9cf02f;;
 	}
 
 	.header .image-container {

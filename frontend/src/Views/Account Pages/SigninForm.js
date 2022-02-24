@@ -81,7 +81,7 @@ const SigninForm = () => {
                   <div class="text-center">
                     <button
                       type="submit"
-                      class="btn bg-gradient-primary w-100 my-4 mb-2"
+                      class="btn btn-primary w-100 my-4 mb-2"
                       onClick={submitHandler}
                     >
                       Log In
