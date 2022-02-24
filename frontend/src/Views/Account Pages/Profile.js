@@ -298,8 +298,8 @@ function Profile(props) {
                       </div>
                     </div>
                     <div class="card-body p-3">
-                      <p class="text-sm">Hi, I’m {user.user_name} .</p>
-                      <hr class="horizontal gray-light my-4" />
+                      <p class="text-sm">Welcome to your profile {user.user_name}.</p>
+                      {/* <hr class="horizontal gray-light my-4" /> */}
                       <ul class="list-group">
                         <li class="list-group-item border-0 ps-0 pt-0 text-sm">
                           <strong class="text-dark">Name: </strong> &nbsp;
@@ -347,17 +347,15 @@ function Profile(props) {
                       </div>
                       <div class="card-body p-3">
                         <h6 class="text-uppercase text-body text-xs font-weight-bolder">
-                          You searched for...
+                          You searched for: 
                         </h6>
                         <ul class="list-group">
-                          {searchedList.map((productName) => {
+                        {searchedList.map((productName) => {
                             return (
-                              <li class="list-group-item border-0 px-0">
-                                <div class="form-check form-switch ps-0">
-                                  <p>{productName}</p>
-                                </div>
-                              </li>
-                            );
+                              <li class="list-group-item border-0 ps-0 pt-0 text-sm">
+                          <div class="text-dark">{productName} </div>
+                        </li>
+                               );
                           })}
                         </ul>
                       </div>

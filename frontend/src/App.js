@@ -8,6 +8,7 @@ import Tables from "./Views/Pages/Tables";
 import Editprofile from "./Views/Account Pages/Editprofile";
 import Homepage from "./Views/Pages/Homepage";
 import Search from "./Views/Pages/Search";
+import Report from "./Views/Pages/Report";
 import { ProtectedRoute } from "./Views/Account Pages/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 import { useContext, useState } from "react";
@@ -45,6 +46,7 @@ function App() {
             </Route>
             <Route exact path="/tables" element={<Tables />}></Route>
             <Route exact path="/editprofile" element={<Editprofile />}></Route>
+            <Route exact path="/report/:name" element={<Report />}></Route>
             {/* <Route
               exact
               path="/search"

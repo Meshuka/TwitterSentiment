@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import ReactDOM from "react-dom";
+import { useNavigate } from "react-router-dom";
 import { useCurrentPng } from "recharts-to-png";
 import Sidenavbar from "../../Components/Sidenavbar";
 import Fixedplugins from "../../Components/Fixedplugins";
@@ -170,6 +171,7 @@ const renderCustomizedLabel = ({
   );
 };
 function Dashboard(props) {
+  const navigate = useNavigate();
   const { authToken } = useContext(AuthContext);
 
   const location = useLocation();
@@ -267,6 +269,18 @@ function Dashboard(props) {
       FileSaver.saveAs(png, "myChart.png");
     }
   }, [getPng]);
+
+  const navigateToReport = () => {
+    navigate(`/report/${product_name}`, {
+      state: {
+        tweetdata,
+        hourdata,
+        fetchedDate,
+        product_name
+      }
+    });
+  }
+
   return (
     <>
       <Sidenavbar />
@@ -300,10 +314,7 @@ function Dashboard(props) {
                     style={{ border: "none", background: "transparent" }}
                   ></button>
                 </div> */}
-                {/* <div className="input-group input-group-outline">
-                  <label className="form-label">Search...</label>
-                  <input type="text" className="form-control" />
-                </div> */}
+                
                 <div className="input-group input-group-outline">
                   <Link to="/search">
                     <input
@@ -317,7 +328,19 @@ function Dashboard(props) {
                     ></input>
                   </Link>
                 </div>
-              </div>
+                </div>
+                <div className="dropdown float-lg-end pe-4">
+                  <button
+                    onClick={navigateToReport}
+                    class="fas fa-file"
+                    style={{ border: "none", background: "transparent" }}
+                  >Report</button>
+                </div> 
+                {/* <div className="input-group input-group-outline">
+                  <label className="form-label">Search...</label>
+                  <input type="text" className="form-control" />
+                </div> */}
+              
               <ul className="navbar-nav  justify-content-end">
                 <li className="nav-item d-flex align-items-center">
                   <Link
