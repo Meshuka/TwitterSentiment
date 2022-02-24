@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 
@@ -40,15 +40,19 @@ function Sidenavbar() {
       >
         <ul className="navbar-nav">
           <li className="nav-item">
-            <Link
+            <NavLink
               to="/dashboard"
-              className="nav-link text-white active bg-gradient-primary"
+              className={({ isActive }) =>
+                isActive
+                  ? "nav-link text-white active bg-gradient-primary"
+                  : "nav-link text-white"
+              }
             >
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="material-icons opacity-10">dashboard</i>
               </div>
               <span className="nav-link-text ms-1">Dashboard</span>
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-item">
             <Link to="/tables" className="nav-link text-white">
@@ -83,19 +87,30 @@ function Sidenavbar() {
             </h6>
           </li>
           <li className="nav-item">
-            <Link to="/profile" className="nav-link text-white ">
+            <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                isActive
+                  ? "nav-link text-white active bg-gradient-primary"
+                  : "nav-link text-white"
+              }
+            >
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="material-icons opacity-10">person</i>
               </div>
               <span className="nav-link-text ms-1">Profile</span>
-            </Link>
+            </NavLink>
           </li>
-          <li className="nav-item" style={{ color: "pointer" }} onClick={logoutHandler}>
+          <li
+            className="nav-item"
+            style={{ color: "pointer" }}
+            onClick={logoutHandler}
+          >
             <div className="nav-link text-white">
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="material-icons opacity-10">logout</i>
               </div>
-              <div >
+              <div>
                 <span className="nav-link-text ms-1">Logout</span>
               </div>
             </div>
