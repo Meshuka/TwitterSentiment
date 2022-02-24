@@ -114,7 +114,9 @@ function Search() {
                       }}
                     />
                   </div>
-                  {hasError && <p>All fields are required</p>}
+                  {hasError && (
+                    <p style={{ color: "red" }}>All fields are required</p>
+                  )}
                 </div>
 
                 <div class="mt-5 text-center">
