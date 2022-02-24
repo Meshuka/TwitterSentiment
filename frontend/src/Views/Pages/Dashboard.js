@@ -172,11 +172,6 @@ const renderCustomizedLabel = ({
 function Dashboard(props) {
   const { authToken } = useContext(AuthContext);
 
-  const location = useLocation();
-  console.log("location", location);
-
-  let sentimentData = location.state;
-
   function refresh() {}
   function calendar() {}
   const [user, setUser] = useState({});
@@ -256,17 +251,29 @@ function Dashboard(props) {
     getData();
   }, []);
 
-  const [getPng, { ref }] = useCurrentPng();
+  //line graph
+  let [getLinePng, { ref: lineRef }] = useCurrentPng();
 
-  const download = React.useCallback(async () => {
-    console.log("clicked...");
-    const png = await getPng();
-    console.log(ref, getPng);
+  const lineDownload = React.useCallback(async () => {
+    const png = await getLinePng();
+    // console.log("clicked", lineRef);
     if (png) {
       // Download with FileSaver
-      FileSaver.saveAs(png, "myChart.png");
+      FileSaver.saveAs(png, "line-chart.png");
     }
-  }, [getPng]);
+  }, [getLinePng]);
+
+  //pie-chart
+  let [getPiePng, { ref: pieRef }] = useCurrentPng();
+
+  const pieDownload = React.useCallback(async () => {
+    const png = await getPiePng();
+    // console.log("clicked", pieRef);
+    if (png) {
+      // Download with FileSaver
+      FileSaver.saveAs(png, "pie-chart.png");
+    }
+  }, [getPiePng]);
   return (
     <>
       <Sidenavbar />
@@ -519,7 +526,7 @@ function Dashboard(props) {
                         <div className="col-lg-6 col-5 my-auto text-end">
                           <div className="dropdown float-lg-end pe-4">
                             <button
-                              onClick={download}
+                              onClick={lineDownload}
                               class="fas fa-download"
                               style={{
                                 margin: "15px",
@@ -543,7 +550,7 @@ function Dashboard(props) {
                       <div className="chart">
                         <ResponsiveContainer width="100%" height={370}>
                           <LineChart
-                            ref={ref}
+                            ref={lineRef}
                             id="chart-bars"
                             className="chart-canvas"
                             width={700}
@@ -594,15 +601,15 @@ function Dashboard(props) {
                         </div>
                         <div className="col-lg-6 col-5 my-auto text-end">
                           <div className="float-lg-end">
-                            {/* <button
-                              onClick={download}
+                            <button
+                              onClick={pieDownload}
                               class="fas fa-download"
                               style={{
                                 margin: "15px",
                                 border: "none",
                                 background: "transparent",
                               }}
-                            ></button> */}
+                            ></button>
                             {/* <button
                               onClick={refresh}
                               class="fas fa-sync"
@@ -619,7 +626,7 @@ function Dashboard(props) {
                       <div className="chart">
                         <ResponsiveContainer width="100%" height={250}>
                           {tweetdata && (
-                            <PieChart width={200} height={250}>
+                            <PieChart width={200} height={250} ref={pieRef}>
                               <Pie
                                 dataKey="value"
                                 isAnimationActive={false}
