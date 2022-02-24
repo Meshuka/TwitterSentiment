@@ -84,16 +84,16 @@ function Profile(props) {
               id="navbar"
             >
               <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-              <div className="input-group input-group-outline" >
-                  <Link to="/search" >
-                    <input 
-                    class="btn btn-light profile-button"
-                    type="button"
-                    value="Search Products"
-                    style={{ margin:0, textTransform: "capitalize"  }}
+                <div className="input-group input-group-outline">
+                  <Link to="/search">
+                    <input
+                      class="btn btn-light profile-button"
+                      type="button"
+                      value="Search Products"
+                      style={{ margin: 0, textTransform: "capitalize" }}
                     ></input>
-                   </Link>
-                   </div>
+                  </Link>
+                </div>
               </div>
               <ul class="navbar-nav  justify-content-end">
                 <li class="nav-item d-flex align-items-center">
@@ -117,8 +117,8 @@ function Profile(props) {
                       <i class="sidenav-toggler-line"></i>
                     </div>
                   </a>
-                 </li>
-                 {/*<li class="nav-item px-3 d-flex align-items-center">
+                </li>
+                {/*<li class="nav-item px-3 d-flex align-items-center">
                   <a href="javascript:;" class="nav-link text-body p-0">
                     <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
                   </a>
@@ -133,7 +133,7 @@ function Profile(props) {
                   >
                     <i class="fa fa-bell cursor-pointer"></i>
                   </a> */}
-                  {/* <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+                {/* <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
                                         <li class="mb-2">
                                             <a class="dropdown-item border-radius-md" href="javascript:;">
                                                 <div class="d-flex py-1">
@@ -283,7 +283,6 @@ function Profile(props) {
             </div>
             <div class="row">
               <div class="row">
-                
                 <div class="col-12 col-xl-4">
                   <div class="card card-plain h-100">
                     <div class="card-header pb-0 p-3">
@@ -304,9 +303,7 @@ function Profile(props) {
                       </div>
                     </div>
                     <div class="card-body p-3">
-                      <p class="text-sm">
-                        Hi, I’m {user.user_name} .
-                      </p>
+                      <p class="text-sm">Hi, I’m {user.user_name} .</p>
                       <hr class="horizontal gray-light my-4" />
                       <ul class="list-group">
                         <li class="list-group-item border-0 ps-0 pt-0 text-sm">
@@ -314,16 +311,13 @@ function Profile(props) {
                           {user.user_name}
                         </li>
                         <li class="list-group-item border-0 ps-0 text-sm">
-                          <strong class="text-dark">Mobile: </strong> &nbsp;
-                        </li>
-                        <li class="list-group-item border-0 ps-0 text-sm">
                           <strong class="text-dark">Email: </strong> &nbsp;
                           {user.email}
                         </li>
-                        <li class="list-group-item border-0 ps-0 text-sm">
+                        {/* <li class="list-group-item border-0 ps-0 text-sm">
                           <strong class="text-dark">Location: </strong> &nbsp;
                           Nepal
-                        </li>
+                        </li> */}
                         <li class="list-group-item border-0 ps-0 pb-0">
                           <strong class="text-dark text-sm">Social: </strong>{" "}
                           &nbsp;
@@ -359,7 +353,7 @@ function Profile(props) {
                       <h6 class="text-uppercase text-body text-xs font-weight-bolder">
                         You searched for...
                       </h6> */}
-                      {/* <ul class="list-group">
+                {/* <ul class="list-group">
                         <li class="list-group-item border-0 px-0">
                           <div class="form-check form-switch ps-0">
                             <input
@@ -459,7 +453,7 @@ function Profile(props) {
                           </div>
                         </li>
                       </ul> */}
-                    {/* </div>
+                {/* </div>
                   </div>
                 </div> */}
               </div>
