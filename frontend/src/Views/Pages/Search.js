@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../axios";
 import axios from "axios";
 import AuthContext from "../../context/AuthContext";
+import Navbar from "../../Components/Navbar";
 
 function Search() {
   const navigate = useNavigate();
@@ -131,6 +132,7 @@ function Search() {
           </div>
         </div>
       </div>
+      <Navbar />
     </>
   );
 }
