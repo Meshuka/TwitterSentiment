@@ -181,6 +181,7 @@ function Dashboard(props) {
   const [user, setUser] = useState({});
   const [tweetdata, setTweetdata] = useState();
   const [hourdata, setHourdata] = useState();
+  const [fetchedDate, setFetchedDate] = useState();
   const [product_name, setProductName] = useState();
   const [hasSearched, setHasSearched] = useState(false);
 
@@ -233,10 +234,12 @@ function Dashboard(props) {
         setTweetdata(tweetData.data.data.output_sentiment);
         setHourdata(tweetData.data.data.hour_data);
         setProductName(tweetData.data.data.product_name);
+        setFetchedDate(tweetData.data.data.fetched_date);
         console.log(
           "tweetData....",
           hourdata,
           tweetData.data.data.product_name,
+          tweetData.data.data.fetched_date,
           tweetData.data.data.output_sentiment
           // JSON.parse(tweetData.data.data.sentiment_data)
         );
@@ -340,7 +343,7 @@ function Dashboard(props) {
                   >
                     <i className="fa fa-bell cursor-pointer"></i>
                   </a> */}
-                  {/* <ul className="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+                {/* <ul className="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
                                         <li className="mb-2">
                                             <a className="dropdown-item border-radius-md" href="javascript:;">
                                                 <div className="d-flex py-1">
@@ -498,7 +501,7 @@ function Dashboard(props) {
                     <div className="card-header pb-0">
                       <div className="row">
                         <div className="col-lg-6 col-7">
-                          <h6>Customer Sentiment</h6>
+                          <h6>Customer Sentiment (on {fetchedDate})</h6>
                         </div>
                         {/* <div className="col-lg-6 col-5 my-auto text-end">
                           <div className="dropdown float-lg-end pe-4">
