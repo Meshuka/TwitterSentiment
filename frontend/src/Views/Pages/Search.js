@@ -122,7 +122,9 @@ function Search() {
 
                 <div class="mt-5 text-center">
                   <input
-                    class="btn btn-primary profile-button"
+                      class="p-2 mb-2 bg-primary text-white w-45 my-4 mb-2"
+
+                    // class="btn btn-primary profile-button"
                     type="button"
                     onClick={searchHandler}
                     value={isLoading ? `Searching...` : `Start Search`}

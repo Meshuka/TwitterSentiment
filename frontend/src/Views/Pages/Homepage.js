@@ -21,7 +21,7 @@ function Homepage() {
                   Business Analytics Tool for companies that care!
                 </h1>
                 <p class="p-large">
-                  Find out the public sentiment about a product today.
+                  Find out the public sentiment about a gadgets today.
                 </p>
                 {token == null && (
                   <Link to="/register" class="btn-solid-lg">
@@ -53,7 +53,7 @@ function Homepage() {
           <div class="row">
             <div class="col-lg-12">
               <h2 class="h2-heading">
-                Product Reviews application is packed with{" "}
+                Gadget Reviews application is packed with{" "}
                 <span>awesome features</span>
               </h2>
             </div>
@@ -253,7 +253,7 @@ function Homepage() {
               <div class="footer-col first">
                 <h6>About Website</h6>
                 <p class="p-small">
-                  Product reviews tells you what the public thinks about about
+                  Gadget reviews tells you what the public thinks about about
                   the latest products.{" "}
                 </p>
               </div>
@@ -286,7 +286,7 @@ function Homepage() {
                 <p class="p-small">
                   For further queries please contact us at:{" "}
                   <a href="mailto:contact@site.com">
-                    <strong>productreviews@site.com</strong>
+                    <strong>gadgetsreviews@site.com</strong>
                   </a>
                 </p>
               </div>
@@ -300,7 +300,7 @@ function Homepage() {
           <div class="row">
             <div class="col-lg-6">
               <p class="p-small">
-                Copyright © <a href="#your-link">Product Reviews</a>
+                Copyright © <a href="#your-link">Gadget Reviews</a>
               </p>
             </div>
 
