@@ -29,7 +29,7 @@ function Sidenavbar() {
             alt="main_logo"
           />
           <span className="ms-1 font-weight-bold text-white">
-            Product Reviews
+            Gadget Reviews
           </span>
         </Link>
       </div>

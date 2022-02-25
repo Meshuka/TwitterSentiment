@@ -24,7 +24,7 @@ function Navbar() {
             />
           </Link>
           <Link to="/" class="navbar-brand logo-text">
-            Product Reviews
+            Gadget Reviews
           </Link>
           <button
             class="navbar-toggler p-0 border-0"

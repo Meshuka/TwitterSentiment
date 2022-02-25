@@ -298,13 +298,13 @@ function Dashboard(props) {
       <Sidenavbar />
       <main className="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <nav
-          className="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl"
+          className="navbar navbar-main navbar-expand-lg px-0 shadow-none border-radius-xl"
           id="navbarBlur"
           navbar-scroll="true"
         >
           <div className="container-fluid py-1 px-3">
             <nav aria-label="breadcrumb">
-              <h6 className="font-weight-bolder mb-0">Dashboard</h6>
+              <h2 className="font-weight-bolder mb-0">Dashboard</h2>
             </nav>
 
             <div
@@ -330,10 +330,11 @@ function Dashboard(props) {
                 <div className="input-group input-group-outline">
                   <Link to="/search">
                     <input
-                      class="btn btn-light profile-button"
+                      class="btn btn-light profile-button bg-primary"
                       type="button"
-                      value="Search Products"
+                      value="Search Gadget"
                       style={{
+                        color: "white",
                         margin: 0,
                         textTransform: "capitalize",
                       }}
@@ -347,7 +348,7 @@ function Dashboard(props) {
                   class="fas fa-file"
                   style={{ border: "none", background: "transparent" }}
                 >
-                  Report
+                  <span style={{ marginLeft: "5px" }}>Report</span>
                 </button>
               </div>
               {/* <div className="input-group input-group-outline">
@@ -458,7 +459,7 @@ function Dashboard(props) {
         {hasSearched && (
           <div className="container-fluid py-4">
             <div className="row">
-              <h3>Search results for {product_name}</h3>
+              <h6>Search results for {product_name}</h6>
               <div className="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                 <div className="card">
                   <div className="card-header p-3 pt-2">
@@ -551,10 +552,10 @@ function Dashboard(props) {
                     <div className="card-header pb-0">
                       <div className="row">
                         <div className="col-lg-6 col-7">
-                          <h6>Customer Sentiment (on {fetchedDate})</h6>
+                          <p>Customer Sentiment (on {fetchedDate})</p>
                         </div>
                         <div className="col-lg-6 col-5 my-auto text-end">
-                          <div className="dropdown float-lg-end pe-4">
+                          <div className="dropdown float-lg-end">
                             <button
                               onClick={lineDownload}
                               class="fas fa-download"

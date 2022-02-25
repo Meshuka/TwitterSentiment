@@ -60,7 +60,7 @@ function Profile(props) {
       <Sidenavbar />
       <div class="main-content position-relative bg-gray-100 max-height-vh-100 h-100">
         <nav
-          class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl"
+          class="navbar navbar-main navbar-expand-lg px-0 mx-3 shadow-none border-radius-xl"
           id="navbarBlur"
           navbar-scroll="true"
         >
@@ -72,7 +72,7 @@ function Profile(props) {
                   aria-current="page"
                 ></li>
               </ol>
-              <h6 class="font-weight-bolder mb-0">Profile</h6>
+              <h2 class="font-weight-bolder mb-0">Profile</h2>
             </nav>
             <div
               class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
@@ -82,10 +82,14 @@ function Profile(props) {
                 <div className="input-group input-group-outline">
                   <Link to="/search">
                     <input
-                      class="btn btn-light profile-button"
+                      class="btn btn-light profile-button bg-primary"
                       type="button"
-                      value="Search Products"
-                      style={{ margin: 0, textTransform: "capitalize" }}
+                      value="Search Gadget"
+                      style={{
+                        margin: 0,
+                        textTransform: "capitalize",
+                        color: "white",
+                      }}
                     ></input>
                   </Link>
                 </div>
@@ -298,7 +302,9 @@ function Profile(props) {
                       </div>
                     </div>
                     <div class="card-body p-3">
-                      <p class="text-sm">Welcome to your profile {user.user_name}.</p>
+                      <p class="text-sm">
+                        Welcome to your profile {user.user_name}.
+                      </p>
                       {/* <hr class="horizontal gray-light my-4" /> */}
                       <ul class="list-group">
                         <li class="list-group-item border-0 ps-0 pt-0 text-sm">
@@ -347,15 +353,15 @@ function Profile(props) {
                       </div>
                       <div class="card-body p-3">
                         <h6 class="text-uppercase text-body text-xs font-weight-bolder">
-                          You searched for: 
+                          You searched for:
                         </h6>
                         <ul class="list-group">
-                        {searchedList.map((productName) => {
+                          {searchedList.map((productName) => {
                             return (
                               <li class="list-group-item border-0 ps-0 pt-0 text-sm">
-                          <div class="text-dark">{productName} </div>
-                        </li>
-                               );
+                                <div class="text-dark">{productName} </div>
+                              </li>
+                            );
                           })}
                         </ul>
                       </div>

@@ -21,7 +21,7 @@ function Homepage() {
                   Business Analytics Tool for companies that care!
                 </h1>
                 <p class="p-large">
-                  Find out the public sentiment about a product today.
+                  Find out the public sentiment about a gadget today.
                 </p>
                 {token == null && (
                   <Link to="/register" class="btn-solid-lg">
@@ -53,7 +53,7 @@ function Homepage() {
           <div class="row">
             <div class="col-lg-12">
               <h2 class="h2-heading">
-                Product Reviews application is packed with{" "}
+                Gadget Reviews application is packed with{" "}
                 <span>awesome features</span>
               </h2>
             </div>
@@ -75,7 +75,7 @@ function Homepage() {
                 </div>
                 <div class="card-body">
                   <h4 class="card-title">Sales Tracking</h4>
-                  <p>Track sales of a product based on public likings.</p>
+                  <p>Track sales of a gadget based on public likings.</p>
                 </div>
               </div>
               <div class="card">
@@ -84,9 +84,7 @@ function Homepage() {
                 </div>
                 <div class="card-body">
                   <h4 class="card-title">Reporting Tool</h4>
-                  <p>
-                    Download your analysis report for a product.
-                  </p>
+                  <p>Download your analysis report for a gadget.</p>
                 </div>
               </div>
             </div>
@@ -253,7 +251,7 @@ function Homepage() {
               <div class="footer-col first">
                 <h6>About Website</h6>
                 <p class="p-small">
-                  Product reviews tells you what the public thinks about about
+                  Gadget reviews tells you what the public thinks about about
                   the latest products.{" "}
                 </p>
               </div>
@@ -300,7 +298,7 @@ function Homepage() {
           <div class="row">
             <div class="col-lg-6">
               <p class="p-small">
-                Copyright © <a href="#your-link">Product Reviews</a>
+                Copyright © <a href="#your-link">Gadget Reviews</a>
               </p>
             </div>
 
