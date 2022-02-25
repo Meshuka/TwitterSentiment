@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link, Redirect, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../../axios";
-
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -14,7 +11,10 @@ const RegisterForm = () => {
     password2: "",
   });
 
-  const [errors, setErrors] = useState({});
+  const [formErrors, setFormErrors] = useState([]);
+  const [isSubmit, setIsSubmit] = useState(false);
+  const [emailError, setEmailError] = useState({});
+  const [usernameError, setUsernameError] = useState({});
 
   const { user_name, email, password, password2 } = inputData;
 
@@ -26,35 +26,42 @@ const RegisterForm = () => {
     });
   };
 
-  // const validationHanlder = () => {
-  //   const errors = {};
-  //   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-  //   if (!inputData.user_name) {
-  //     errors.user_name = "Username is required";
-  //   }
-  //   if (!inputData.email) {
-  //     errors.email = "Email is required";
-  //   } else if (!regex.test(inputData.email)) {
-  //     errors.email = "This is not a valid email format!";
-  //   }
-  //   if (!inputData.password) {
-  //     errors.password = "Both password are required";
-  //   } else if (inputData.password.length < 4) {
-  //     errors.password = "Password must be more than 4 characters";
-  //   } else if (inputData.password.length > 10) {
-  //     errors.password = "Password cannot exceed more than 10 characters";
-  //   }
-  //   if (!inputData.password2) {
-  //     errors.password2 = "Both password are required";
-  //   } else if (inputData.password2.length < 4) {
-  //     errors.password2 = "Password must be more than 4 characters";
-  //   } else if (inputData.password2.length > 10) {
-  //     errors.password2 = "Password cannot exceed more than 10 characters";
-  //   }
-
-  //   setErrors(errors);
-  //   return errors;
-  // };
+  const validationHanlder = (inputData) => {
+    const error = {};
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    const nameRegex = /^[A-Za-z\s]+$/;
+    setIsSubmit(false);
+    if (!inputData.user_name) {
+      error.user_name = "Name is required!";
+    }
+    if (!nameRegex.test(inputData.user_name)) {
+      error.user_name = "Valid name is required!";
+    }
+    if (!inputData.email) {
+      error.email = "Email is required";
+    } else if (!regex.test(inputData.email)) {
+      error.email = "This is not a valid email format!";
+    }
+    if (!inputData.password) {
+      error.password = "Both password are required";
+    } else if (inputData.password.length < 4) {
+      error.password = "Password must be more than 4 characters";
+    } else if (inputData.password.length > 10) {
+      error.password = "Password cannot exceed more than 10 characters";
+    }
+    if (!inputData.password2) {
+      error.password2 = "Both password are required";
+    } else if (inputData.password2.length < 4) {
+      error.password2 = "Password must be more than 4 characters";
+    } else if (inputData.password2.length > 10) {
+      error.password2 = "Password cannot exceed more than 10 characters";
+    }
+    if (inputData.password !== inputData.password2) {
+      error.password2 = "Password doesn't match!";
+    }
+    console.log("errorr", error);
+    return error;
+  };
 
   const storeDataHandler = () => {
     axiosInstance
@@ -65,42 +72,59 @@ const RegisterForm = () => {
         password2: password2,
       })
       .then((res) => {
+        console.log("response", res);
         if (res.status === 400) {
+          const email = {};
+          const user_name = {};
           console.log("res-data", res.data);
-          setErrors({
-            ...errors,
-            user_name: res.data.user_name,
-            email: res.data.email,
-            password: res.data.password,
-          });
+          email.error = res.data.email;
+          user_name.error = res.data.user_name;
+          setEmailError(email);
+          setUsernameError(user_name);
+          // console.log("error in username,email", usernameError, emailError);
         } else {
           console.log("in else");
           alert("User created");
           console.log("Sign up done user data: ");
           console.log(user_name, email, password, password2);
           navigate("/signin");
-          // notify("User created");
           console.log(res);
           console.log(res.data);
         }
-        setErrors({
-          ...errors,
-          user_name: res.data.user_name,
-          email: res.data.email,
-          password: res.data.password,
-        });
       })
       .catch((e) => {
         console.log("error", e.message);
-        // notify("Error");
       });
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
-    // setErrors(validationHanlder(inputData));
-    storeDataHandler();
+    // console.log("clicked");
+    let errorForm = validationHanlder(inputData);
+    // console.log("error in form", errorForm);
+    setFormErrors(errorForm);
+    // console.log("validated front end");
+    setIsSubmit(true);
+    // console.log(
+    //   "is submit",
+    //   isSubmit,
+    //   formErrors,
+    //   Object.keys(formErrors).length,
+    //   formErrors.length
+    // );
+    if (Object.keys(errorForm).length === 0) {
+      console.log("can check in db..");
+      console.log(formErrors);
+      storeDataHandler();
+    }
   };
+
+  useEffect(() => {
+    // console.log(formErrors);
+    if (Object.keys(inputData).length === 0 && isSubmit) {
+      // console.log(inputData);
+    }
+  }, [formErrors]);
 
   return (
     <>
@@ -128,7 +152,8 @@ const RegisterForm = () => {
                       onChange={inputHanlder}
                     />
                   </div>
-                  <p style={{ color: "red" }}>{errors.user_name}</p>
+                  <p style={{ color: "red" }}>{formErrors.user_name}</p>
+                  <p style={{ color: "red" }}>{usernameError.error}</p>
                   <div class="input-group input-group-outline mb-3">
                     {/* <label class="form-label">Email</label> */}
                     <input
@@ -140,9 +165,9 @@ const RegisterForm = () => {
                       onChange={inputHanlder}
                     />
                   </div>
-                  <p style={{ color: "red" }}>{errors.email}</p>
+                  <p style={{ color: "red" }}>{formErrors.email}</p>
+                  <p style={{ color: "red" }}>{emailError.error}</p>
                   <div class="input-group input-group-outline mb-3">
-                    {/* <label class="form-label">Password</label> */}
                     <input
                       type="password"
                       placeholder="Password"
@@ -152,8 +177,8 @@ const RegisterForm = () => {
                       onChange={inputHanlder}
                     />
                   </div>
+                  <p style={{ color: "red" }}>{formErrors.password}</p>
                   <div class="input-group input-group-outline mb-3">
-                    {/* <label class="form-label">Confirm Password</label> */}
                     <input
                       type="password"
                       placeholder="Confirm Password"
@@ -163,7 +188,7 @@ const RegisterForm = () => {
                       onChange={inputHanlder}
                     />
                   </div>
-                  <p style={{ color: "red" }}>{errors.password}</p>
+                  <p style={{ color: "red" }}>{formErrors.password2}</p>
                   {/* <div class="form-check form-check-info text-start ps-0">
                     <input
                       class="form-check-input"
