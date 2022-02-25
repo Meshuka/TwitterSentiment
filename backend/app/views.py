@@ -159,9 +159,15 @@ def fetch_tweets(product, company, keywords):
                             lang="en",tweet_mode='extended',
                             ).items(500)
 
+            print("tweets", tweets)
+
             # extracting required fields from fetched tweets
             all_tweets = [[tweet.full_text, tweet.created_at.year, tweet.created_at.month, tweet.created_at.day, tweet.created_at.time().hour, tweet.created_at.time().minute, tweet.created_at.time().second] for tweet in tweets]
 
+            print("all", all_tweets)
+            
+            if(len(all_tweets) == 0):
+                return []
     
             # print("all fetched tweets", all_tweets)
 
@@ -241,141 +247,160 @@ def search_keywords(request):
     user = request.user
     # user.is_registered = True
     # user.save()
+
    
     data ={}
     data["product_name"] = request.data['product_name']
     data["company_name"] = request.data['company_name']
     data["keywords"] = request.data['keywords']
 
-    print("data.....",data)
+    # print("data.....",data)
     product_name = data["product_name"] 
 
+   
     # calling fetch_tweets to get real time cleaned tweets
     cleaned_tweets = fetch_tweets(data["product_name"], data["company_name"], data["keywords"])
 
-    # print("clened", cleaned_tweets)
+    print("clened", len(cleaned_tweets))
 
-    # output sentiments
-    prediction = find_sentiment(cleaned_tweets)
+    if(len(cleaned_tweets) == 0):
+        print("no tweets.........")
+        return Response({
+            "msg":"Error in fetching data. Try some other keywords.",
+        }, status=500)
+    else:
+        graphDataAvailable = False
+        print("in else")
+        # output sentiments
+        prediction = find_sentiment(cleaned_tweets)
 
-    # new DF containing sentiments instead of tweets
-    lists = list(zip(prediction,cleaned_tweets["year"],cleaned_tweets["month"],cleaned_tweets["day"],cleaned_tweets["hour"],cleaned_tweets["minute"],cleaned_tweets["second"]))
-    finalDf = pd.DataFrame(lists, columns=["sentiment","year","month","day","hour","minute","second"])
+        # new DF containing sentiments instead of tweets
+        lists = list(zip(prediction,cleaned_tweets["year"],cleaned_tweets["month"],cleaned_tweets["day"],cleaned_tweets["hour"],cleaned_tweets["minute"],cleaned_tweets["second"]))
+        finalDf = pd.DataFrame(lists, columns=["sentiment","year","month","day","hour","minute","second"])
 
-    print(finalDf)
-    # separate DFs for each sentiments
-    positiveDf = finalDf[finalDf["sentiment"] == "Positive"]
-    negativeDf = finalDf[finalDf["sentiment"] == "Negative"]
-    neutralDf = finalDf[finalDf["sentiment"] == "Neutral"]
+        print(finalDf)
+        # separate DFs for each sentiments
+        positiveDf = finalDf[finalDf["sentiment"] == "Positive"]
+        negativeDf = finalDf[finalDf["sentiment"] == "Negative"]
+        neutralDf = finalDf[finalDf["sentiment"] == "Neutral"]
 
-    # showing data in graph  (1 day before)
-    dayYesterday = datetime.date.today() - datetime.timedelta(days=1)
-    date = dayYesterday
-    dayYesterday = dayYesterday.day
-    
-    print('yesterday', dayYesterday, date)
-
-
-    positiveDfmonth = positiveDf[positiveDf["month"] == datetime.date.today().month]
-    negativeDfmonth = negativeDf[negativeDf["month"] == datetime.date.today().month]
-    neutralDfmonth = neutralDf[neutralDf["month"] == datetime.date.today().month]
-
-    positiveDfday = positiveDfmonth[positiveDfmonth["day"] == dayYesterday]
-    negativeDfday = negativeDfmonth[negativeDfmonth["day"] == dayYesterday]
-    neutralDfday = neutralDfmonth[neutralDfmonth["day"] == dayYesterday]
-
-    # print('p', positiveDfday, len(positiveDfday))
-    # print('n', negativeDfday, len(negativeDfday))
-    # print('neu', neutralDfday, len(negativeDfday))
-
-    # showing data in graph of the same day
-    if(len(positiveDfday) == 0 or len(negativeDfday) == [] or len(neutralDfday) == []):
-        dayToday = datetime.date.today()
-        date = dayToday
-        dayToday = dayToday.day
-        print('today', dayToday, date)
-
-        positiveDfday = positiveDfmonth[positiveDfmonth["day"] == dayToday]
-        negativeDfday = negativeDfmonth[negativeDfmonth["day"] == dayToday]
-        neutralDfday = neutralDfmonth[neutralDfmonth["day"] == dayToday]
-
-    # print('p', positiveDfday)
-    # print('n', negativeDfday)
-    # print('neu', neutralDfday)
-
-    
-    sentimentData = get_counts(prediction)
-    # yearCount = get_counts(cleaned_tweets["year"])
-    # monthCount = get_counts(cleaned_tweets["month"])
-    # dayCount = get_counts(cleaned_tweets["day"])
-    hourCountPositive = get_counts(positiveDfday["hour"])
-    hourCountNegative = get_counts(negativeDfday["hour"])
-    hourCountNeutral = get_counts(neutralDfday["hour"])
-
-
-    hourCountPositive = hour_counts(hourCountPositive)
-    hourCountNegative = hour_counts(hourCountNegative)
-    hourCountNeutral = hour_counts(hourCountNeutral)
-
-    # print('pos', hourCountPositive, 'neg', hourCountNegative, 'neutral', hourCountNeutral)
-   
-    hourCountPosUpdated = {}
-    hourCountNegUpdated = {}
-    hourCountNeutralUpdated = {}
-
-    for i in range(0,23,2):
-        hourCountPosUpdated[i] = hourCountPositive[i] + hourCountPositive[i+1]
-        hourCountNegUpdated[i] = hourCountNegative[i] + hourCountNegative[i+1]
-        hourCountNeutralUpdated[i] = hourCountNeutral[i] + hourCountNeutral[i+1]
-    
-    print('pos..', hourCountPosUpdated, 'neg..', hourCountNegUpdated, 'neutral..', hourCountNeutralUpdated)
-
-    hour_key = [0,2,4,6,8,10,12,14,16,18,20,22]
-    hourData = []
-
-    for key in hour_key:
-            hourData.append({"time":key,"positive":hourCountPosUpdated[key],"negative":hourCountNegUpdated[key], "neutral":hourCountNeutralUpdated[key]})
-            
-    # print('hourData',hourData)
-    
-
-    requiredKeys = ["Positive", "Negative", "Neutral"]
-    receivedKeys = []
-    for key in sentimentData:
-        receivedKeys.append(key)
+        # showing data in graph  (1 day before)
+        dayYesterday = datetime.date.today() - datetime.timedelta(days=1)
+        date = dayYesterday
+        dayYesterday = dayYesterday.day
         
-    # print(receivedKeys)
-    missingKeys = list(set(requiredKeys)-set(receivedKeys))
-    # print(len(missingKeys))
+        print('yesterday', dayYesterday, date)
 
-    if(missingKeys):
-        print("there are missing keys")
-        for i in range(len(missingKeys)):
-            sentimentData[missingKeys[i]] = 0
+
+        positiveDfmonth = positiveDf[positiveDf["month"] == datetime.date.today().month]
+        negativeDfmonth = negativeDf[negativeDf["month"] == datetime.date.today().month]
+        neutralDfmonth = neutralDf[neutralDf["month"] == datetime.date.today().month]
+
+        positiveDfday = positiveDfmonth[positiveDfmonth["day"] == dayYesterday]
+        negativeDfday = negativeDfmonth[negativeDfmonth["day"] == dayYesterday]
+        neutralDfday = neutralDfmonth[neutralDfmonth["day"] == dayYesterday]
+
+        # print('p', positiveDfday, len(positiveDfday))
+        # print('n', negativeDfday, len(negativeDfday))
+        # print('neu', neutralDfday, len(negativeDfday))
+
+        # showing data in graph of the same day
+        if(len(positiveDfday) == 0 or len(negativeDfday) == [] or len(neutralDfday) == []):
+            dayToday = datetime.date.today()
+            date = dayToday
+            dayToday = dayToday.day
+            print('today', dayToday, date)
+
+            positiveDfday = positiveDfmonth[positiveDfmonth["day"] == dayToday]
+            negativeDfday = negativeDfmonth[negativeDfmonth["day"] == dayToday]
+            neutralDfday = neutralDfmonth[neutralDfmonth["day"] == dayToday]
+
+        print('p', positiveDfday)
+        print('n', negativeDfday)
+        print('neu', neutralDfday)
+
+ 
+        if(len(positiveDfday) == 0 and len(negativeDfday) == 0 and len(neutralDfday) == 0):
+            graphDataAvailable = False
+        else:
+            graphDataAvailable = True
+
+
+        
+        sentimentData = get_counts(prediction)
+        # yearCount = get_counts(cleaned_tweets["year"])
+        # monthCount = get_counts(cleaned_tweets["month"])
+        # dayCount = get_counts(cleaned_tweets["day"])
+        hourCountPositive = get_counts(positiveDfday["hour"])
+        hourCountNegative = get_counts(negativeDfday["hour"])
+        hourCountNeutral = get_counts(neutralDfday["hour"])
+
+
+        hourCountPositive = hour_counts(hourCountPositive)
+        hourCountNegative = hour_counts(hourCountNegative)
+        hourCountNeutral = hour_counts(hourCountNeutral)
+
+        # print('pos', hourCountPositive, 'neg', hourCountNegative, 'neutral', hourCountNeutral)
     
-    sentimentData = dict(sorted(sentimentData.items()))
+        hourCountPosUpdated = {}
+        hourCountNegUpdated = {}
+        hourCountNeutralUpdated = {}
 
-    tweetData = TweetAnalysis(
-        user = request.user,
-        sentiment_data = sentimentData,
-        hour_data = hourData,
-        product_name = data["product_name"],
-        fetched_date = date
-    )
+        for i in range(0,23,2):
+            hourCountPosUpdated[i] = hourCountPositive[i] + hourCountPositive[i+1]
+            hourCountNegUpdated[i] = hourCountNegative[i] + hourCountNegative[i+1]
+            hourCountNeutralUpdated[i] = hourCountNeutral[i] + hourCountNeutral[i+1]
+        
+        print('pos..', hourCountPosUpdated, 'neg..', hourCountNegUpdated, 'neutral..', hourCountNeutralUpdated)
 
-    # print('data saved', sentimentData)
+        hour_key = [0,2,4,6,8,10,12,14,16,18,20,22]
+        hourData = []
 
-    tweetData.save()
+        for key in hour_key:
+                hourData.append({"time":key,"positive":hourCountPosUpdated[key],"negative":hourCountNegUpdated[key], "neutral":hourCountNeutralUpdated[key]})
+                
+        # print('hourData',hourData)
+        
 
-    return Response({
-        "msg": "From search",
-        "is_registered": user.is_registered,
-        "data": data,
-        "predicted_data":prediction,
-        "sentiment_data": sentimentData,
-        "hour_data": hourData,
-        "product_name": product_name
-    })
+        requiredKeys = ["Positive", "Negative", "Neutral"]
+        receivedKeys = []
+        for key in sentimentData:
+            receivedKeys.append(key)
+            
+        # print(receivedKeys)
+        missingKeys = list(set(requiredKeys)-set(receivedKeys))
+        # print(len(missingKeys))
+
+        if(missingKeys):
+            print("there are missing keys")
+            for i in range(len(missingKeys)):
+                sentimentData[missingKeys[i]] = 0
+        
+        sentimentData = dict(sorted(sentimentData.items()))
+
+        tweetData = TweetAnalysis(
+            user = request.user,
+            sentiment_data = sentimentData,
+            hour_data = hourData,
+            product_name = data["product_name"],
+            fetched_date = date,
+            graph_data_available = graphDataAvailable,
+        )
+
+        # print('data saved', sentimentData)
+
+        tweetData.save()
+
+        return Response({
+            "msg": "From search",
+            "is_registered": user.is_registered,
+            "data": data,
+            "predicted_data":prediction,
+            "sentiment_data": sentimentData,
+            "hour_data": hourData,
+            "product_name": product_name,
+            "graphDataAvailable": graphDataAvailable
+        })
 
 @api_view(["GET",])
 @permission_classes([IsAuthenticated])
@@ -406,7 +431,8 @@ def getSentimentData(request):
             "output_sentiment": outputSentiment,
             "hour_data": hour_data_json,
             "product_name": tweetData.product_name,
-            "fetched_date": tweetData.fetched_date
+            "fetched_date": tweetData.fetched_date,
+            "graph_data_available": tweetData.graph_data_available
         }
         
         # print('data.....', data)

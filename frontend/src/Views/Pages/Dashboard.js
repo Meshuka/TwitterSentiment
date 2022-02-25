@@ -182,6 +182,7 @@ function Dashboard(props) {
   const [fetchedDate, setFetchedDate] = useState();
   const [product_name, setProductName] = useState();
   const [hasSearched, setHasSearched] = useState(false);
+  const [grpahState, setGraphState] = useState(false);
 
   const getData = async () => {
     try {
@@ -234,10 +235,12 @@ function Dashboard(props) {
         setHourdata(tweetData.data.data.hour_data);
         setProductName(tweetData.data.data.product_name);
         setFetchedDate(tweetData.data.data.fetched_date);
+        setGraphState(tweetData.data.data.graph_data_available);
+        console.log("check", tweetData);
         console.log(
           user.user_name,
           "tweetData....",
-          hourdata,
+          tweetData.data.data.hour_data,
           tweetData.data.data.product_name,
           tweetData.data.data.fetched_date,
           tweetData.data.data.output_sentiment
@@ -553,6 +556,11 @@ function Dashboard(props) {
                       <div className="row">
                         <div className="col-lg-6 col-7">
                           <p>Customer Sentiment (on {fetchedDate})</p>
+                          {!grpahState && (
+                            <span style={{ color: "red" }}>
+                              No fetched data for on {fetchedDate}
+                            </span>
+                          )}
                         </div>
                         <div className="col-lg-6 col-5 my-auto text-end">
                           <div className="dropdown float-lg-end">

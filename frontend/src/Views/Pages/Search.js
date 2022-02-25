@@ -13,6 +13,7 @@ function Search() {
   const [company_name, setCompanyName] = useState("");
   const [keywords, setKeywords] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [searchError, setSearchError] = useState(false);
   const searchHandler = async (e) => {
     e.preventDefault();
     console.log("Search button clicked");
@@ -50,7 +51,9 @@ function Search() {
           state: resp.data.sentiment_data,
         });
       } catch (e) {
-        console.log(e);
+        if (e.response.status === 500) {
+          setSearchError(true);
+        }
         // logoutUser();
         setIsLoading(false);
       }
@@ -74,6 +77,11 @@ function Search() {
                 <h4 class="text-right">Search Criteria</h4>
               </div>
               <form>
+                {searchError && !isLoading && (
+                  <p style={{ color: "red" }}>
+                    Error in fetching data. Try some other keywords!!
+                  </p>
+                )}
                 <div class="row mt-3">
                   <div class="col-md-12">
                     <label class="labels">Product Name</label>

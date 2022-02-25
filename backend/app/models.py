@@ -1,4 +1,5 @@
 from pyexpat import model
+from statistics import mode
 from django.db import models
 from users.models import NewUser
 # Create your models here.
@@ -17,4 +18,7 @@ class TweetAnalysis(models.Model):
     hour_data = models.TextField(null=True)
     product_name = models.TextField(null=True)
     fetched_date = models.DateField(null=True)
+    start_date = models.DateField(null=True)
+    end_date = models.DateField(null=True)
+    graph_data_available = models.BooleanField(null=True)
 
