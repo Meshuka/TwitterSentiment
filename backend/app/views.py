@@ -159,12 +159,12 @@ def fetch_tweets(product, company, keywords):
                             lang="en",tweet_mode='extended',
                             ).items(500)
 
-            print("tweets", tweets)
+            # print("tweets", tweets)
 
             # extracting required fields from fetched tweets
             all_tweets = [[tweet.full_text, tweet.created_at.year, tweet.created_at.month, tweet.created_at.day, tweet.created_at.time().hour, tweet.created_at.time().minute, tweet.created_at.time().second] for tweet in tweets]
 
-            print("all", all_tweets)
+            # print("all", all_tweets)
             
             if(len(all_tweets) == 0):
                 return []
@@ -243,6 +243,7 @@ def hour_counts(hourCount):
 @api_view(["POST",])
 @permission_classes([IsAuthenticated])
 def search_keywords(request):
+    print("starting search...")
     # print('user in search', request.headers.keys())
     user = request.user
     # user.is_registered = True
@@ -254,14 +255,12 @@ def search_keywords(request):
     data["company_name"] = request.data['company_name']
     data["keywords"] = request.data['keywords']
 
-    # print("data.....",data)
+    print("data.....",data)
     product_name = data["product_name"] 
 
    
     # calling fetch_tweets to get real time cleaned tweets
     cleaned_tweets = fetch_tweets(data["product_name"], data["company_name"], data["keywords"])
-
-    print("clened", len(cleaned_tweets))
 
     if(len(cleaned_tweets) == 0):
         print("no tweets.........")
@@ -270,7 +269,7 @@ def search_keywords(request):
         }, status=500)
     else:
         graphDataAvailable = False
-        print("in else")
+   
         # output sentiments
         prediction = find_sentiment(cleaned_tweets)
 
@@ -278,7 +277,12 @@ def search_keywords(request):
         lists = list(zip(prediction,cleaned_tweets["year"],cleaned_tweets["month"],cleaned_tweets["day"],cleaned_tweets["hour"],cleaned_tweets["minute"],cleaned_tweets["second"]))
         finalDf = pd.DataFrame(lists, columns=["sentiment","year","month","day","hour","minute","second"])
 
-        print(finalDf)
+        print("final..", finalDf)
+        enddate = datetime.datetime(int(finalDf["year"].iloc[0]), int(finalDf["month"].iloc[0]), int(finalDf["day"].iloc[0]), int(finalDf["hour"].iloc[0]) ,int(finalDf["minute"].iloc[0]) ,int(finalDf["second"].iloc[0]))
+        startdate = datetime.datetime(int(finalDf["year"].iloc[-1]), int(finalDf["month"].iloc[-1]), int(finalDf["day"].iloc[-1]), int(finalDf["hour"].iloc[-1]) ,int(finalDf["minute"].iloc[-1]) ,int(finalDf["second"].iloc[-1]))
+        print("starting..",startdate)
+        print("ending...", enddate)
+
         # separate DFs for each sentiments
         positiveDf = finalDf[finalDf["sentiment"] == "Positive"]
         negativeDf = finalDf[finalDf["sentiment"] == "Negative"]
@@ -289,7 +293,7 @@ def search_keywords(request):
         date = dayYesterday
         dayYesterday = dayYesterday.day
         
-        print('yesterday', dayYesterday, date)
+        # print('yesterday', dayYesterday, date)
 
 
         positiveDfmonth = positiveDf[positiveDf["month"] == datetime.date.today().month]
@@ -315,9 +319,9 @@ def search_keywords(request):
             negativeDfday = negativeDfmonth[negativeDfmonth["day"] == dayToday]
             neutralDfday = neutralDfmonth[neutralDfmonth["day"] == dayToday]
 
-        print('p', positiveDfday)
-        print('n', negativeDfday)
-        print('neu', neutralDfday)
+        # print('p', positiveDfday)
+        # print('n', negativeDfday)
+        # print('neu', neutralDfday)
 
  
         if(len(positiveDfday) == 0 and len(negativeDfday) == 0 and len(neutralDfday) == 0):
@@ -351,7 +355,7 @@ def search_keywords(request):
             hourCountNegUpdated[i] = hourCountNegative[i] + hourCountNegative[i+1]
             hourCountNeutralUpdated[i] = hourCountNeutral[i] + hourCountNeutral[i+1]
         
-        print('pos..', hourCountPosUpdated, 'neg..', hourCountNegUpdated, 'neutral..', hourCountNeutralUpdated)
+        # print('pos..', hourCountPosUpdated, 'neg..', hourCountNegUpdated, 'neutral..', hourCountNeutralUpdated)
 
         hour_key = [0,2,4,6,8,10,12,14,16,18,20,22]
         hourData = []
@@ -372,7 +376,7 @@ def search_keywords(request):
         # print(len(missingKeys))
 
         if(missingKeys):
-            print("there are missing keys")
+            # print("there are missing keys")
             for i in range(len(missingKeys)):
                 sentimentData[missingKeys[i]] = 0
         
@@ -385,6 +389,8 @@ def search_keywords(request):
             product_name = data["product_name"],
             fetched_date = date,
             graph_data_available = graphDataAvailable,
+            start_date = startdate,
+            end_date = enddate
         )
 
         # print('data saved', sentimentData)
@@ -432,7 +438,9 @@ def getSentimentData(request):
             "hour_data": hour_data_json,
             "product_name": tweetData.product_name,
             "fetched_date": tweetData.fetched_date,
-            "graph_data_available": tweetData.graph_data_available
+            "graph_data_available": tweetData.graph_data_available,
+            "start_date": tweetData.start_date,
+            "end_date": tweetData.end_date
         }
         
         # print('data.....', data)

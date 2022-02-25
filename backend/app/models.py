@@ -18,7 +18,7 @@ class TweetAnalysis(models.Model):
     hour_data = models.TextField(null=True)
     product_name = models.TextField(null=True)
     fetched_date = models.DateField(null=True)
-    start_date = models.DateField(null=True)
-    end_date = models.DateField(null=True)
+    start_date = models.CharField(null=True, max_length=100)
+    end_date = models.CharField(null=True, max_length=100)
     graph_data_available = models.BooleanField(null=True)
 
