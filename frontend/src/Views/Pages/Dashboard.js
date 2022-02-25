@@ -191,7 +191,8 @@ function Dashboard(props) {
   const getData = async () => {
     try {
       const token = localStorage.getItem("authToken");
-      const { user_id } = jwt_decode(token);
+      const { user_id, user_name } = jwt_decode(token);
+      console.log(user_name);
       if (user_id) {
         const userDatas = await axios({
           method: "GET",
@@ -239,6 +240,7 @@ function Dashboard(props) {
         setProductName(tweetData.data.data.product_name);
         setFetchedDate(tweetData.data.data.fetched_date);
         console.log(
+          user.user_name,
           "tweetData....",
           hourdata,
           tweetData.data.data.product_name,
@@ -271,12 +273,16 @@ function Dashboard(props) {
   }, [getPng]);
 
   const navigateToReport = () => {
+    const token = localStorage.getItem("authToken");
+    const { user_id, user_name } = jwt_decode(token);
     navigate(`/report/${product_name}`, {
       state: {
+        user_name,
         tweetdata,
         hourdata,
         fetchedDate,
-        product_name
+        product_name,
+        
       }
     });
   }

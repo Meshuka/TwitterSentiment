@@ -1,15 +1,59 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import "./report.css";
 import { useLocation } from "react-router-dom";
+import AuthContext from "../../context/AuthContext";
 
 
 export default function Report() {
     const location = useLocation();
+    console.log(location);
+
+    const { authToken } = useContext(AuthContext);
     
     let sentimentData = location.state;
+    let user_name = location.state.user_name;
     console.log(sentimentData);
 
     const [fetchReviewCount, setFetchReviewCount] = useState(0);
+    const [user, setUser] = useState({ });
+    // const getData = async () => {
+    //     try {
+    //       const token = localStorage.getItem("authToken");
+    //       const { user_id } = jwt_decode(token);
+    //       if (user_id) {
+    //         const userDatas = await axios({
+    //           method: "GET",
+    //           url: `http://127.0.0.1:8000/api/user/me/${user_id}`,
+    //           timeout: 1000 * 10,
+    //           validateStatus: (status) => {
+    //             return status < 500;
+    //           },
+    //           headers: {
+    //             Authorization: authToken
+    //               ? "Bearer " + String(authToken.access)
+    //               : null,
+    //             "Content-Type": "application/json",
+    //             accept: "application/json",
+    //           },
+    //         });
+    //         setUser({
+    //           user_name: userDatas.data.user_name,
+    //           email: userDatas.data.email,
+    //         });
+    //         console.log("user", user);
+    
+           
+    
+       
+    //       }
+    //     } catch (err) {
+    //       console.log(err);
+          
+    //     }
+    //   };
+    //   useEffect(() => {
+    //     getData();
+    //   }, []);
 
 
     useEffect(() => {
@@ -19,7 +63,7 @@ export default function Report() {
        });
 
        setFetchReviewCount(total);
-
+      
        setTimeout(() => {
         window.print()
        }, 4000);
@@ -50,13 +94,13 @@ export default function Report() {
                     <div className="col-7">
                         <p>You searched for:</p>
                         <h2>{sentimentData.product_name}</h2>
-                        <p className="address"> 777 Brockton Avenue, <br/> Abington MA 2351, <br/>Vestavia Hills AL </p>
+                        {/* <p className="address"> 777 Brockton Avenue, <br/> Abington MA 2351, <br/>Vestavia Hills AL </p> */}
                         
                     </div>
                     <div className="col-5">
                         <p>Searched By:</p>
-                        <h2>Sabur Ali</h2>
-                        <p className="address"> email <br/> Abington MA 2351, <br/>Vestavia Hills AL </p>
+                        <h2>{user_name}</h2>
+                        {/* <p className="address"> email <br/> Abington MA 2351, <br/>Vestavia Hills AL </p> */}
                         
                     
                 </div>
@@ -106,7 +150,7 @@ export default function Report() {
             <div className="row">
                 <div className="col-12">
                     <p className="m-0 font-weight-bold"> Note: </p>
-                    <p>Your Search for {sentimentData.product_name} product resulted in a total of {fetchReviewCount} reviews, It contains __ positive, __negative  and __ neutral reviews.</p>
+                    <p>Your Search for {sentimentData.product_name} product resulted in a total of {fetchReviewCount} reviews, It contains {sentimentData.tweetdata[2].value} positive, {sentimentData.tweetdata[0].value} negative  and {sentimentData.tweetdata[1].value} neutral reviews.</p>
                 </div>
                 {/* <!-- <div className="col-4">
                     <table className="table border-0 table-hover">
