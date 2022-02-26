@@ -21,7 +21,7 @@ function Homepage() {
                   Business Analytics Tool for companies that care!
                 </h1>
                 <p class="p-large">
-                  Find out the public sentiment about a gadget today.
+                  Find out the public sentiment about a gadgets today.
                 </p>
                 {token == null && (
                   <Link to="/register" class="btn-solid-lg">
@@ -284,7 +284,7 @@ function Homepage() {
                 <p class="p-small">
                   For further queries please contact us at:{" "}
                   <a href="mailto:contact@site.com">
-                    <strong>productreviews@site.com</strong>
+                    <strong>gadgetsreviews@site.com</strong>
                   </a>
                 </p>
               </div>

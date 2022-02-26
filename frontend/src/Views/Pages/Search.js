@@ -1,11 +1,19 @@
 import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, NavLink } from "react-router-dom";
 import axiosInstance from "../../axios";
+import { HashLink } from "react-router-hash-link";
 import axios from "axios";
 import AuthContext from "../../context/AuthContext";
-import Navbar from "../../Components/Navbar";
+// import Navbar from "../../Components/Navbar";
 
 function Search() {
+  function logoutHandler() {
+    // console.log("logout");
+    logoutUser();
+  }
+
+  const token = localStorage.getItem("authToken");
+  console.log("token", token);
   const navigate = useNavigate();
   const [hasError, setHasError] = useState(false);
   const { logoutUser, authToken } = useContext(AuthContext);
@@ -60,7 +68,105 @@ function Search() {
     }
   };
   return (
+    
     <>
+     <nav
+        id="navbarExample"
+        class="navbar navbar-expand-lg fixed-top"
+        aria-label="Main navigation"
+      >
+        <div class="container">
+          {/* <!-- Image Logo --> */}
+          <Link to="/" class="navbar-brand logo-image">
+            <img
+              src="../assets/img/logo2.png"
+              alt="alternative"
+              style={{ height: "40px", width: "40px" }}
+            />
+          </Link>
+          <Link to="/" class="navbar-brand logo-text">
+            Gadget Reviews
+          </Link>
+          <button
+            class="navbar-toggler p-0 border-0"
+            type="button"
+            id="navbarSideCollapse"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div
+            class="navbar-collapse offcanvas-collapse"
+            id="navbarsExampleDefault"
+          >
+            <ul class="navbar-nav ms-auto navbar-nav-scroll">
+              <li class="nav-item">
+                <Link to="/" class="nav-link active" aria-current="page">
+                  Home
+                </Link>
+              </li>
+              {/* <li class="nav-item">
+                <HashLink smooth to="#features" class="nav-link">
+                  Features
+                </HashLink>
+              </li>
+              <li class="nav-item">
+                <HashLink smooth to="#details" class="nav-link" href="#details">
+                  Details
+                </HashLink>
+              </li> */}
+
+              {token !== null && (
+                <>
+                  <li class="nav-item">
+                    <Link to="/dashboard" class="nav-link" aria-current="page">
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li class="nav-item">
+                    <Link to="/profile" class="nav-link" aria-current="page">
+                      Profile
+                    </Link>
+                  </li>
+
+                  <li
+            className="nav-item"
+            style={{ color: "pointer" }}
+            onClick={logoutHandler}
+          >
+            <div className="nav-link" style={{ cursor: "pointer" }}>
+              {/* <div className="nav-link text-center me-2 d-flex align-items-center justify-content-center">
+                <i className="material-icons opacity-10">logout</i>
+              </div> */}
+              <div>
+                <span className="nav-link-text ms-1">Logout</span>
+              </div>
+            </div>
+          </li>
+
+                </>
+              )}
+            </ul>
+            {/* {token == null && (
+              <span class="nav-item">
+                <Link to="/signout" class="btn-outline-sm">
+                  Log out
+                </Link>
+              </span>
+            )} */}
+          </div>
+        </div>
+      </nav>
+     <header class="ex-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-10 offset-xl-1">
+                        <h1 class="text-center">Search Gadget</h1>
+                    </div> 
+                </div> 
+            </div> 
+        </header> 
       <div class="container rounded bg-white mt-5 mb-5">
         <div class="row">
           <div class="col-md-3 border-right">
@@ -130,7 +236,9 @@ function Search() {
 
                 <div class="mt-5 text-center">
                   <input
-                    class="btn btn-primary profile-button"
+                      class="p-2 mb-2 bg-primary text-white w-45 my-4 mb-2"
+
+                    // class="btn btn-primary profile-button"
                     type="button"
                     onClick={searchHandler}
                     value={isLoading ? `Searching...` : `Start Search`}
@@ -142,7 +250,7 @@ function Search() {
           </div>
         </div>
       </div>
-      <Navbar />
+      
     </>
   );
 }

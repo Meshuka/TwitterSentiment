@@ -210,11 +210,8 @@ const RegisterForm = () => {
                   <div class="text-center">
                     <button
                       type="submit"
-                      // class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0"
-                      class="btn btn-outline-primary btn-lg w-100 mt-4 mb-0"
-
-                      onClick={submitHandler}
-                    >
+                      class="p-2 mb-2 bg-primary text-white w-100 my-4 mb-2"
+                      onClick={submitHandler}>
                       Sign Up
                     </button>
                   </div>

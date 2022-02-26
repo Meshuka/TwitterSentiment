@@ -1,17 +1,15 @@
 import React from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
+// Link for routing to diff pages & Hashlink for smooth transition to different parts of same page
 
-// import Navbar from "../../Components/Navbar";
-import SigninForm from "./SigninForm";
-
-function Signin() {
+function Navigation() {
   const token = localStorage.getItem("authToken");
   console.log("token", token);
   return (
     <>
-     {/* Navbar */}
-     <nav
+      {/* Navbar */}
+      <nav
         id="navbarExample"
         class="navbar navbar-expand-lg fixed-top"
         aria-label="Main navigation"
@@ -47,12 +45,12 @@ function Signin() {
                   Home
                 </Link>
               </li>
-              <li class="nav-item">
-                <HashLink smooth to="#Dashboard" class="nav-link">
-                  Dashboard
+              {/* <li class="nav-item">
+                <HashLink smooth to="#features" class="nav-link">
+                  Features
                 </HashLink>
               </li>
-              {/* <li class="nav-item">
+              <li class="nav-item">
                 <HashLink smooth to="#details" class="nav-link" href="#details">
                   Details
                 </HashLink>
@@ -83,19 +81,9 @@ function Signin() {
           </div>
         </div>
       </nav>
-    <header class="ex-header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-10 offset-xl-1">
-                        <h1 class="text-center">Log In</h1>
-                    </div> 
-                </div> 
-            </div> 
-        </header> 
-            
-      <SigninForm />
+      {/* End Navbar*/}
     </>
   );
 }
 
-export default Signin;
+export default Navigation;
