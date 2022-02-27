@@ -293,7 +293,7 @@ function Homepage() {
         </div>
       </div>
       {/* <!-- Copyright --> */}
-      <div class="copyright">
+      <div class="copyright" id="contact">
         <div class="container">
           <div class="row">
             <div class="col-lg-6">

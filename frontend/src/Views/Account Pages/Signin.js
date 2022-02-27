@@ -10,8 +10,8 @@ function Signin() {
   console.log("token", token);
   return (
     <>
-     {/* Navbar */}
-     <nav
+      {/* Navbar */}
+      <nav
         id="navbarExample"
         class="navbar navbar-expand-lg fixed-top"
         aria-label="Main navigation"
@@ -47,11 +47,11 @@ function Signin() {
                   Home
                 </Link>
               </li>
-              <li class="nav-item">
+              {/* <li class="nav-item">
                 <HashLink smooth to="#Dashboard" class="nav-link">
                   Dashboard
                 </HashLink>
-              </li>
+              </li> */}
               {/* <li class="nav-item">
                 <HashLink smooth to="#details" class="nav-link" href="#details">
                   Details
@@ -83,16 +83,16 @@ function Signin() {
           </div>
         </div>
       </nav>
-    <header class="ex-header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-10 offset-xl-1">
-                        <h1 class="text-center">Log In</h1>
-                    </div> 
-                </div> 
-            </div> 
-        </header> 
-            
+      <header class="ex-header">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-10 offset-xl-1">
+              <h1 class="text-center">Log In</h1>
+            </div>
+          </div>
+        </div>
+      </header>
+
       <SigninForm />
     </>
   );

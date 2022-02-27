@@ -68,9 +68,8 @@ function Search() {
     }
   };
   return (
-    
     <>
-     <nav
+      <nav
         id="navbarExample"
         class="navbar navbar-expand-lg fixed-top"
         aria-label="Main navigation"
@@ -102,7 +101,7 @@ function Search() {
           >
             <ul class="navbar-nav ms-auto navbar-nav-scroll">
               <li class="nav-item">
-                <Link to="/" class="nav-link active" aria-current="page">
+                <Link to="/" class="nav-link" aria-current="page">
                   Home
                 </Link>
               </li>
@@ -131,20 +130,19 @@ function Search() {
                   </li>
 
                   <li
-            className="nav-item"
-            style={{ color: "pointer" }}
-            onClick={logoutHandler}
-          >
-            <div className="nav-link" style={{ cursor: "pointer" }}>
-              {/* <div className="nav-link text-center me-2 d-flex align-items-center justify-content-center">
+                    className="nav-item"
+                    style={{ color: "pointer" }}
+                    onClick={logoutHandler}
+                  >
+                    <div className="nav-link" style={{ cursor: "pointer" }}>
+                      {/* <div className="nav-link text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="material-icons opacity-10">logout</i>
               </div> */}
-              <div>
-                <span className="nav-link-text ms-1">Logout</span>
-              </div>
-            </div>
-          </li>
-
+                      <div>
+                        <span className="nav-link-text ms-1">Logout</span>
+                      </div>
+                    </div>
+                  </li>
                 </>
               )}
             </ul>
@@ -158,15 +156,15 @@ function Search() {
           </div>
         </div>
       </nav>
-     <header class="ex-header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-10 offset-xl-1">
-                        <h1 class="text-center">Search Gadget</h1>
-                    </div> 
-                </div> 
-            </div> 
-        </header> 
+      <header class="ex-header">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-10 offset-xl-1">
+              <h1 class="text-center">Search Gadget</h1>
+            </div>
+          </div>
+        </div>
+      </header>
       <div class="container rounded bg-white mt-5 mb-5">
         <div class="row">
           <div class="col-md-3 border-right">
@@ -236,8 +234,7 @@ function Search() {
 
                 <div class="mt-5 text-center">
                   <input
-                      class="p-2 mb-2 bg-primary text-white w-45 my-4 mb-2"
-
+                    class="p-2 mb-2 bg-primary text-white w-45 my-4 mb-2"
                     // class="btn btn-primary profile-button"
                     type="button"
                     onClick={searchHandler}
@@ -250,7 +247,6 @@ function Search() {
           </div>
         </div>
       </div>
-      
     </>
   );
 }

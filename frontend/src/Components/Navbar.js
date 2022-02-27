@@ -55,6 +55,11 @@ function Navbar() {
                   Details
                 </HashLink>
               </li>
+              <li class="nav-item">
+                <HashLink smooth to="#contact" class="nav-link" href="#details">
+                  Contact
+                </HashLink>
+              </li>
 
               {token !== null && (
                 <>
