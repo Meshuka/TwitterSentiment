@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import "./report.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
+import Dashboard from './Dashboard';
 
 
 export default function Report() {
@@ -54,7 +55,22 @@ export default function Report() {
     //   useEffect(() => {
     //     getData();
     //   }, []);
+    // const handlePrint = () => {
+    //    window.print()
+    // }
 
+    function printPageArea(areaID){
+        console.log("error", areaID);
+        var printContent = document.getElementsByClassName("container");
+        console.log(printContent[0]);
+        var WinPrint = window.open('', '', 'width=900,height=650');
+    
+        WinPrint.document.write(printContent.innerHTML);
+        WinPrint.document.close();
+        WinPrint.focus();
+        WinPrint.print();
+        WinPrint.close();
+    }
 
     useEffect(() => {
        let total = 0;
@@ -64,15 +80,36 @@ export default function Report() {
 
        setFetchReviewCount(total);
       
-       setTimeout(() => {
-        window.print()
-       }, 4000);
+   
 
     }, []);
 
   return (
-    <div className="my-5 page" size="A4">
-    <div className="p-5">
+      
+  <div className='container'>
+      <div className='container-nav-wrapper'>
+      <div className="dropdown float-rg-end pe-4">
+    <Link to="/dashboard"
+    class="fa fa-arrow-left"
+    style={{  textDecoration: 'none', color: 'black'}}>
+        <span style={{ marginLeft: "5px" }}>Back to dashboard</span>
+    
+    </Link>
+  </div>
+   
+      <div className="dropdown float-lg-end pe-4">
+    <button 
+      onClick={printPageArea('pagePrint')}
+      class="fas fa-download"
+     style={{ border: "none", background: "transparent" }}>
+    
+    </button>
+  </div>
+  </div>
+  
+    <div className="my-5 page" size="A4" >
+       <div id="pagePrint">  
+    <div className="p-5" >
         <section className="top-content bb d-flex justify-content-between">
             <div className="logo">
                 <h2>Gadget Reviews</h2>
@@ -215,6 +252,8 @@ export default function Report() {
             </div>
         </footer> */}
     </div>
+    </div> 
+</div>
 </div>
   )
 };
