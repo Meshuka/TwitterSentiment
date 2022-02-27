@@ -51,24 +51,24 @@ export default function Report() {
   //   useEffect(() => {
   //     getData();
   //   }, []);
-  // const handlePrint = () => {
-  //    window.print()
-  // }
-
-  function printPageArea(areaID) {
-    console.log("error", areaID);
-    var printContent = document.getElementById("printPage");
-    console.log(printContent);
-    var WinPrint = window.open("", "", "width=900,height=650");
-    // WinPrint.document.write(
-    //   '<link rel="stylesheet" type="text/css" href="./report.css" media="print">'
-    // );
-    WinPrint.document.write(printContent.innerHTML);
-    WinPrint.document.close();
-    WinPrint.focus();
-    WinPrint.print();
-    WinPrint.close();
+  const handlePrint = () => {
+     window.print()
   }
+
+//   function printPageArea(areaID) {
+//     console.log("error", areaID);
+//     var printContent = document.getElementById("printPage");
+//     console.log(printContent);
+//     var WinPrint = window.open("", "", "width=900,height=650");
+//     // WinPrint.document.write(
+//     //   '<link rel="stylesheet" type="text/css" href="./report.css" media="print">'
+//     // );
+//     WinPrint.document.write(printContent.innerHTML);
+//     WinPrint.document.close();
+//     WinPrint.focus();
+//     WinPrint.print();
+//     WinPrint.close();
+//   }
 
   useEffect(() => {
     let total = 0;
@@ -81,25 +81,24 @@ export default function Report() {
 
   return (
     <div className="container-main">
-      <div className="container-nav-wrapper">
-        <div className="dropdown float-rg-end pe-4">
+      <div className="container-nav-wrapper d-print-none">
+        <div className="dropdown float-rg-end pe-4 d-print-none">
           <Link
             to="/dashboard"
-            class="fa fa-arrow-left"
             style={{ textDecoration: "none", color: "black" }}
           >
-            <span style={{ marginLeft: "5px" }}>Back to dashboard</span>
+            <span className="fa fa-arrow-left text-dark" style={{ fontSize: '28px' }}></span>
           </Link>
         </div>
 
-        <div className="dropdown float-lg-end pe-4">
+        <div className="dropdown float-lg-end pe-4 d-print-none">
           <button
-            onClick={() => {
-              printPageArea("pagePrint");
-            }}
-            class="fas fa-download"
-            style={{ border: "none", background: "transparent" }}
-          ></button>
+            onClick={handlePrint}
+            class="btn btn-dark"
+            // style={{ border: "none", background: "transparent" }}
+          >
+            <span className="fas fa-print"></span> Print
+          </button>
         </div>
       </div>
 
