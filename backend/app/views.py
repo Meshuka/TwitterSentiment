@@ -1,3 +1,4 @@
+from __future__ import print_function
 import datetime
 from datetime import timedelta
 from distutils.command.clean import clean
@@ -143,7 +144,10 @@ def fetch_tweets(product, company, keywords):
             auth.set_access_token(access_token, access_token_secret)
             api = tw.API(auth, wait_on_rate_limit=True)
 
-            # keywordsArr = keywords.split(',')
+            keywordsArr = keywords.split(',')
+            print(keywordsArr)
+            keywordStr = ''.join(keywordsArr)
+            print(keywordStr)
             # keywordLength = len(keywordsArr)
             # print('lngth', keywordLength)
             # keyword_search = ""
@@ -152,8 +156,9 @@ def fetch_tweets(product, company, keywords):
             #     keyword_search=keyword_search + str(keywordsArr[i]) + " OR " + str(keywordsArr[i]) + "+review OR"      
 
             # search query
-            new_search = product + " OR " + product +"+review OR "+ keywords + " OR " + keywords +"+review OR "  + company + " OR " + company + "+review -sale -available -want -filter:retweets AND -filter:replies AND -filter:links AND -filter:media AND -filter:images AND -filter:twimg"
-
+            # new_search = product + " OR " + product +"+review OR "+ keywords + " OR " + keywords +"+review OR "  + company + " OR " + company + "+review -sale -available -want -filter:retweets AND -filter:replies AND -filter:links AND -filter:media AND -filter:images AND -filter:twimg"
+            new_search = product + " OR " + keywords + " OR " + company +" -sale -available -want -filter:retweets AND -filter:replies AND -filter:links AND -filter:media AND -filter:images AND -filter:twimg"
+            print(new_search)
             # contains fetched tweets
             tweets = tw.Cursor(api.search_tweets,q=new_search,
                             lang="en",tweet_mode='extended',
@@ -164,7 +169,7 @@ def fetch_tweets(product, company, keywords):
             # extracting required fields from fetched tweets
             all_tweets = [[tweet.full_text, tweet.created_at.year, tweet.created_at.month, tweet.created_at.day, tweet.created_at.time().hour, tweet.created_at.time().minute, tweet.created_at.time().second] for tweet in tweets]
 
-            # print("all", all_tweets)
+            print("all", all_tweets)
             
             if(len(all_tweets) == 0):
                 return []
@@ -358,10 +363,21 @@ def search_keywords(request):
         # print('pos..', hourCountPosUpdated, 'neg..', hourCountNegUpdated, 'neutral..', hourCountNeutralUpdated)
 
         hour_key = [0,2,4,6,8,10,12,14,16,18,20,22]
+        # hour_key = ["0:00 A.M","2:00 A.M","4:00 A.M.","6:00 A.M","8:00 A.M","10:00 A.M","12:00 P.M","2:00 P.M","4:00 P.M","6:00 P.M","8:00 P.M","10:00 P.M"]
         hourData = []
 
         for key in hour_key:
-                hourData.append({"time":key,"positive":hourCountPosUpdated[key],"negative":hourCountNegUpdated[key], "neutral":hourCountNeutralUpdated[key]})
+            # print(key)
+            if(key <= 10):
+                keyHour = str(key) + ":00 A.M."
+            elif(key == 12):
+                keyHour = str(key) + ":00 P.M."
+                # print("Here", keyHour)
+            elif(key > 12):
+        
+                keyHour = int(key) - int(12)
+                keyHour = str(keyHour) + ":00 P.M."
+            hourData.append({"time":keyHour,"positive":hourCountPosUpdated[key],"negative":hourCountNegUpdated[key], "neutral":hourCountNeutralUpdated[key]})
                 
         # print('hourData',hourData)
         
