@@ -345,15 +345,17 @@ function Dashboard(props) {
                   </Link>
                 </div>
               </div>
-              <div className="dropdown float-lg-end pe-4">
-                <button
-                  onClick={navigateToReport}
-                  class="fas fa-file"
-                  style={{ border: "none", background: "transparent" }}
-                >
-                  <span style={{ marginLeft: "5px" }}>Report</span>
-                </button>
-              </div>
+              {hasSearched && (
+                <div className="dropdown float-lg-end pe-4">
+                  <button
+                    onClick={navigateToReport}
+                    class="fas fa-file"
+                    style={{ border: "none", background: "transparent" }}
+                  >
+                    <span style={{ marginLeft: "5px" }}>Report</span>
+                  </button>
+                </div>
+              )}
               {/* <div className="input-group input-group-outline">
                   <label className="form-label">Search...</label>
                   <input type="text" className="form-control" />
@@ -458,7 +460,7 @@ function Dashboard(props) {
           </div>
         </nav>
 
-        {!hasSearched && <h6>Nothing to show.</h6>}
+        {!hasSearched && <h6 className="mx-3">Nothing to show.</h6>}
         {hasSearched && (
           <div className="container-fluid py-4">
             <div className="row">
@@ -603,10 +605,37 @@ function Dashboard(props) {
                             }}
                           >
                             <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="time" />
-                            <YAxis />
+                            <XAxis
+                              dataKey="time"
+                              label={{
+                                value: "No. of Tweets",
+                                position: "bottom",
+                              }}
+                              sclaeToFit="true"
+                              verticalAnchor="start"
+                              textAnchor="end"
+                              interval={0}
+                              angle="-18"
+                              tick={{ fontSize: "12px" }}
+                              // axisLine={false}
+                            />
+                            <YAxis
+                              label={{
+                                value: "No. of Tweets",
+                                angle: -90,
+                                position: "insideLeft",
+                              }}
+                            />
                             <Tooltip />
-                            <Legend />
+                            <Legend
+                              verticalAlign="top"
+                              align="right"
+                              wrapperStyle={{
+                                left: 0,
+                                top: -20,
+                                paddingBottom: -60,
+                              }}
+                            />
                             <Line
                               type="monotone"
                               dataKey="positive"
@@ -627,6 +656,14 @@ function Dashboard(props) {
                             />
                           </LineChart>
                         </ResponsiveContainer>
+                        <p
+                          style={{
+                            textAlignVertical: "center",
+                            textAlign: "center",
+                          }}
+                        >
+                          Hours
+                        </p>
                       </div>
                     </div>
                   </div>
