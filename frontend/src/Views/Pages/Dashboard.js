@@ -607,10 +607,9 @@ function Dashboard(props) {
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis
                               dataKey="time"
-                              label={{
-                                value: "No. of Tweets",
-                                position: "bottom",
-                              }}
+                              // label={{
+                              //   position: "bottom",
+                              // }}
                               sclaeToFit="true"
                               verticalAnchor="start"
                               textAnchor="end"
