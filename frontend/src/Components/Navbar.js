@@ -1,11 +1,22 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 // Link for routing to diff pages & Hashlink for smooth transition to different parts of same page
 
-function Navbar() {
+// (document).ready(function(){
+//   ('li').click(function() {
+//   ("li.active").removeClass("active");
+//   (this).addClass('active');
+// });
+
+export default function Navbar() {
+  const [isActive,setActive] = useState("home")
+  
   const token = localStorage.getItem("authToken");
   console.log("token", token);
+
+
+  
   return (
     <>
       {/* Navbar */}
@@ -41,22 +52,31 @@ function Navbar() {
           >
             <ul class="navbar-nav ms-auto navbar-nav-scroll">
               <li class="nav-item">
-                <Link to="/" class="nav-link active" aria-current="page">
+                <Link to="/" className={isActive==='home' ? 'nav-link active' : 'nav-link' } aria-current="page"
+                onClick={() => setActive("home")}
+                value={` ${isActive === "home" ? 'btn__nav-bar-btn active-link' : 'btn__nav-bar-btn'}`}
+                >
                   Home
                 </Link>
               </li>
               <li class="nav-item">
-                <HashLink smooth to="#features" class="nav-link">
+                <HashLink smooth to="#features" className={isActive==='features' ? 'nav-link active' : 'nav-link' }
+                onClick={() => setActive("features")}
+                value={` ${isActive === "features" ? 'btn__nav-bar-btn active-link' : 'btn__nav-bar-btn'}`}>
                   Features
                 </HashLink>
               </li>
               <li class="nav-item">
-                <HashLink smooth to="#details" class="nav-link" href="#details">
+                <HashLink smooth to="#details"  href="#details" className={isActive==='details' ? 'nav-link active' : 'nav-link' }
+                onClick={() => setActive("details")}
+                value={` ${isActive === "features" ? 'btn__nav-bar-btn active-link' : 'btn__nav-bar-btn'}`}>
                   Details
                 </HashLink>
               </li>
               <li class="nav-item">
-                <HashLink smooth to="#contact" class="nav-link" href="#details">
+                <HashLink smooth to="#contact" class="nav-link" href="#details" className={isActive==='contact' ? 'nav-link active' : 'nav-link' }
+                onClick={() => setActive("contact")}
+                value={` ${isActive === "contact" ? 'btn__nav-bar-btn active-link' : 'btn__nav-bar-btn'}`}>
                   Contact
                 </HashLink>
               </li>
@@ -88,7 +108,10 @@ function Navbar() {
       </nav>
       {/* End Navbar*/}
     </>
+  
+
+ 
   );
 }
 
-export default Navbar;
+// export default Navbar;
