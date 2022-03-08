@@ -23,27 +23,6 @@ from .authentication import ExpiringTokenAuthentication
 import pytz
 import datetime
 
-
-# @api_view(['POST',])
-# @permission_classes([AllowAny])
-# def registration_view(request):
-#     print('---', request)
-
-#     if request.method == 'POST':
-#         serializer = RegistrationSerializer(data=request.data)
-#         data = {}
-#         if serializer.is_valid(): 
-#             user = serializer.save()  #call the overwritten save method from serializers
-#             data['response'] = "Successfully registered new user."
-#             data['email'] = user.email
-#             data['user_name'] = user.user_name
-#             token = Token.objects.get(user=user).key
-#             data['token'] = token
-#         else:
-#             data = serializer.errors        
-#         return Response(data)
-
-from django.db import IntegrityError
 @api_view(["POST"])
 # @permission_classes([AllowAny])
 def registration_view(request):
@@ -67,60 +46,60 @@ def registration_view(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
  
 
-@api_view(["POST",])
-@permission_classes([AllowAny])
-def login_view(request):
-    print('------------------------req', request.data['email'])
-    data = {}
-    email = request.data['email']
-    password = request.data['password']
+# @api_view(["POST",])
+# @permission_classes([AllowAny])
+# def login_view(request):
+#     print('------------------------req', request.data['email'])
+#     data = {}
+#     email = request.data['email']
+#     password = request.data['password']
 
-    print(email, password)
+#     print(email, password)
 
-    try:
-        User = NewUser.objects.get(email=email)
-        print('user', User.password)
-    except BaseException as e:
-        raise serializers.ValidationError({"400":f'{str(e)}'})
+#     try:
+#         User = NewUser.objects.get(email=email)
+#         print('user', User.password)
+#     except BaseException as e:
+#         raise serializers.ValidationError({"400":f'{str(e)}'})
     
-    utc_now = datetime.datetime.utcnow()
-    utc_now = utc_now.replace(tzinfo=pytz.utc)
+#     utc_now = datetime.datetime.utcnow()
+#     utc_now = utc_now.replace(tzinfo=pytz.utc)
 
-    # Token.objects.filter(user=User, created__lt = utc_now - datetime.timedelta(seconds=settings.TOKEN_EXPIRED_AFTER_SECONDS)).delete()
-    # token = Token.objects.get_or_create(user=User)[0].key
+#     # Token.objects.filter(user=User, created__lt = utc_now - datetime.timedelta(seconds=settings.TOKEN_EXPIRED_AFTER_SECONDS)).delete()
+#     # token = Token.objects.get_or_create(user=User)[0].key
 
-    # token = Token.objects.get_or_create(user=User)[0].key
-    # is_expired, token = token_expire_handler(token)
+#     # token = Token.objects.get_or_create(user=User)[0].key
+#     # is_expired, token = token_expire_handler(token)
 
-    if not check_password(password, User.password):
-        raise serializers.ValidationError({"error": "Incorrect login credentials"})
+#     if not check_password(password, User.password):
+#         raise serializers.ValidationError({"error": "Incorrect login credentials"})
 
-    if User:
-        if User.is_active:
-            login(request, User)
-            data["message"] = "User logged in."
-            data["email"] = User.email
-            data["id"] = User.id
-            data["is_registered"] = User.is_registered
-            res = {"data": data, 
-            # "token": token
-            # , "expires_in":expires_in(token)
-            }
+#     if User:
+#         if User.is_active:
+#             login(request, User)
+#             data["message"] = "User logged in."
+#             data["email"] = User.email
+#             data["id"] = User.id
+#             data["is_registered"] = User.is_registered
+#             res = {"data": data, 
+#             # "token": token
+#             # , "expires_in":expires_in(token)
+#             }
 
-            return Response(res)
+#             return Response(res)
 
-        else:
-            raise ValidationError({"message":"User not active"})
-    else:
-        raise ValidationError({"message":"Account doesnot exists."})
+#         else:
+#             raise ValidationError({"message":"User not active"})
+#     else:
+#         raise ValidationError({"message":"Account doesnot exists."})
 
 
-@api_view(["GET",])
-@permission_classes([IsAuthenticated])
-def logout_view(request):
-#    request.user.auth_token.delete()
-   logout(request)
-   return Response({"message":"User logged out"})
+# @api_view(["GET",])
+# @permission_classes([IsAuthenticated])
+# def logout_view(request):
+# #    request.user.auth_token.delete()
+#    logout(request)
+#    return Response({"message":"User logged out"})
 
 @api_view(["GET",])
 def get_user(request, id):
