@@ -157,7 +157,7 @@ def fetch_tweets(product, company, keywords):
 
             # search query
             # new_search = product + " OR " + product +"+review OR "+ keywords + " OR " + keywords +"+review OR "  + company + " OR " + company + "+review -sale -available -want -filter:retweets AND -filter:replies AND -filter:links AND -filter:media AND -filter:images AND -filter:twimg"
-            new_search = product + " OR " + keywords + " OR " + company +" -sale -available -want -filter:retweets AND -filter:replies AND -filter:links AND -filter:media AND -filter:images AND -filter:twimg"
+            new_search ="(" + product + ")" + " OR " + "(" +keywords +")" + " OR " + "("+company+")" +" -sale -available -want -filter:retweets AND -filter:replies AND -filter:links AND -filter:media AND -filter:images AND -filter:twimg"
             print(new_search)
             # contains fetched tweets
             tweets = tw.Cursor(api.search_tweets,q=new_search,
@@ -169,7 +169,7 @@ def fetch_tweets(product, company, keywords):
             # extracting required fields from fetched tweets
             all_tweets = [[tweet.full_text, tweet.created_at.year, tweet.created_at.month, tweet.created_at.day, tweet.created_at.time().hour, tweet.created_at.time().minute, tweet.created_at.time().second] for tweet in tweets]
 
-            print("all", all_tweets)
+            # print("all", all_tweets)
             
             if(len(all_tweets) == 0):
                 return []
